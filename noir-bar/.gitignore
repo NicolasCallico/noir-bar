@@ -1,0 +1,23 @@
+# Dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# Production
+/.next/
+/out/
+
+# Environment (¡MUY IMPORTANTE! Nunca subir esto a GitHub)
+.env
+.env.local
+.env.*.local
+
+# Debug
+npm-debug.log*
+
+# Vercel
+.vercel
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
