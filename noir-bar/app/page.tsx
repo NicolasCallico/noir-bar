@@ -1,7 +1,8 @@
-import { redirect } from "next/navigation";
-
 export default function Home() {
-  // Redirige al menú del local demo
-  // Cuando tengas tu propio local, cambiá "noir-bar" por tu slug
-  redirect("/noir-bar");
+  return (
+    <main>
+      <h1>Menu QR funcionando</h1>
+      <p>Si ves esto, el deploy está OK</p>
+    </main>
+  )
 }
