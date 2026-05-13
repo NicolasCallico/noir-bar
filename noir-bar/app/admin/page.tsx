@@ -5,17 +5,17 @@ import { formatDate } from "@/lib/utils";
 
 export default async function AdminDashboard() {
   // Stats en paralelo
-  const [
-    { count: totalProducts },
-    { count: totalReservations },
-    { data: recentReservations },
-    { count: pendingReservations },
-  ] = await Promise.all([
+  const results = await Promise.all([
     supabase.from("products").select("*", { count: "exact", head: true }),
     supabase.from("reservations").select("*", { count: "exact", head: true }),
     supabase.from("reservations").select("*").order("created_at", { ascending: false }).limit(5),
     supabase.from("reservations").select("*", { count: "exact", head: true }).eq("status", "new"),
   ]);
+
+  const totalProducts = results[0].count ?? 0;
+  const totalReservations = results[1].count ?? 0;
+  const recentReservations = results[2].data ?? [];
+  const pendingReservations = results[3].count ?? 0;
 
   const stats = [
     { label: "Productos", value: totalProducts ?? 0, sub: "en el menú", icon: ShoppingBag, href: "/admin/products" },

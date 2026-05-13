@@ -1,8 +1,8 @@
 export default function Home() {
   return (
-    <main>
-      <h1>Menu QR funcionando</h1>
-      <p>Si ves esto, el deploy está OK</p>
+    <main style={{ padding: 20 }}>
+      <h1>App funcionando</h1>
+      <p>Deploy OK</p>
     </main>
-  )
+  );
 }

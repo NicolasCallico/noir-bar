@@ -29,7 +29,18 @@ export default function AdminPromotions() {
   async function savePromo() {
     if (!form.name) return alert("Ingresá un nombre.");
     setSaving(true);
-    await supabase.from("promotions").insert({ ...form, venue_id: "TU_VENUE_ID" });
+    
+    // Obtener venue_id de la sesión
+    const { data: { session } } = await supabase.auth.getSession();
+    const venueId = session?.user?.user_metadata?.venue_id;
+    
+    if (!venueId) {
+      alert("Error: No se pudo obtener el venue_id. Por favor, cierra sesión y vuelve a iniciar.");
+      setSaving(false);
+      return;
+    }
+    
+    await supabase.from("promotions").insert({ ...form, venue_id: venueId });
     setSaving(false);
     setShowModal(false);
     fetchPromos();

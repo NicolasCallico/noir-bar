@@ -63,11 +63,21 @@ export default function AdminProducts() {
     if (!form.name || !form.price) return alert("Completá nombre y precio.");
     setSaving(true);
     const payload = { name: form.name, description: form.description, price: parseFloat(form.price), emoji: form.emoji, category_id: form.category_id, badge: form.badge, available: form.available };
+    
+    // Obtener venue_id de la sesión
+    const { data: { session } } = await supabase.auth.getSession();
+    const venueId = session?.user?.user_metadata?.venue_id;
+    
+    if (!venueId && !editingId) {
+      alert("Error: No se pudo obtener el venue_id. Por favor, cierra sesión y vuelve a iniciar.");
+      setSaving(false);
+      return;
+    }
+    
     if (editingId) {
       await supabase.from("products").update(payload).eq("id", editingId);
     } else {
-      // Necesitás el venue_id real aquí
-      await supabase.from("products").insert({ ...payload, venue_id: "TU_VENUE_ID" });
+      await supabase.from("products").insert({ ...payload, venue_id: venueId });
     }
     setSaving(false);
     setShowModal(false);

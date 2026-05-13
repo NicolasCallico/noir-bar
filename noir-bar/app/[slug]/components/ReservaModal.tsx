@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Loader2, CheckCircle } from "lucide-react";
 import { supabase } from "@/lib/supabase";
+import type { Reservation } from "@/lib/types";
 
 interface Props {
   isOpen: boolean;
@@ -53,17 +54,17 @@ export function ReservaModal({ isOpen, onClose, venueId, venueName }: Props) {
 
     try {
       const { error } = await supabase.from("reservations").insert([
-  {
-    venue_id: venueId,
-    name: form.name,
-    phone: form.phone,
-    people: Number(form.people),
-    date: form.date,
-    time: form.time,
-    is_birthday: form.is_birthday,
-    notes: form.notes,
-  },
-] as any);
+        {
+          venue_id: venueId,
+          name: form.name,
+          phone: form.phone,
+          people: Number(form.people),
+          date: form.date,
+          time: form.time,
+          is_birthday: form.is_birthday,
+          notes: form.notes,
+        },
+      ]);
 
       if (error) {
         console.error(error);

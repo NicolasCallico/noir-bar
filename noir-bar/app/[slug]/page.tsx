@@ -1,4 +1,5 @@
 import { supabase } from "@/lib/supabase";
+import { VenueSettings, Category, Product, Promotion } from "@/lib/types";
 import { Hero } from "./components/Hero";
 import { PromoBar } from "./components/PromoBar";
 import { CategoryFilter } from "./components/CategoryFilter";
@@ -11,50 +12,60 @@ interface Props {
 }
 
 export async function generateMetadata({ params }: Props) {
-  const { data: venue } = await supabase
+  const result = await supabase
     .from("venue_settings")
     .select("*")
     .eq("slug", params.slug)
     .single();
 
+  const venue = (result.data as unknown) as VenueSettings | null;
+
   if (!venue) return { title: "Menú no encontrado" };
 
   return {
-    title: `${venue.name} — Menú`,
-    description: venue.tagline,
+    title: `${venue.name || "Menú"} — Menú`,
+    description: venue.tagline || "Menú del local",
   };
 }
 
 export default async function MenuPage({ params }: Props) {
   // Traer datos del local
-  const { data: venue } = await supabase
+  const venueResult = await supabase
     .from("venue_settings")
     .select("*")
     .eq("slug", params.slug)
     .single();
 
+  const venue = (venueResult.data as unknown) as VenueSettings | null;
+
   if (!venue) notFound();
 
   // Traer categorías
-  const { data: categories } = await supabase
+  const categoriesResult = await supabase
     .from("categories")
     .select("*")
     .eq("venue_id", venue.id)
     .order("order");
 
+  const categories = (categoriesResult.data as unknown) as Category[] | null;
+
   // Traer productos con su categoría
-  const { data: products } = await supabase
+  const productsResult = await supabase
     .from("products")
     .select("*, categories(*)")
     .eq("venue_id", venue.id)
     .order("created_at", { ascending: false });
 
+  const products = (productsResult.data as unknown) as Product[] | null;
+
   // Traer promociones activas
-  const { data: promotions } = await supabase
+  const promotionsResult = await supabase
     .from("promotions")
     .select("*")
     .eq("venue_id", venue.id)
     .eq("active", true);
+
+  const promotions = (promotionsResult.data as unknown) as Promotion[] | null;
 
   return (
     <main className="min-h-screen bg-bg">
