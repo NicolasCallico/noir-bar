@@ -1,11 +1,4 @@
-import type { Metadata } from "next";
 import "./globals.css";
-
-export const metadata: Metadata = {
-  title: "Menú Digital",
-  description: "Menú QR premium para tu local gastronómico",
-  viewport: "width=device-width, initial-scale=1, maximum-scale=1",
-};
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
