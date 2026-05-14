@@ -65,7 +65,6 @@ export function ProductList({ products, categories, showUnavailable }: Props) {
                 </span>
               </div>
               <p className="max-w-2xl text-sm leading-relaxed text-muted/90">
-                Explora los mejores platos de esta categoría con fotos, precios claros y detalle rápido.
               </p>
             </motion.div>
           )}
