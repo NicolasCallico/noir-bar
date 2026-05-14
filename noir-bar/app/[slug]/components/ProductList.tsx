@@ -56,16 +56,15 @@ export function ProductList({ products, categories, showUnavailable }: Props) {
               transition={{ delay: groupIdx * 0.05 }}
               className="flex flex-col gap-3"
             >
-              <div className="flex flex-wrap items-center gap-3">
-                <span className="text-[13px] uppercase tracking-[0.3em] text-muted">
-                  {group.category.icon} {group.category.name}
-                </span>
-                <span className="rounded-full border border-border/70 bg-white/5 px-3 py-1 text-[11px] text-muted">
-                  {group.products.length} productos
-                </span>
-              </div>
-              <p className="max-w-2xl text-sm leading-relaxed text-muted/90">
-              </p>
+<div className="flex items-center gap-4">
+  <span className="font-serif text-xl text-[#F5F5F5]">
+    {group.category.icon} {group.category.name}
+  </span>
+  <div className="flex-1 h-[1px] bg-gradient-to-r from-gold/30 to-transparent" />
+  <span className="text-[10px] uppercase tracking-widest text-gold/60 border border-gold/20 rounded-full px-3 py-1">
+    {group.products.length}
+  </span>
+</div>
             </motion.div>
           )}
 
