@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import type { Product } from "@/lib/types";
 import { formatPrice } from "@/lib/utils";
 import { cn } from "@/lib/utils";
@@ -16,9 +15,13 @@ const badgeConfig = {
   "": null,
 };
 
+function isExternalUrl(url?: string) {
+  return !!url && (url.startsWith("http://") || url.startsWith("https://"));
+}
+
 function getProductImageUrl(imageUrl?: string) {
   if (!imageUrl) return undefined;
-  if (imageUrl.startsWith("http://") || imageUrl.startsWith("https://")) return imageUrl;
+  if (isExternalUrl(imageUrl)) return imageUrl;
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.replace(/\/$/, "");
   if (!supabaseUrl) return imageUrl;
   if (imageUrl.startsWith("/")) {
@@ -41,12 +44,11 @@ export function ProductCard({ product }: Props) {
       <div className="grid gap-4 md:grid-cols-[160px_1fr] p-4 md:p-5">
         <div className="relative overflow-hidden rounded-3xl bg-zinc-950/70 border border-border/60 shadow-inner shadow-black/30 min-h-[160px] md:min-h-[180px]">
           {imageUrl ? (
-            <Image
+            <img
               src={imageUrl}
               alt={product.name}
-              fill
-              sizes="(max-width: 640px) 100vw, 160px"
-              className="object-cover transition duration-500 group-hover:scale-105"
+              loading="lazy"
+              className="object-cover w-full h-full transition duration-500 group-hover:scale-105"
             />
           ) : (
             <div className="flex h-full items-center justify-center text-4xl text-muted">
