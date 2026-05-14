@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { motion } from "framer-motion";
 import type { Product } from "@/lib/types";
 import { formatPrice } from "@/lib/utils";
 import { cn } from "@/lib/utils";
@@ -17,69 +16,90 @@ const badgeConfig = {
   "": null,
 };
 
+function getProductImageUrl(imageUrl?: string) {
+  if (!imageUrl) return undefined;
+  if (imageUrl.startsWith("http://") || imageUrl.startsWith("https://")) return imageUrl;
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.replace(/\/$/, "");
+  if (!supabaseUrl) return imageUrl;
+  if (imageUrl.startsWith("/")) {
+    return `${supabaseUrl}${imageUrl}`;
+  }
+  return `${supabaseUrl}/storage/v1/object/public/products/${imageUrl.replace(/^\/+/, "")}`;
+}
+
 export function ProductCard({ product }: Props) {
   const badge = badgeConfig[product.badge];
+  const imageUrl = getProductImageUrl(product.image_url);
 
   return (
     <div
       className={cn(
-        "flex gap-3 p-3.5 rounded-lg border border-border bg-card transition-all duration-200",
-        product.available
-          ? "hover:border-gold-dim active:scale-[0.99]"
-          : "opacity-40 cursor-default"
+        "group overflow-hidden rounded-[26px] border border-border bg-card/80 shadow-[0_20px_60px_rgba(0,0,0,0.22)] transition duration-300 hover:-translate-y-0.5 hover:border-gold-dim/50",
+        product.available ? "" : "opacity-60"
       )}
     >
-      {/* Imagen / Emoji */}
-      <div className="w-[68px] h-[68px] flex-shrink-0 rounded-md overflow-hidden bg-[#222] flex items-center justify-center text-3xl">
-        {product.image_url ? (
-          <Image
-            src={product.image_url}
-            alt={product.name}
-            width={68}
-            height={68}
-            className="object-cover w-full h-full"
-          />
-        ) : (
-          <span>{product.emoji}</span>
-        )}
-      </div>
-
-      {/* Info */}
-      <div className="flex-1 min-w-0">
-        {/* Badges */}
-        <div className="flex gap-1.5 flex-wrap mb-1.5">
-          {badge && (
-            <span className={cn("text-[9px] tracking-wide uppercase px-2 py-0.5 rounded-full border font-medium", badge.class)}>
-              {badge.label}
-            </span>
+      <div className="grid gap-4 md:grid-cols-[160px_1fr] p-4 md:p-5">
+        <div className="relative overflow-hidden rounded-3xl bg-zinc-950/70 border border-border/60 shadow-inner shadow-black/30 min-h-[160px] md:min-h-[180px]">
+          {imageUrl ? (
+            <Image
+              src={imageUrl}
+              alt={product.name}
+              fill
+              sizes="(max-width: 640px) 100vw, 160px"
+              className="object-cover transition duration-500 group-hover:scale-105"
+            />
+          ) : (
+            <div className="flex h-full items-center justify-center text-4xl text-muted">
+              {product.emoji}
+            </div>
           )}
           {!product.available && (
-            <span className="text-[9px] tracking-wide uppercase px-2 py-0.5 rounded-full border border-border text-muted font-medium">
+            <div className="absolute inset-x-4 bottom-4 rounded-2xl bg-black/70 px-3 py-1 text-[11px] uppercase tracking-[0.24em] text-white/90 backdrop-blur-sm">
               Sin stock
-            </span>
+            </div>
           )}
         </div>
 
-        {/* Nombre */}
-        <h3 className="font-serif text-[17px] font-medium leading-tight text-[#F5F5F5]">
-          {product.name}
-        </h3>
+        <div className="flex flex-col justify-between gap-3">
+          <div>
+            <div className="flex flex-wrap gap-2 mb-3">
+              {badge && (
+                <span className={cn(
+                  "rounded-full border px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.24em]",
+                  badge.class
+                )}>
+                  {badge.label}
+                </span>
+              )}
+              {product.original_price && (
+                <span className="rounded-full border border-border px-3 py-1 text-[10px] uppercase tracking-[0.24em] text-muted">
+                  Oferta
+                </span>
+              )}
+            </div>
 
-        {/* Descripción */}
-        <p className="text-[11px] text-muted mt-0.5 mb-2 leading-snug line-clamp-2">
-          {product.description}
-        </p>
+            <h3 className="font-serif text-lg font-semibold leading-tight text-white">
+              {product.name}
+            </h3>
+            <p className="mt-2 text-sm leading-relaxed text-muted line-clamp-3">
+              {product.description}
+            </p>
+          </div>
 
-        {/* Precio */}
-        <div className="flex items-baseline gap-2">
-          <span className="text-[15px] font-medium text-gold">
-            {formatPrice(product.price)}
-          </span>
-          {product.original_price && (
-            <span className="text-xs text-muted line-through">
-              {formatPrice(product.original_price)}
-            </span>
-          )}
+          <div className="flex items-end justify-between gap-4 pt-2">
+            <div>
+              <p className="text-2xl font-semibold text-gold">{formatPrice(product.price)}</p>
+              {product.original_price && (
+                <p className="text-xs text-muted line-through">{formatPrice(product.original_price)}</p>
+              )}
+            </div>
+
+            {product.available && (
+              <span className="rounded-full border border-gold/30 bg-gold/5 px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-gold">
+                Disponible
+              </span>
+            )}
+          </div>
         </div>
       </div>
     </div>

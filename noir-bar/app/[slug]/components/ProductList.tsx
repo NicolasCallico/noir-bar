@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { Product, Category } from "@/lib/types";
 import { ProductCard } from "./ProductCard";
-import { formatPrice } from "@/lib/utils";
 
 interface Props {
   products: Product[];
@@ -15,7 +14,6 @@ interface Props {
 export function ProductList({ products, categories, showUnavailable }: Props) {
   const [activeCategoryId, setActiveCategoryId] = useState<string | null>(null);
 
-  // Escuchar el evento del CategoryFilter
   useEffect(() => {
     const handler = (e: Event) => {
       setActiveCategoryId((e as CustomEvent).detail);
@@ -24,14 +22,12 @@ export function ProductList({ products, categories, showUnavailable }: Props) {
     return () => window.removeEventListener("filterCategory", handler);
   }, []);
 
-  // Filtrar productos
   const filtered = products.filter((p) => {
     if (!showUnavailable && !p.available) return false;
     if (activeCategoryId && p.category_id !== activeCategoryId) return false;
     return true;
   });
 
-  // Agrupar por categoría para mostrar sección
   const grouped = categories
     .map((cat) => ({
       category: cat,
@@ -41,45 +37,55 @@ export function ProductList({ products, categories, showUnavailable }: Props) {
 
   if (filtered.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-20 text-muted">
-        <span className="text-4xl mb-3">🍽️</span>
-        <p className="text-sm">No hay productos en esta categoría</p>
+      <div className="flex min-h-[280px] flex-col items-center justify-center rounded-[30px] border border-border bg-card/70 p-8 text-center text-muted shadow-xl shadow-black/20">
+        <span className="text-5xl mb-4">😔</span>
+        <p className="text-lg font-medium text-white">No hay productos disponibles.</p>
+        <p className="mt-2 text-sm text-muted">Intenta cambiar de categoría o vuelve más tarde.</p>
       </div>
     );
   }
 
   return (
-    <div className="px-5 pb-24 pt-4">
+    <div className="space-y-8 px-5 pb-24 pt-4 sm:px-6 lg:px-8">
       {grouped.map((group, groupIdx) => (
-        <div key={group.category.id} className="mb-6">
-          {/* Título de sección (solo si mostramos varios) */}
+        <section key={group.category.id} className="space-y-5">
           {!activeCategoryId && (
-            <motion.h2
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ delay: groupIdx * 0.05 }}
-              className="font-serif text-[11px] tracking-[0.15em] uppercase text-muted pb-2 border-b border-border mb-3"
+              className="flex flex-col gap-3"
             >
-              {group.category.icon} {group.category.name}
-            </motion.h2>
+              <div className="flex flex-wrap items-center gap-3">
+                <span className="text-[13px] uppercase tracking-[0.3em] text-muted">
+                  {group.category.icon} {group.category.name}
+                </span>
+                <span className="rounded-full border border-border/70 bg-white/5 px-3 py-1 text-[11px] text-muted">
+                  {group.products.length} productos
+                </span>
+              </div>
+              <p className="max-w-2xl text-sm leading-relaxed text-muted/90">
+                Explora los mejores platos de esta categoría con fotos, precios claros y detalle rápido.
+              </p>
+            </motion.div>
           )}
 
-          <div className="flex flex-col gap-3">
+          <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
             <AnimatePresence>
               {group.products.map((product, idx) => (
                 <motion.div
                   key={product.id}
-                  initial={{ opacity: 0, y: 12 }}
+                  initial={{ opacity: 0, y: 18 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -8 }}
-                  transition={{ duration: 0.3, delay: idx * 0.04 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.35, delay: idx * 0.03 }}
                 >
                   <ProductCard product={product} />
                 </motion.div>
               ))}
             </AnimatePresence>
           </div>
-        </div>
+        </section>
       ))}
     </div>
   );
