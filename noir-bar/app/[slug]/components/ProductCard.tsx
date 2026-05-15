@@ -33,73 +33,58 @@ function getProductImageUrl(imageUrl?: string) {
 export function ProductCard({ product }: Props) {
   const badge = badgeConfig[product.badge];
   const imageUrl = getProductImageUrl(product.image_url);
-
   return (
     <div
       className={cn(
-        "group overflow-hidden rounded-[26px] border border-border bg-card/80 shadow-[0_20px_60px_rgba(0,0,0,0.22)] transition duration-300 hover:-translate-y-0.5 hover:border-gold-dim/50",
+        "flex items-center gap-3 rounded-lg border border-border bg-card/80 transition-colors overflow-hidden",
         product.available ? "" : "opacity-60"
       )}
-    >
-      <div className="grid gap-4 md:grid-cols-[160px_1fr] p-4 md:p-5">
-        <div className="relative overflow-hidden rounded-3xl bg-zinc-950/70 border border-border/60 shadow-inner shadow-black/30 min-h-[160px] md:min-h-[180px]">
-          {imageUrl ? (
-            <img
-              src={imageUrl}
-              alt={product.name}
-              loading="lazy"
-              className="object-cover w-full h-full transition duration-500 group-hover:scale-105"
-            />
-          ) : (
-            <div className="flex h-full items-center justify-center text-4xl text-muted">
-              {product.emoji}
-            </div>
-          )}
-          {!product.available && (
-            <div className="absolute inset-x-4 bottom-4 rounded-2xl bg-black/70 px-3 py-1 text-[11px] uppercase tracking-[0.24em] text-white/90 backdrop-blur-sm">
-              Sin stock
-            </div>
-          )}
-        </div>
+      style={{ maxHeight: 80 }}
+     >
+      <div className="flex-shrink-0 w-16 h-16 flex items-center justify-center rounded-md bg-zinc-950/60 border border-border/60 overflow-hidden ml-2">
+        {imageUrl ? (
+          <img src={imageUrl} alt={product.name} loading="lazy" className="w-full h-full object-cover" />
+        ) : (
+          <div className="text-2xl">{product.emoji}</div>
+        )}
+      </div>
 
-        <div className="flex flex-col justify-between gap-3">
-          <div>
-            <div className="flex flex-wrap gap-2 mb-3">
+      <div className="flex-1 min-w-0 py-2">
+        <div className="flex items-center justify-between gap-4">
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 mb-1">
               {badge && (
                 <span className={cn(
-                  "rounded-full border px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.24em]",
+                  "rounded-full border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em]",
                   badge.class
                 )}>
                   {badge.label}
                 </span>
               )}
               {product.original_price && (
-                <span className="rounded-full border border-border px-3 py-1 text-[10px] uppercase tracking-[0.24em] text-muted">
+                <span className="rounded-full border border-border px-2 py-0.5 text-[10px] uppercase tracking-[0.12em] text-muted">
                   Oferta
+                </span>
+              )}
+              {!product.available && (
+                <span className="rounded-full border border-border px-2 py-0.5 text-[10px] uppercase tracking-[0.12em] text-muted">
+                  Sin stock
                 </span>
               )}
             </div>
 
-            <h3 className="font-serif text-lg font-semibold leading-tight text-white">
+            <h3 className="font-serif text-sm font-semibold leading-tight text-white truncate">
               {product.name}
             </h3>
-            <p className="mt-2 text-sm leading-relaxed text-muted line-clamp-3">
+            <p className="text-xs text-muted leading-tight truncate line-clamp-2">
               {product.description}
             </p>
           </div>
 
-          <div className="flex items-end justify-between gap-4 pt-2">
-            <div>
-              <p className="text-2xl font-semibold text-gold">{formatPrice(product.price)}</p>
-              {product.original_price && (
-                <p className="text-xs text-muted line-through">{formatPrice(product.original_price)}</p>
-              )}
-            </div>
-
-            {product.available && (
-              <span className="rounded-full border border-gold/30 bg-gold/5 px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-gold">
-                Disponible
-              </span>
+          <div className="flex-shrink-0 text-right pr-3">
+            <p className="text-lg font-semibold text-gold">{formatPrice(product.price)}</p>
+            {product.original_price && (
+              <p className="text-xs text-muted line-through">{formatPrice(product.original_price)}</p>
             )}
           </div>
         </div>
