@@ -34,7 +34,8 @@ export function Hero({ venue }: Props) {
           >
           Instagram
         </a>
-      </div><ReservaModal isOpen={showReserva} onClose={() => setShowReserva(false)} venueId={venue.id} venueName={venue.name} /></>
+      </div>
+      <ReservaModal isOpen={showReserva} onClose={() => setShowReserva(false)} venueId={venue.id} venueName={venue.name} />
     </div>
   );
 }
