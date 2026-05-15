@@ -20,9 +20,10 @@ export function CategoryFilter({ categories, onFilter }: Props) {
   }
 
   return (
-    <div className="flex gap-2 px-5 py-3.5 overflow-x-auto no-scrollbar border-b border-border sticky top-0 bg-bg z-10">
-      {/* Botón "Todos" */}
-      <button
+    <div className="mx-auto w-full max-w-5xl px-5 sm:px-6 lg:px-8">
+      <div className="flex justify-center gap-2 px-2 py-3.5 overflow-x-auto no-scrollbar border-b border-border sticky top-0 bg-bg z-10">
+        {/* Botón "Todos" */}
+        <button
         onClick={() => handleClick(null)}
         className={`flex-shrink-0 text-xs px-4 py-1.5 rounded-full border transition-all duration-200 ${
           active === null
@@ -47,6 +48,7 @@ export function CategoryFilter({ categories, onFilter }: Props) {
           {cat.icon} {cat.name}
         </button>
       ))}
+      </div>
     </div>
   );
 }
