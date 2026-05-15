@@ -21,7 +21,7 @@ export function CategoryFilter({ categories, onFilter }: Props) {
 
   return (
     <div className="mx-auto w-full max-w-5xl px-5 sm:px-6 lg:px-8">
-      <div className="flex justify-center gap-2 px-2 py-3.5 overflow-x-auto no-scrollbar border-b border-border sticky top-0 bg-bg z-10">
+      <div className="flex justify-start md:justify-center gap-2 px-2 py-3.5 overflow-x-auto no-scrollbar border-b border-border sticky top-0 bg-bg z-10">
         {/* Botón "Todos" */}
         <button
         onClick={() => handleClick(null)}
