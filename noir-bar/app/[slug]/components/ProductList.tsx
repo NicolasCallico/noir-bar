@@ -46,7 +46,7 @@ export function ProductList({ products, categories, showUnavailable }: Props) {
   }
 
   return (
-    <div className="space-y-6 px-5 pb-24 pt-4 sm:px-6 lg:px-8">
+    <div className="mx-auto w-full max-w-5xl space-y-6 px-5 pb-24 pt-4 sm:px-6 lg:px-8">
       {grouped.map((group, groupIdx) => (
         <section key={group.category.id} className="space-y-4">
           <motion.div

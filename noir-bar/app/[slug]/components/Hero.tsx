@@ -9,8 +9,8 @@ interface Props { venue: VenueSettings; }
 export function Hero({ venue }: Props) {
   const [showReserva, setShowReserva] = useState(false);
     return (
-    <div className="relative mx-auto w-full max-w-5xl px-5 pt-10 pb-8 border-b border-border overflow-hidden">
-      <div className="inline-flex flex-wrap items-center gap-1.5 border border-gold/30 rounded-full px-3 py-1 mb-4">
+    <div className="relative mx-auto w-full max-w-5xl px-5 pt-10 pb-8 border-b border-border overflow-hidden text-center sm:text-left">
+      <div className="inline-flex flex-wrap items-center justify-center gap-1.5 border border-gold/30 rounded-full px-3 py-1 mb-4 mx-auto sm:mx-0">
           <span className="w-1.5 h-1.5 rounded-full bg-gold inline-block" />
           <span className="text-[10px] tracking-[0.2em] uppercase text-gold/80">{venue.address}</span>
         </div>
@@ -19,7 +19,7 @@ export function Hero({ venue }: Props) {
         </h1>
         <div className="w-12 h-[1px] bg-gold/50 mb-3" />
         <p className="text-xs text-muted tracking-widest uppercase mb-6">{venue.tagline}</p>
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-wrap items-center justify-center gap-3 sm:justify-start">
           <button
             onClick={() => setShowReserva(true)}
             className="bg-gold text-bg text-xs font-semibold px-4 py-2 rounded-full tracking-widest uppercase hover:bg-gold/90 transition-all"
