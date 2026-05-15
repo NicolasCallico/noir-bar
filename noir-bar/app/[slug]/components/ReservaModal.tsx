@@ -98,35 +98,6 @@ document.body.removeChild(link);
     }
   }
 
-    setLoading(true);
-
-    try {
-      const { error } = await supabase.from("reservations").insert([
-        {
-          venue_id: venueId,
-          name: form.name,
-          phone: form.phone,
-          people: Number(form.people),
-          date: form.date,
-          time: form.time,
-          is_birthday: form.is_birthday,
-          notes: form.notes,
-        },
-      ]);
-
-      if (error) {
-        console.error(error);
-        return;
-      }
-
-      setSuccess(true);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  }
-
   function handleClose() {
     onClose();
     setTimeout(() => setSuccess(false), 300);
