@@ -49,24 +49,22 @@ export function ProductList({ products, categories, showUnavailable }: Props) {
     <div className="space-y-6 px-5 pb-24 pt-4 sm:px-6 lg:px-8">
       {grouped.map((group, groupIdx) => (
         <section key={group.category.id} className="space-y-4">
-          {!activeCategoryId && (
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: groupIdx * 0.05 }}
-              className="flex flex-col gap-3"
-            >
-              <div className="flex items-center gap-4">
-                <span className="font-serif text-xl text-[#F5F5F5]">
-                  {group.category.icon} {group.category.name}
-                </span>
-                <div className="flex-1 h-[1px] bg-gradient-to-r from-gold/30 to-transparent" />
-                <span className="text-[10px] uppercase tracking-widest text-gold/60 border border-gold/20 rounded-full px-3 py-1">
-                  {group.products.length}
-                </span>
-              </div>
-            </motion.div>
-          )}
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: groupIdx * 0.05 }}
+            className="flex flex-col gap-3"
+          >
+            <div className="flex items-center gap-4">
+              <span className="font-serif text-xl text-[#F5F5F5]">
+                {group.category.icon} {group.category.name}
+              </span>
+              <div className="flex-1 h-[1px] bg-gradient-to-r from-gold/30 to-transparent" />
+              <span className="text-[10px] uppercase tracking-widest text-gold/60 border border-gold/20 rounded-full px-3 py-1">
+                {group.products.length}
+              </span>
+            </div>
+          </motion.div>
 
           <div className="flex flex-col divide-y divide-border">
             <AnimatePresence>
