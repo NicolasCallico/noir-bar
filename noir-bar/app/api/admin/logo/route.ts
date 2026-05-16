@@ -67,7 +67,7 @@ export async function POST(req: Request) {
   const publicData = publicResult.data;
   const { error: updateError } = await supabaseAdmin
     .from("venue_settings")
-    .update({ logo_image_url: publicData.publicUrl })
+.update({ logo_url: publicData.publicUrl })
     .eq("id", venueId);
 
   if (updateError) {

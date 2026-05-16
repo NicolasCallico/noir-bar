@@ -10,10 +10,10 @@ export function Hero({ venue }: Props) {
   const [showReserva, setShowReserva] = useState(false);
     return (
     <div className="relative mx-auto w-full max-w-5xl px-5 pt-10 pb-8 border-b border-border overflow-hidden text-center">
-      {venue.logo_image_url ? (
+      {venue.logo_url ? (
         <div className="mx-auto mb-6 max-w-[180px] rounded-3xl border border-gold/30 bg-[#111] p-4">
           <img
-            src={venue.logo_image_url}
+            src={venue.logo_url}
             alt={`${venue.name} logo`}
             className="mx-auto h-20 w-20 sm:h-24 sm:w-24 object-contain"
           />

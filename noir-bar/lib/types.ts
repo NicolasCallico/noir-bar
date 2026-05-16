@@ -58,7 +58,7 @@ export interface VenueSettings {
   instagram: string;
   address: string;
   hero_image_url?: string;
-  logo_image_url?: string;
+  logo_url?: string;
   primary_color: string;
   show_unavailable: boolean;
 }
