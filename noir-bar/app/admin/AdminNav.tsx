@@ -6,11 +6,11 @@ import { LayoutDashboard, ShoppingBag, Calendar, Megaphone, Settings } from "luc
 import { cn } from "@/lib/utils";
 
 const navItems = [
-  { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/admin", label: "Inicio", icon: LayoutDashboard },
   { href: "/admin/products", label: "Productos", icon: ShoppingBag },
-  { href: "/admin/reservations", label: "Reservas", icon: Calendar },
   { href: "/admin/promotions", label: "Promos", icon: Megaphone },
-  { href: "/admin/settings", label: "Config", icon: Settings },
+  { href: "/admin/reservations", label: "Reservas", icon: Calendar },
+  { href: "/admin/settings", label: "Local", icon: Settings },
 ];
 
 export function AdminNav() {

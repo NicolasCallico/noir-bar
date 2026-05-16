@@ -17,13 +17,14 @@ export default function AdminLogin() {
     setLoading(true);
     setError("");
 
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) {
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error || !data?.session) {
       setError("Email o contraseña incorrectos.");
       setLoading(false);
-    } else {
-      router.push("/admin");
+      return;
     }
+
+    router.push("/admin");
   }
 
   const inputClass = "w-full bg-[#111] border border-[#2A2A2A] rounded-md px-3 py-3 text-sm text-[#F5F5F5] placeholder-[#888] focus:outline-none focus:border-[#8a7248] transition-colors";

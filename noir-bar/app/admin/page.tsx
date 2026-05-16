@@ -31,6 +31,11 @@ export default async function AdminDashboard() {
 
   return (
     <div className="px-5 pt-5">
+      <div className="mb-6">
+        <h1 className="font-serif text-2xl mb-1">Panel de administración</h1>
+        <p className="text-xs text-[#888]">Carga productos, promociones y controla reservas desde el admin.</p>
+      </div>
+
       {/* Stats */}
       <div className="grid grid-cols-3 gap-2.5 mb-6">
         {stats.map((stat) => (

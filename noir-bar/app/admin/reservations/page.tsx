@@ -19,6 +19,7 @@ export default function AdminReservations() {
   useEffect(() => { fetchReservations(); }, []);
 
   async function fetchReservations() {
+    setLoading(true);
     const { data } = await supabase
       .from("reservations")
       .select("*")
@@ -37,7 +38,18 @@ export default function AdminReservations() {
 
   return (
     <div className="px-5 pt-5">
-      <h2 className="font-serif text-xl mb-4">Reservas</h2>
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-4">
+        <div>
+          <h2 className="font-serif text-xl">Reservas</h2>
+          <p className="text-xs text-[#888]">Ver reservas y confirmar o cancelar con un clic.</p>
+        </div>
+        <button
+          onClick={fetchReservations}
+          className="self-start text-[#888] border border-[#2A2A2A] px-3 py-2 rounded text-xs hover:border-[#C8A96B] hover:text-[#F5F5F5] transition-colors"
+        >
+          Recargar
+        </button>
+      </div>
 
       {/* Filtros */}
       <div className="flex gap-2 mb-4">

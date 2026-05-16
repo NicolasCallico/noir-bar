@@ -17,6 +17,7 @@ create table if not exists venue_settings (
   instagram text,
   address text,
   hero_image_url text,
+  logo_image_url text,
   primary_color text default '#C8A96B',
   show_unavailable boolean default true,
   created_at timestamptz default now()

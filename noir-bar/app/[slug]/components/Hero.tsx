@@ -10,6 +10,15 @@ export function Hero({ venue }: Props) {
   const [showReserva, setShowReserva] = useState(false);
     return (
     <div className="relative mx-auto w-full max-w-5xl px-5 pt-10 pb-8 border-b border-border overflow-hidden text-center">
+      {venue.logo_image_url ? (
+        <div className="mx-auto mb-6 max-w-[180px] rounded-3xl border border-gold/30 bg-[#111] p-4">
+          <img
+            src={venue.logo_image_url}
+            alt={`${venue.name} logo`}
+            className="mx-auto h-20 w-20 sm:h-24 sm:w-24 object-contain"
+          />
+        </div>
+      ) : null}
       <div className="inline-flex flex-wrap items-center justify-center gap-1.5 border border-gold/30 rounded-full px-3 py-1 mb-4 mx-auto">
           <span className="w-1.5 h-1.5 rounded-full bg-gold inline-block" />
           <span className="text-[10px] tracking-[0.2em] uppercase text-gold/80">{venue.address}</span>

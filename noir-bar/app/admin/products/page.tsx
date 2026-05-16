@@ -81,11 +81,22 @@ export default function AdminProducts() {
 
   return (
     <div className="px-5 pt-5">
-      <div className="flex items-center justify-between mb-5">
-        <h2 className="font-serif text-xl">Productos</h2>
-        <button onClick={openNew} className="flex items-center gap-1.5 bg-[#C8A96B] text-[#0D0D0D] text-xs font-medium px-3 py-2 rounded">
-          <Plus size={14} /> Agregar
-        </button>
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-5">
+        <div>
+          <h2 className="font-serif text-xl">Productos</h2>
+          <p className="text-xs text-[#888]">Agregar, editar precios y controlar stock.</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={fetchData}
+            className="text-[#888] border border-[#2A2A2A] px-3 py-2 rounded text-xs hover:border-[#C8A96B] hover:text-[#F5F5F5] transition-colors"
+          >
+            Recargar
+          </button>
+          <button onClick={openNew} className="flex items-center gap-1.5 bg-[#C8A96B] text-[#0D0D0D] text-xs font-medium px-3 py-2 rounded">
+            <Plus size={14} /> Agregar
+          </button>
+        </div>
       </div>
 
       {loading ? (
