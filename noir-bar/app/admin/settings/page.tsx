@@ -48,6 +48,8 @@ export default function AdminSettings() {
           whatsapp: "5491112345678",
           instagram: "noirbar.ba",
           address: "Palermo, Buenos Aires",
+          birthday_promo_text:
+            "Recordá que si vas a festejar tu cumpleaños, presentando el DNI tenés un 20% OFF.",
         })
         .single();
 
@@ -91,7 +93,7 @@ export default function AdminSettings() {
       return;
     }
 
-    const { error } = await supabase
+    let updateResult = await supabase
       .from("venue_settings")
       .update({
         name: settings.name,
@@ -102,14 +104,32 @@ export default function AdminSettings() {
         logo_url: settings.logo_url,
         primary_color: settings.primary_color,
         show_unavailable: settings.show_unavailable,
+        birthday_promo_text: settings.birthday_promo_text || "",
       })
       .eq("id", settings.id);
 
-    if (!error) {
+    if (updateResult.error && updateResult.error.message?.includes("birthday_promo_text")) {
+      console.warn("Birthday promo column missing in DB schema, retrying without it.", updateResult.error);
+      updateResult = await supabase
+        .from("venue_settings")
+        .update({
+          name: settings.name,
+          tagline: settings.tagline,
+          whatsapp: settings.whatsapp,
+          instagram: settings.instagram,
+          address: settings.address,
+          logo_url: settings.logo_url,
+          primary_color: settings.primary_color,
+          show_unavailable: settings.show_unavailable,
+        })
+        .eq("id", settings.id);
+    }
+
+    if (!updateResult.error) {
       alert("Configuración guardada correctamente.");
     } else {
-      console.error("Error saving venue settings:", error);
-      alert(`Error al guardar la configuración. ${error.message}`);
+      console.error("Error saving venue settings:", updateResult.error);
+      alert(`Error al guardar la configuración. ${updateResult.error.message}`);
     }
 
     setSaving(false);
@@ -271,6 +291,18 @@ export default function AdminSettings() {
             value={settings.address}
             onChange={(e) => setSettings({ ...settings, address: e.target.value })}
           />
+        </div>
+
+        {/* Texto de promoción de cumpleaños */}
+        <div>
+          <label className="text-[10px] uppercase tracking-wider text-[#888] mb-1.5 block">Texto de promoción de cumpleaños</label>
+          <textarea
+            className={`${inputClass} min-h-[120px] resize-none`}
+            placeholder="Recordá que si vas a festejar tu cumpleaños, presentando el DNI tenés un 20% OFF."
+            value={settings.birthday_promo_text || ""}
+            onChange={(e) => setSettings({ ...settings, birthday_promo_text: e.target.value })}
+          />
+          <p className="text-xs text-[#888] mt-2">Este texto se mostrará en el formulario de reserva cuando el cliente seleccione cumpleaños.</p>
         </div>
 
         {/* Logo del local */}

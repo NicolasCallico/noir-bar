@@ -11,9 +11,10 @@ interface Props {
   onClose: () => void;
   venueId: string;
   venueName: string;
+  birthdayPromoText?: string;
 }
 
-export function ReservaModal({ isOpen, onClose, venueId, venueName }: Props) {
+export function ReservaModal({ isOpen, onClose, venueId, venueName, birthdayPromoText }: Props) {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
@@ -207,6 +208,17 @@ document.body.removeChild(link);
                       </option>
                     ))}
                   </select>
+
+                  <div className="rounded-3xl border border-gold/20 bg-[#1c150b] p-4 text-sm text-[#f5f5f5] shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05)]">
+                    <p className="font-semibold text-gold mb-1">Promoción de cumple</p>
+                    <p className="leading-6">
+                      {birthdayPromoText ||
+                        "Recordá que si vas a festejar tu cumpleaños, presentando el DNI tenés un "}
+                      {birthdayPromoText ? null : (
+                        <span className="font-semibold text-white">20% OFF</span>
+                      )}
+                    </p>
+                  </div>
 
                   <textarea
                     className={inputClass}

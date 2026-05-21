@@ -61,6 +61,7 @@ export interface VenueSettings {
   logo_url?: string;
   primary_color: string;
   show_unavailable: boolean;
+  birthday_promo_text?: string;
 }
 
 // Supabase Database type

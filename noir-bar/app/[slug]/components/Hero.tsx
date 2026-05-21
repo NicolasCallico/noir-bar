@@ -63,6 +63,7 @@ export function Hero({ venue }: Props) {
         onClose={() => setShowReserva(false)}
         venueId={venue.id}
         venueName={venue.name}
+        birthdayPromoText={venue.birthday_promo_text}
       />
     </div>
   );

@@ -20,6 +20,7 @@ create table if not exists venue_settings (
   logo_image_url text,
   primary_color text default '#C8A96B',
   show_unavailable boolean default true,
+  birthday_promo_text text default 'Recordá que si vas a festejar tu cumpleaños, presentando el DNI tenés un 20% OFF.',
   created_at timestamptz default now()
 );
 
@@ -253,3 +254,10 @@ where not exists (
   where name = 'Happy Hour'
   and venue_id = 'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee'
 );
+
+-- ============================================================
+-- ADAPTACIÓN PARA SCHEMAS EXISTENTES
+-- ============================================================
+
+alter table venue_settings
+  add column if not exists birthday_promo_text text default 'Recordá que si vas a festejar tu cumpleaños, presentando el DNI tenés un 20% OFF.';
