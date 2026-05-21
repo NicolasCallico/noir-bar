@@ -8,13 +8,6 @@ interface Props {
   product: Product;
 }
 
-const badgeConfig = {
-  gold: { label: "⭐ Destacado", class: "bg-gold/10 text-gold border-gold/25" },
-  new: { label: "Nuevo", class: "bg-emerald-500/10 text-emerald-400 border-emerald-500/25" },
-  hot: { label: "🔥 Más vendido", class: "bg-red-500/10 text-red-400 border-red-500/25" },
-  "": null,
-};
-
 function isExternalUrl(url?: string) {
   return !!url && (url.startsWith("http://") || url.startsWith("https://"));
 }
@@ -31,61 +24,65 @@ function getProductImageUrl(imageUrl?: string) {
 }
 
 export function ProductCard({ product }: Props) {
-  const badge = badgeConfig[product.badge];
   const imageUrl = getProductImageUrl(product.image_url);
   return (
     <div
       className={cn(
-        "flex items-center gap-3 rounded-lg border border-border bg-card/80 transition-colors overflow-hidden max-h-[64px] md:max-h-[80px]",
-        product.available ? "" : "opacity-60"
+        "group overflow-hidden rounded-[1.25rem] border bg-[#0d0d0d]/95 transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_22px_48px_-16px_rgba(200,169,107,0.22)]",
+        product.available
+          ? "border-border"
+          : "border-red-500/30 bg-[#170606]"
       )}
     >
-      <div className="flex-shrink-0 w-12 h-12 md:w-16 md:h-16 flex items-center justify-center rounded-md bg-zinc-950/60 border border-border/60 overflow-hidden ml-2">
+      <div className="bg-[#111] px-3 py-3">
         {imageUrl ? (
-          <img src={imageUrl} alt={product.name} loading="lazy" className="w-full h-full object-cover" />
+          <div className="relative mx-auto flex h-24 w-full items-center justify-center overflow-hidden rounded-xl bg-[#090909]">
+            <img
+              src={imageUrl}
+              alt={product.name}
+              loading="lazy"
+              className="max-h-full w-full object-contain object-center transition duration-500 group-hover:scale-105"
+            />
+          </div>
         ) : (
-          <div className="text-2xl">{product.emoji}</div>
+          <div className="flex h-24 w-full items-center justify-center rounded-xl bg-zinc-950 text-3xl">
+            {product.emoji}
+          </div>
         )}
       </div>
 
-      <div className="flex-1 min-w-0 py-1 md:py-2">
-        <div className="flex items-center justify-between gap-4">
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 mb-1">
-              {badge && (
-                <span className={cn(
-                  "rounded-full border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em]",
-                  badge.class
-                )}>
-                  {badge.label}
-                </span>
-              )}
-              {product.original_price && (
-                <span className="rounded-full border border-border px-2 py-0.5 text-[10px] uppercase tracking-[0.12em] text-muted">
-                  Oferta
-                </span>
-              )}
-              {!product.available && (
-                <span className="rounded-full border border-border px-2 py-0.5 text-[10px] uppercase tracking-[0.12em] text-muted">
-                  Sin stock
-                </span>
-              )}
-            </div>
-
-            <h3 className="font-serif text-xs md:text-sm font-semibold leading-tight text-white truncate">
+      <div className="space-y-2 p-3 sm:p-3">
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <h3 className="font-serif text-base font-semibold leading-tight text-white">
               {product.name}
             </h3>
-            <p className="text-[11px] md:text-xs text-muted leading-tight truncate line-clamp-2">
+            <p className="mt-1 text-[13px] leading-5 text-[#c2c2c2] max-h-14 overflow-hidden">
               {product.description}
             </p>
           </div>
-
-          <div className="flex-shrink-0 text-right pr-3">
-            <p className="text-base md:text-lg font-semibold text-gold">{formatPrice(product.price)}</p>
-            {product.original_price && (
-              <p className="text-xs text-muted line-through">{formatPrice(product.original_price)}</p>
-            )}
+          <div className="flex-shrink-0 text-right">
+            <p className="text-base font-semibold text-gold">{formatPrice(product.price)}</p>
+            {product.original_price ? (
+              <p className="text-[11px] text-muted line-through">{formatPrice(product.original_price)}</p>
+            ) : null}
           </div>
+        </div>
+
+        <div className="flex items-center justify-between gap-2 pt-2 text-sm">
+          {product.original_price ? (
+            <span className="rounded-full border border-gold/20 bg-white/5 px-2 py-1 text-[11px] uppercase tracking-[0.18em] text-gold/70">
+              Oferta
+            </span>
+          ) : (
+            <div className="h-4" />
+          )}
+
+          {!product.available && (
+            <span className="rounded-full bg-red-500/95 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-white shadow-sm shadow-red-500/20">
+              Sin stock
+            </span>
+          )}
         </div>
       </div>
     </div>
