@@ -99,7 +99,7 @@ export default function AdminSettings() {
         whatsapp: settings.whatsapp,
         instagram: settings.instagram,
         address: settings.address,
-        logo_image_url: settings.logo_image_url,
+        logo_url: settings.logo_url,
         primary_color: settings.primary_color,
         show_unavailable: settings.show_unavailable,
       })
@@ -154,7 +154,7 @@ export default function AdminSettings() {
       return;
     }
 
-    setSettings({ ...settings, logo_image_url: result.publicUrl });
+    setSettings({ ...settings, logo_url: result.publicUrl });
     setSelectedLogo(null);
     alert("Logo cargado correctamente.");
 
@@ -277,10 +277,10 @@ export default function AdminSettings() {
         <div>
           <label className="text-[10px] uppercase tracking-wider text-[#888] mb-1.5 block">Logo del local</label>
           <div className="space-y-3">
-            {settings.logo_image_url ? (
+            {settings.logo_url ? (
               <div className="mx-auto max-w-[180px] rounded-3xl border border-[#2A2A2A] bg-[#111] p-4">
                 <img
-                  src={settings.logo_image_url}
+                  src={settings.logo_url}
                   alt={`${settings.name} logo`}
                   className="mx-auto h-20 w-20 sm:h-24 sm:w-24 object-contain"
                 />
