@@ -50,7 +50,7 @@ export default async function MenuPage({ params }: Props) {
     .eq("active", true);
   const promotions = (promotionsResult.data as unknown) as Promotion[] | null;
   return (
-    <main className="min-h-screen bg-bg">
+    <main className="bg-[#0D0D0D]">
       {/* Hero / Portada */}
       <Hero venue={venue} />
       {/* Barra de promociones (si hay activas) */}
