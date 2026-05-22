@@ -89,7 +89,7 @@ export default async function MenuPage({ params }: Props) {
       />
 
       {/* Botón flotante WhatsApp */}
-      <WhatsAppFAB phone={venue.whatsapp} />
+      <WhatsAppFAB phone={venue.whatsapp} instagram={venue.instagram} />
     </main>
   );
 }
