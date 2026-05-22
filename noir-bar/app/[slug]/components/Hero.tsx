@@ -6,31 +6,22 @@ interface Props { venue: VenueSettings; }
 export function Hero({ venue }: Props) {
   const [showReserva, setShowReserva] = useState(false);
   return (
-    <div className="relative mx-auto w-full max-w-3xl px-5 pt-10 pb-8 border-b border-border overflow-hidden">
-      <div className="mx-auto w-full max-w-2xl overflow-hidden rounded-[2rem] border border-gold/20 bg-[#111]/95 p-5 shadow-[0_30px_80px_-56px_rgba(0,0,0,0.9)] sm:p-8 md:grid md:grid-cols-[auto_1fr] md:items-center md:gap-8">
-        {venue.logo_url ? (
-          <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-[1.75rem] border border-gold/40 bg-[#0f0f0f] p-3 shadow-[inset_0_0_0_1px_rgba(200,169,107,0.12)] md:mx-0 md:h-28 md:w-28">
-            <img src={venue.logo_url} alt={`${venue.name} logo`} className="h-full w-full object-contain" />
-          </div>
-        ) : null}
-        <div className="flex flex-col justify-between gap-5 text-center md:text-left">
-          <div className="space-y-4">
-            <div className="mx-auto inline-flex items-center gap-2 rounded-full border border-gold/20 bg-white/5 px-3 py-1.5 text-[11px] uppercase tracking-[0.22em] text-gold/80 shadow-sm shadow-black/20 md:mx-0">
-              <span className="h-2 w-2 rounded-full bg-gold" />
-              <span>{venue.address}</span>
-            </div>
-            <div className="space-y-3">
-              <h1 className="font-serif text-4xl sm:text-5xl font-light tracking-[0.04em] text-[#F5F5F5] leading-tight">{venue.name}</h1>
-              <div className="mx-auto h-[1px] w-16 bg-gold/40 md:mx-0" />
-              <p className="mx-auto max-w-xl text-sm leading-7 text-[#d8d8d8] sm:text-base md:mx-0">{venue.tagline}</p>
-            </div>
-          </div>
-          <div>
-            <button onClick={() => setShowReserva(true)} className="bg-gold text-bg text-sm font-semibold rounded-full px-5 py-2.5 uppercase tracking-[0.18em] transition hover:bg-gold/90">
-              Reservar mesa
-            </button>
+    <div className="w-full border-b border-border bg-[#0D0D0D] px-5 py-4">
+      <div className="mx-auto flex items-center gap-4 max-w-3xl">
+        {venue.logo_url && (
+          <img src={venue.logo_url} alt={venue.name} className="h-14 w-14 rounded-xl object-contain flex-shrink-0 border border-gold/20 bg-[#111] p-1.5" />
+        )}
+        <div className="flex-1 min-w-0">
+          <h1 className="font-serif text-xl font-light tracking-wide text-[#F5F5F5] leading-tight">{venue.name}</h1>
+          <p className="text-[11px] text-muted mt-0.5 leading-snug">{venue.tagline}</p>
+          <div className="flex items-center gap-1.5 mt-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-gold flex-shrink-0" />
+            <span className="text-[10px] text-gold/70 tracking-wide uppercase">{venue.address}</span>
           </div>
         </div>
+        <button onClick={() => setShowReserva(true)} className="flex-shrink-0 bg-gold text-bg text-[10px] font-semibold rounded-full px-4 py-2 uppercase tracking-widest hover:bg-gold/90 transition-all">
+          Reservar
+        </button>
       </div>
       <ReservaModal isOpen={showReserva} onClose={() => setShowReserva(false)} venueId={venue.id} venueName={venue.name} birthdayPromoText={venue.birthday_promo_text} />
     </div>
