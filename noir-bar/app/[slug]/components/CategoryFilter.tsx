@@ -52,3 +52,4 @@ export function CategoryFilter({ categories, onFilter }: Props) {
     </div>
   );
 }
+ 
