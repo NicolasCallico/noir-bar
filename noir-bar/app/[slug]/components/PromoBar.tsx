@@ -21,7 +21,7 @@ export function PromoBar({ promotions }: Props) {
   const promo = promotions[current];
 
   return (
-    <div className="sticky top-0 z-40 w-full bg-[#121212]/95 backdrop-blur-md border-b border-gold/15 shadow-[0_16px_40px_-24px_rgba(0,0,0,0.6)] sm:static sm:shadow-none">
+    <div className="w-full">
       <div className="relative overflow-hidden bg-gradient-to-r from-[#1a1400] via-[#2a1f00] to-[#1a1400] px-4 py-3 sm:px-5 sm:py-3.5">
         <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-gold to-transparent" />
 
