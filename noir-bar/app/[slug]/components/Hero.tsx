@@ -46,12 +46,6 @@ export function Hero({ venue }: Props) {
             >
               Reservar mesa
             </button>
-            <a
-              href={`https://instagram.com/${venue.instagram}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center rounded-full border border-border bg-white/5 px-5 py-2.5 text-sm uppercase tracking-[0.18em] text-[#F5F5F5] transition hover:border-gold/40 hover:bg-white/5"
-            >
               Instagram
             </a>
           </div>
