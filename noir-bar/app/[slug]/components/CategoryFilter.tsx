@@ -13,7 +13,7 @@ export function CategoryFilter({ categories, onFilter }: Props) {
     window.dispatchEvent(new CustomEvent("filterCategory", { detail: id }));
   }
   return (
-    <div className="flex gap-2 px-4 py-3 overflow-x-auto no-scrollbar border-b border-[#2A2A2A] bg-[#0D0D0D]">
+    <div className="flex justify-center gap-2 px-4 py-3 overflow-x-auto no-scrollbar border-b border-[#2A2A2A] bg-[#0D0D0D]">
       <button
         onClick={() => handleClick(null)}
         className={`flex-shrink-0 text-xs px-4 py-1.5 rounded-full border transition-all duration-200 ${active === null ? "bg-[#C8A96B] text-[#0D0D0D] border-[#C8A96B] font-medium" : "border-[#2A2A2A] text-[#888] hover:text-[#F5F5F5]"}`}
