@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import type { Category } from "@/lib/types";
 interface Props {
   categories: Category[];
@@ -7,13 +7,28 @@ interface Props {
 }
 export function CategoryFilter({ categories, onFilter }: Props) {
   const [active, setActive] = useState<string | null>(null);
+  const [topOffset, setTopOffset] = useState(0);
+
+  useEffect(() => {
+    function measurePromoBar() {
+      const promoBar = document.querySelector("[data-promo-bar]") as HTMLElement;
+      if (promoBar) {
+        setTopOffset(promoBar.offsetHeight);
+      }
+    }
+    measurePromoBar();
+    window.addEventListener("resize", measurePromoBar);
+    return () => window.removeEventListener("resize", measurePromoBar);
+  }, []);
+
   function handleClick(id: string | null) {
     setActive(id);
     onFilter?.(id);
     window.dispatchEvent(new CustomEvent("filterCategory", { detail: id }));
   }
+
   return (
-    <div style={{ position: "sticky", top: "44px", zIndex: 30, backgroundColor: "#0D0D0D", borderBottom: "1px solid #2A2A2A" }}>
+    <div style={{ position: "sticky", top: topOffset, zIndex: 30, backgroundColor: "#0D0D0D", borderBottom: "1px solid #2A2A2A" }}>
       <div className="flex gap-2 px-4 py-3 overflow-x-auto no-scrollbar">
         <button
           onClick={() => handleClick(null)}
