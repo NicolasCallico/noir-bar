@@ -51,21 +51,18 @@ export default async function MenuPage({ params }: Props) {
   const promotions = (promotionsResult.data as unknown) as Promotion[] | null;
   return (
     <main className="bg-[#0D0D0D]">
-      {/* Hero / Portada */}
       <Hero venue={venue} />
-      {/* Barra de promociones (si hay activas) */}
-      {promotions && promotions.length > 0 && (
-        <PromoBar promotions={promotions} />
-      )}
-      {/* Filtro de categorías */}
-      <CategoryFilter categories={categories || []} />
-      {/* Lista de productos */}
+      <div style={{ position: "sticky", top: 0, zIndex: 30, backgroundColor: "#0D0D0D" }}>
+        {promotions && promotions.length > 0 && (
+          <PromoBar promotions={promotions} />
+        )}
+        <CategoryFilter categories={categories || []} />
+      </div>
       <ProductList
         products={products || []}
         categories={categories || []}
         showUnavailable={venue.show_unavailable}
       />
-      {/* Botón flotante WhatsApp */}
       <WhatsAppFAB phone={venue.whatsapp} instagram={venue.instagram} />
     </main>
   );
