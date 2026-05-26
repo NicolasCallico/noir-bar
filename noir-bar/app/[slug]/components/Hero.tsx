@@ -22,7 +22,7 @@ export function Hero({ venue }: Props) {
           <h1 className="font-serif text-[20px] sm:text-2xl font-light tracking-wide text-[#F5F5F5] leading-tight truncate">
             {venue.name}
           </h1>
-          <p className="text-[11px] text-[#666] mt-0.5 truncate">
+          <p className="text-[11px] text-[#666] mt-0.5 leading-snug line-clamp-2">
             {venue.tagline}
           </p>
           <div className="flex items-center gap-1.5 mt-1">
