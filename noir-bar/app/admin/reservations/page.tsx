@@ -180,7 +180,7 @@ export default function AdminReservations() {
                             <Trash2 size={13} />
                           </button>
                         )}
-                        
+                        <a
                           href={`https://wa.me/${r.phone.replace(/\D/g, "")}?text=${encodeURIComponent(`Hola ${r.name}, confirmamos tu reserva para el ${r.date} a las ${r.time} hs para ${r.people} personas. ¡Te esperamos!`)}`}
                           target="_blank"
                           rel="noopener noreferrer"
