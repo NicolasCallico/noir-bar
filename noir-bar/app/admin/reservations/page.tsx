@@ -166,7 +166,7 @@ export default function AdminReservations() {
                     <XCircle size={12} /> Cancelar
                   </button>
                 )}
-                
+              <a
                   href={`https://wa.me/${r.phone.replace(/\D/g, "")}?text=${encodeURIComponent(`Hola ${r.name}, confirmamos tu reserva para el ${r.date} a las ${r.time} hs para ${r.people} personas. ¡Te esperamos!`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
