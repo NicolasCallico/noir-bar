@@ -62,7 +62,7 @@ export default function AdminReservations() {
   };
 
   return (
-    <div className="px-4 pt-5 pb-24">
+    <div className="px-4 md:px-8 pt-5 pb-24 max-w-5xl mx-auto">
       {/* Header */}
       <div className="flex items-center justify-between mb-5">
         <div>
@@ -77,7 +77,7 @@ export default function AdminReservations() {
         </button>
       </div>
 
-      {/* Filtros con contadores */}
+      {/* Filtros */}
       <div className="flex gap-2 mb-4 overflow-x-auto no-scrollbar pb-1">
         {([
           { key: "all", label: "Todas" },
@@ -102,7 +102,6 @@ export default function AdminReservations() {
         ))}
       </div>
 
-      {/* Lista */}
       {loading ? (
         <div className="flex justify-center py-16">
           <Loader2 className="animate-spin text-[#888]" size={24} />
@@ -113,89 +112,166 @@ export default function AdminReservations() {
           <p className="text-sm">No hay reservas en esta categoría</p>
         </div>
       ) : (
-        <div className="flex flex-col gap-2">
-          {filtered.map((r) => (
-            <div key={r.id} className="bg-[#1A1A1A] border border-[#2A2A2A] rounded-xl p-4">
-              {/* Nombre y estado */}
-              <div className="flex items-center justify-between mb-3">
-                <div>
-                  <span className="text-sm font-medium text-[#F5F5F5]">
-                    {r.name} {r.is_birthday ? "🎂" : ""}
+        <>
+          {/* DESKTOP: tabla */}
+          <div className="hidden md:block">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="text-[#555] text-[11px] uppercase tracking-wider border-b border-[#2A2A2A]">
+                  <th className="text-left pb-3 font-medium">Nombre</th>
+                  <th className="text-left pb-3 font-medium">Fecha y hora</th>
+                  <th className="text-left pb-3 font-medium">Personas</th>
+                  <th className="text-left pb-3 font-medium">Contacto</th>
+                  <th className="text-left pb-3 font-medium">Estado</th>
+                  <th className="text-left pb-3 font-medium">Notas</th>
+                  <th className="text-right pb-3 font-medium">Acciones</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-[#1A1A1A]">
+                {filtered.map((r) => (
+                  <tr key={r.id} className="hover:bg-[#1A1A1A] transition-colors">
+                    <td className="py-3 pr-4">
+                      <span className="text-[#F5F5F5] font-medium">{r.name} {r.is_birthday ? "🎂" : ""}</span>
+                      <p className="text-[10px] text-[#555] mt-0.5">
+                        {new Date(r.created_at).toLocaleDateString("es-AR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" })}
+                      </p>
+                    </td>
+                    <td className="py-3 pr-4 text-[#888]">{r.date} · {r.time}hs</td>
+                    <td className="py-3 pr-4 text-[#888]">{r.people}</td>
+                    <td className="py-3 pr-4">
+                      <a href={`tel:${r.phone}`} className="text-[#C8A96B] hover:underline flex items-center gap-1">
+                        <Phone size={10} /> {r.phone}
+                      </a>
+                    </td>
+                    <td className="py-3 pr-4">
+                      <span className={`text-[9px] uppercase tracking-wider px-2 py-1 rounded-full font-medium border ${statusConfig[r.status]?.class}`}>
+                        {statusConfig[r.status]?.label}
+                      </span>
+                    </td>
+                    <td className="py-3 pr-4 text-[#555] text-xs italic max-w-[150px] truncate">
+                      {r.notes || "—"}
+                    </td>
+                    <td className="py-3">
+                      <div className="flex items-center justify-end gap-1.5">
+                        {r.status !== "confirmed" && (
+                          <button
+                            onClick={() => updateStatus(r.id, "confirmed")}
+                            title="Confirmar"
+                            className="p-1.5 text-emerald-400 border border-emerald-400/20 rounded-lg hover:bg-emerald-400/10 transition-colors"
+                          >
+                            <CheckCircle size={13} />
+                          </button>
+                        )}
+                        {r.status !== "cancelled" && (
+                          <button
+                            onClick={() => updateStatus(r.id, "cancelled")}
+                            title="Cancelar"
+                            className="p-1.5 text-red-400 border border-red-400/20 rounded-lg hover:bg-red-400/10 transition-colors"
+                          >
+                            <XCircle size={13} />
+                          </button>
+                        )}
+                        {r.status === "cancelled" && (
+                          <button
+                            onClick={() => deleteReservation(r.id)}
+                            title="Borrar"
+                            className="p-1.5 text-[#555] border border-[#2A2A2A] rounded-lg hover:text-red-400 hover:border-red-400/20 transition-colors"
+                          >
+                            <Trash2 size={13} />
+                          </button>
+                        )}
+                        
+                          href={`https://wa.me/${r.phone.replace(/\D/g, "")}?text=${encodeURIComponent(`Hola ${r.name}, confirmamos tu reserva para el ${r.date} a las ${r.time} hs para ${r.people} personas. ¡Te esperamos!`)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          title="WhatsApp"
+                          className="p-1.5 text-[#25D366] border border-[#25D366]/20 rounded-lg hover:bg-[#25D366]/10 transition-colors text-xs"
+                        >
+                          💬
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* MOBILE: cards */}
+          <div className="flex flex-col gap-2 md:hidden">
+            {filtered.map((r) => (
+              <div key={r.id} className="bg-[#1A1A1A] border border-[#2A2A2A] rounded-xl p-4">
+                <div className="flex items-center justify-between mb-3">
+                  <div>
+                    <span className="text-sm font-medium text-[#F5F5F5]">{r.name} {r.is_birthday ? "🎂" : ""}</span>
+                    <p className="text-[10px] text-[#666] mt-0.5">
+                      Recibida {new Date(r.created_at).toLocaleDateString("es-AR", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" })}
+                    </p>
+                  </div>
+                  <span className={`text-[9px] uppercase tracking-wider px-2.5 py-1 rounded-full font-medium ${statusConfig[r.status]?.class}`}>
+                    {statusConfig[r.status]?.label}
                   </span>
-                  <p className="text-[10px] text-[#666] mt-0.5">
-                    Recibida {new Date(r.created_at).toLocaleDateString("es-AR", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" })}
-                  </p>
                 </div>
-                <span className={`text-[9px] uppercase tracking-wider px-2.5 py-1 rounded-full font-medium ${statusConfig[r.status]?.class}`}>
-                  {statusConfig[r.status]?.label}
-                </span>
-              </div>
-
-              {/* Detalles */}
-              <div className="grid grid-cols-2 gap-2 mb-3">
-                <div className="bg-[#111] rounded-lg px-3 py-2">
-                  <p className="text-[9px] text-[#555] uppercase tracking-wider mb-0.5">Fecha y hora</p>
-                  <p className="text-xs text-[#F5F5F5] font-medium">📅 {r.date} · {r.time} hs</p>
+                <div className="grid grid-cols-2 gap-2 mb-3">
+                  <div className="bg-[#111] rounded-lg px-3 py-2">
+                    <p className="text-[9px] text-[#555] uppercase tracking-wider mb-0.5">Fecha y hora</p>
+                    <p className="text-xs text-[#F5F5F5] font-medium">📅 {r.date} · {r.time} hs</p>
+                  </div>
+                  <div className="bg-[#111] rounded-lg px-3 py-2">
+                    <p className="text-[9px] text-[#555] uppercase tracking-wider mb-0.5">Personas</p>
+                    <p className="text-xs text-[#F5F5F5] font-medium">👥 {r.people} personas</p>
+                  </div>
                 </div>
-                <div className="bg-[#111] rounded-lg px-3 py-2">
-                  <p className="text-[9px] text-[#555] uppercase tracking-wider mb-0.5">Personas</p>
-                  <p className="text-xs text-[#F5F5F5] font-medium">👥 {r.people} personas</p>
-                </div>
-              </div>
-
-              {/* Teléfono */}
-              <div className="bg-[#111] rounded-lg px-3 py-2 mb-3">
-                <p className="text-[9px] text-[#555] uppercase tracking-wider mb-0.5">Contacto</p>
-                <a href={`tel:${r.phone}`} className="text-xs text-[#C8A96B] font-medium flex items-center gap-1.5">
-                  <Phone size={10} /> {r.phone}
-                </a>
-              </div>
-
-              {r.notes && (
                 <div className="bg-[#111] rounded-lg px-3 py-2 mb-3">
-                  <p className="text-[9px] text-[#555] uppercase tracking-wider mb-0.5">Notas</p>
-                  <p className="text-xs text-[#888] italic">"{r.notes}"</p>
+                  <p className="text-[9px] text-[#555] uppercase tracking-wider mb-0.5">Contacto</p>
+                  <a href={`tel:${r.phone}`} className="text-xs text-[#C8A96B] font-medium flex items-center gap-1.5">
+                    <Phone size={10} /> {r.phone}
+                  </a>
                 </div>
-              )}
-
-              {/* Acciones */}
-              <div className="flex gap-2">
-                {r.status !== "confirmed" && (
-                  <button
-                    onClick={() => updateStatus(r.id, "confirmed")}
-                    className="flex-1 flex items-center justify-center gap-1.5 text-xs text-emerald-400 border border-emerald-400/25 px-3 py-2 rounded-lg hover:bg-emerald-400/5 transition-colors"
-                  >
-                    <CheckCircle size={12} /> Confirmar
-                  </button>
+                {r.notes && (
+                  <div className="bg-[#111] rounded-lg px-3 py-2 mb-3">
+                    <p className="text-[9px] text-[#555] uppercase tracking-wider mb-0.5">Notas</p>
+                    <p className="text-xs text-[#888] italic">"{r.notes}"</p>
+                  </div>
                 )}
-                {r.status !== "cancelled" && (
-                  <button
-                    onClick={() => updateStatus(r.id, "cancelled")}
-                    className="flex-1 flex items-center justify-center gap-1.5 text-xs text-red-400 border border-red-400/25 px-3 py-2 rounded-lg hover:bg-red-400/5 transition-colors"
+                <div className="flex gap-2">
+                  {r.status !== "confirmed" && (
+                    <button
+                      onClick={() => updateStatus(r.id, "confirmed")}
+                      className="flex-1 flex items-center justify-center gap-1.5 text-xs text-emerald-400 border border-emerald-400/25 px-3 py-2 rounded-lg hover:bg-emerald-400/5 transition-colors"
+                    >
+                      <CheckCircle size={12} /> Confirmar
+                    </button>
+                  )}
+                  {r.status !== "cancelled" && (
+                    <button
+                      onClick={() => updateStatus(r.id, "cancelled")}
+                      className="flex-1 flex items-center justify-center gap-1.5 text-xs text-red-400 border border-red-400/25 px-3 py-2 rounded-lg hover:bg-red-400/5 transition-colors"
+                    >
+                      <XCircle size={12} /> Cancelar
+                    </button>
+                  )}
+                  {r.status === "cancelled" && (
+                    <button
+                      onClick={() => deleteReservation(r.id)}
+                      className="flex items-center justify-center gap-1.5 text-xs text-[#555] border border-[#2A2A2A] px-3 py-2 rounded-lg hover:text-red-400 hover:border-red-400/25 transition-colors"
+                    >
+                      <Trash2 size={12} /> Borrar
+                    </button>
+                  )}
+                  <a
+                    href={`https://wa.me/${r.phone.replace(/\D/g, "")}?text=${encodeURIComponent(`Hola ${r.name}, confirmamos tu reserva para el ${r.date} a las ${r.time} hs para ${r.people} personas. ¡Te esperamos!`)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-1.5 text-xs text-[#25D366] border border-[#25D366]/25 px-3 py-2 rounded-lg hover:bg-[#25D366]/5 transition-colors"
                   >
-                    <XCircle size={12} /> Cancelar
-                  </button>
-                )}
-                {r.status === "cancelled" && (
-                  <button
-                    onClick={() => deleteReservation(r.id)}
-                    className="flex items-center justify-center gap-1.5 text-xs text-[#555] border border-[#2A2A2A] px-3 py-2 rounded-lg hover:text-red-400 hover:border-red-400/25 transition-colors"
-                  >
-                    <Trash2 size={12} /> Borrar
-                  </button>
-                )}
-                <a
-                  href={`https://wa.me/${r.phone.replace(/\D/g, "")}?text=${encodeURIComponent(`Hola ${r.name}, confirmamos tu reserva para el ${r.date} a las ${r.time} hs para ${r.people} personas. ¡Te esperamos!`)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-1.5 text-xs text-[#25D366] border border-[#25D366]/25 px-3 py-2 rounded-lg hover:bg-[#25D366]/5 transition-colors"
-                >
-                  💬 WhatsApp
-                </a>
+                    💬 WhatsApp
+                  </a>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        </>
       )}
     </div>
   );
