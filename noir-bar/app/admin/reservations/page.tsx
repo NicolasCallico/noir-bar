@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Loader2, CheckCircle, XCircle, Phone } from "lucide-react";
+import { Loader2, CheckCircle, XCircle, Phone, Trash2 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import type { Reservation } from "@/lib/types";
 
@@ -37,6 +37,16 @@ export default function AdminReservations() {
       setReservations((prev) =>
         prev.map((r) => (r.id === id ? { ...r, status } : r))
       );
+    }
+  }
+
+  async function deleteReservation(id: string) {
+    const { error } = await supabase
+      .from("reservations")
+      .delete()
+      .eq("id", id);
+    if (!error) {
+      setReservations((prev) => prev.filter((r) => r.id !== id));
     }
   }
 
@@ -166,7 +176,15 @@ export default function AdminReservations() {
                     <XCircle size={12} /> Cancelar
                   </button>
                 )}
-              <a
+                {r.status === "cancelled" && (
+                  <button
+                    onClick={() => deleteReservation(r.id)}
+                    className="flex items-center justify-center gap-1.5 text-xs text-[#555] border border-[#2A2A2A] px-3 py-2 rounded-lg hover:text-red-400 hover:border-red-400/25 transition-colors"
+                  >
+                    <Trash2 size={12} /> Borrar
+                  </button>
+                )}
+                
                   href={`https://wa.me/${r.phone.replace(/\D/g, "")}?text=${encodeURIComponent(`Hola ${r.name}, confirmamos tu reserva para el ${r.date} a las ${r.time} hs para ${r.people} personas. ¡Te esperamos!`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
