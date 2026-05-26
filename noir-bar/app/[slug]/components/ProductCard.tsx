@@ -17,9 +17,9 @@ function getProductImageUrl(imageUrl?: string) {
   return `${supabaseUrl}/storage/v1/object/public/products/${imageUrl.replace(/^\/+/, "")}`;
 }
 const badgeConfig: Record<string, { label: string; class: string }> = {
-  hot: { label: "🔥 Más vendido", class: "text-[#e05555] bg-[rgba(224,85,85,0.1)] border border-[rgba(224,85,85,0.2)]" },
-  new: { label: "Nuevo", class: "text-[#50c878] bg-[rgba(80,200,120,0.1)] border border-[rgba(80,200,120,0.2)]" },
-  gold: { label: "⭐ Destacado", class: "text-[#C8A96B] bg-[rgba(200,169,107,0.1)] border border-[rgba(200,169,107,0.2)]" },
+  hot: { label: "🍷 La preferida", class: "text-[#e05555] bg-[rgba(224,85,85,0.1)] border border-[rgba(224,85,85,0.2)]" },
+  new: { label: "✨ Temporada", class: "text-[#50c878] bg-[rgba(80,200,120,0.1)] border border-[rgba(80,200,120,0.2)]" },
+  gold: { label: "👨‍🍳 Del chef", class: "text-[#C8A96B] bg-[rgba(200,169,107,0.1)] border border-[rgba(200,169,107,0.2)]" },
 };
 export function ProductCard({ product }: Props) {
   const imageUrl = getProductImageUrl(product.image_url);
