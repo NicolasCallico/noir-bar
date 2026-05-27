@@ -117,12 +117,10 @@ export default function AdminProducts() {
       ) : (
         <div className="flex flex-col gap-2">
           {products.map((p) => (
-            <div key={p.id} className="bg-[#1A1A1A] border border-[#2A2A2A] rounded-lg px-3.5 py-3 flex items-center gap-3">
-              {p.image_url ? (
-                <img src={p.image_url} alt={p.name} className="w-10 h-10 rounded-md object-cover flex-shrink-0" />
-              ) : (
-              ) : null}
-              )}
+<div key={p.id} className="bg-[#1A1A1A] border border-[#2A2A2A] rounded-lg px-3.5 py-3 flex items-center gap-3">
+  {p.image_url && (
+    <img src={p.image_url} alt={p.name} className="w-10 h-10 rounded-md object-cover flex-shrink-0" />
+  )}
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium truncate">{p.name}</p>
                 <p className="text-[11px] text-[#888]">{(p.categories as Category)?.name || "—"}</p>
