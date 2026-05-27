@@ -30,11 +30,7 @@ export function ProductCard({ product }: Props) {
         <div className="w-14 h-14 flex-shrink-0 rounded-xl overflow-hidden bg-[#141414]">
           <img src={imageUrl} alt={product.name} loading="lazy" className="w-full h-full object-cover" />
         </div>
-      ) : (
-        <div className="w-14 h-14 flex-shrink-0 rounded-xl bg-[#141414] flex items-center justify-center text-2xl">
-          {product.emoji}
-        </div>
-      )}
+      ) : null}
       <div className="flex-1 min-w-0">
         {badge && (
           <span className={cn("inline-block text-[9px] font-medium uppercase tracking-wide px-2 py-0.5 rounded-full mb-1", badge.class)}>
