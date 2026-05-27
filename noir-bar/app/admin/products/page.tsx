@@ -121,7 +121,7 @@ export default function AdminProducts() {
               {p.image_url ? (
                 <img src={p.image_url} alt={p.name} className="w-10 h-10 rounded-md object-cover flex-shrink-0" />
               ) : (
-                <div className="w-10 h-10 flex-shrink-0" />
+              ) : null}
               )}
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium truncate">{p.name}</p>
