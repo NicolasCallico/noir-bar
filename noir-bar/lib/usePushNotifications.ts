@@ -26,7 +26,7 @@ export function usePushNotifications(venueId: string) {
 
       const sub = await reg.pushManager.subscribe({
         userVisibleOnly: true,
-        applicationServerKey: process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
+        applicationServerKey: "BFo14Ot6nPhZ3vAHFr1m3IdI9nXvw8ypBV0I-LpY02px9UlnxtM6nvNbjUUJsXcQVznxQCbugwvEHSfqYAPMGok",
       });
 
       await fetch("/api/admin/push-subscribe", {
