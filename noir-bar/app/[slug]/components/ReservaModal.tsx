@@ -74,7 +74,7 @@ if (error) {
 
 // Notificación email al admin
 try {
-  await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/push-notify`, {
+  await fetch(`/api/admin/push-notify`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
