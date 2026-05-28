@@ -147,9 +147,9 @@ export default function AdminDashboard() {
           <Link href="/admin/reservations" className="w-full py-2.5 border border-dashed border-[#8a7248] rounded-lg text-[#C8A96B] text-xs text-center hover:bg-[#C8A96B]/5 transition-colors">
             Ver todas las reservas
           </Link>
-          <Link href="/admin/promotions?new=true" className="w-full py-2.5 border border-dashed border-[#8a7248] rounded-lg text-[#C8A96B] text-xs text-center hover:bg-[#C8A96B]/5 transition-colors">
-            Activar promoción
-          </Link>
+        <Link href="/admin/promotions" className="w-full py-3 bg-[#C8A96B]/10 border border-[#C8A96B]/40 rounded-lg text-[#C8A96B] text-sm font-medium text-center hover:bg-[#C8A96B]/20 transition-colors flex items-center justify-center gap-2">
+          📣 Gestionar promociones
+        </Link>
         </div>
       </div>
     </div>
