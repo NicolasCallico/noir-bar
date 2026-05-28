@@ -1,9 +1,11 @@
 "use client";
-
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, ShoppingBag, Calendar, Megaphone, Settings } from "lucide-react";
+import { LayoutDashboard, ShoppingBag, Calendar, Megaphone, Settings, Bell, BellOff } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { usePushNotifications } from "@/lib/usePushNotifications";
+
+const VENUE_ID = "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee";
 
 const navItems = [
   { href: "/admin", label: "Inicio", icon: LayoutDashboard },
@@ -15,6 +17,7 @@ const navItems = [
 
 export function AdminNav() {
   const pathname = usePathname();
+  const { supported, subscribed, loading, subscribe, unsubscribe } = usePushNotifications(VENUE_ID);
 
   return (
     <>
@@ -23,13 +26,29 @@ export function AdminNav() {
         <h1 className="font-serif text-xl text-[#F5F5F5]">
           NOIR <span className="text-[#C8A96B]">·</span> ADMIN
         </h1>
-        <span className="text-[10px] text-emerald-400 tracking-widest uppercase flex items-center gap-1">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block" />
-          Live
-        </span>
+        <div className="flex items-center gap-3">
+          {supported && (
+            <button
+              onClick={subscribed ? unsubscribe : subscribe}
+              disabled={loading}
+              title={subscribed ? "Desactivar notificaciones" : "Activar notificaciones"}
+              className={`flex items-center gap-1.5 text-[10px] uppercase tracking-wider px-3 py-1.5 rounded-full border transition-colors ${
+                subscribed
+                  ? "border-[#C8A96B] text-[#C8A96B]"
+                  : "border-[#2A2A2A] text-[#888] hover:border-[#C8A96B] hover:text-[#C8A96B]"
+              }`}
+            >
+              {loading ? "..." : subscribed ? <><Bell size={11} /> Activas</> : <><BellOff size={11} /> Notificaciones</>}
+            </button>
+          )}
+          <span className="text-[10px] text-emerald-400 tracking-widest uppercase flex items-center gap-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block" />
+            Live
+          </span>
+        </div>
       </div>
 
-      {/* Bottom tab nav (mobile first) */}
+      {/* Bottom tab nav */}
       <nav className="fixed bottom-0 left-0 right-0 bg-[#111] border-t border-[#2A2A2A] flex justify-around z-50 px-2 py-2">
         {navItems.map(({ href, label, icon: Icon }) => {
           const isActive = href === "/admin" ? pathname === "/admin" : pathname.startsWith(href);

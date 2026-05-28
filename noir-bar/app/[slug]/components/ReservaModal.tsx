@@ -67,10 +67,26 @@ async function handleSubmit() {
         },
       ]);
 
-      if (error) {
-        console.error(error);
-        return;
-      }
+if (error) {
+  console.error(error);
+  return;
+}
+
+// Notificación push al admin
+try {
+  await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/push-notify`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      venueId: venueId,
+      title: "🍸 Nueva reserva",
+      body: `${form.name} — ${form.people} personas el ${form.date} a las ${form.time}hs`,
+      url: "/admin/reservations",
+    }),
+  });
+} catch (e) {
+  console.error("Error enviando push:", e);
+}
 
       const mensaje =
         "🍸 *Nueva Reserva — " + venueName + "*\n\n" +
