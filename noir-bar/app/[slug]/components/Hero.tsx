@@ -9,12 +9,14 @@ export function Hero({ venue }: Props) {
     <div className="w-full border-b border-[#1a1a1a] bg-[#0D0D0D] px-4 py-3.5">
       <div className="mx-auto flex items-center gap-3 max-w-3xl">
         {venue.logo_url && (
-          <div className="flex-shrink-0 flex items-center justify-center bg-[#111] border border-[rgba(200,169,107,0.15)] rounded-[14px] px-3 py-2 h-14" style={{ minWidth: 64, maxWidth: 120 }}>
+          <div
+            className="flex-shrink-0 flex items-center justify-center bg-[#111] border border-[rgba(200,169,107,0.15)] rounded-[14px] overflow-hidden"
+            style={{ width: 56, height: 56 }}
+          >
             <img
               src={venue.logo_url}
               alt={venue.name}
-              className="object-contain"
-              style={{ maxHeight: 40, maxWidth: 96 }}
+              className="w-full h-full object-cover"
             />
           </div>
         )}
