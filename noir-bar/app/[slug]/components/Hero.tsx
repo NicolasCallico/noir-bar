@@ -2,24 +2,40 @@
 import { useState } from "react";
 import type { VenueSettings } from "@/lib/types";
 import { ReservaModal } from "./ReservaModal";
+
 interface Props { venue: VenueSettings; }
+
 export function Hero({ venue }: Props) {
   const [showReserva, setShowReserva] = useState(false);
+
   return (
     <div className="w-full border-b border-[#1a1a1a] bg-[#0D0D0D] px-4 py-3.5">
       <div className="mx-auto flex items-center gap-3 max-w-3xl">
+
         {venue.logo_url && (
           <div
-            className="flex-shrink-0 flex items-center justify-center bg-[#111] border border-[rgba(200,169,107,0.15)] rounded-[14px] overflow-hidden"
-            style={{ width: 56, height: 56 }}
+            className="flex-shrink-0 flex items-center justify-center rounded-2xl overflow-hidden"
+            style={{
+              width: 72,
+              height: 72,
+              minWidth: 72,
+              boxShadow: "0 0 0 1px rgba(200,169,107,0.15)",
+            }}
           >
             <img
               src={venue.logo_url}
               alt={venue.name}
-              className="w-full h-full object-cover"
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "contain",
+                padding: 6,
+                mixBlendMode: "screen",
+              }}
             />
           </div>
         )}
+
         <div className="flex-1 min-w-0">
           <h1 className="font-serif text-[20px] sm:text-2xl font-light tracking-wide text-[#F5F5F5] leading-tight truncate">
             {venue.name}
@@ -34,6 +50,7 @@ export function Hero({ venue }: Props) {
             </span>
           </div>
         </div>
+
         <button
           onClick={() => setShowReserva(true)}
           className="flex-shrink-0 bg-[#C8A96B] text-[#0D0D0D] font-bold rounded-full border-none cursor-pointer uppercase tracking-widest transition-all hover:shadow-[0_0_20px_rgba(200,169,107,0.35)] hover:scale-105 active:scale-95"
@@ -41,6 +58,7 @@ export function Hero({ venue }: Props) {
         >
           Reservar<br />mesa
         </button>
+
       </div>
       <ReservaModal
         isOpen={showReserva}
