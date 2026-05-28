@@ -1,31 +1,32 @@
 import { NextRequest, NextResponse } from "next/server";
-import webpush from "web-push";
-import { supabase } from "@/lib/supabase";
+import { Resend } from "resend";
+import { createClient } from "@supabase/supabase-js";
 
-webpush.setVapidDetails(
-  "mailto:admin@tuapp.com",
-  process.env.VAPID_PUBLIC_KEY!,
-  process.env.VAPID_PRIVATE_KEY!
-);
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: NextRequest) {
-  const { venueId, title, body, url } = await req.json();
+  const { venueId, title, body } = await req.json();
 
-  const { data: subs } = await supabase
-    .from("push_subscriptions")
-    .select("subscription")
-    .eq("venue_id", venueId);
-
-  if (!subs || subs.length === 0) {
-    return NextResponse.json({ ok: true, sent: 0 });
-  }
-
-  const payload = JSON.stringify({ title, body, url });
-
-  const results = await Promise.allSettled(
-    subs.map((row) => webpush.sendNotification(row.subscription, payload))
+  // Obtener el email del dueño desde Supabase Auth
+  const supabaseAdmin = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    { auth: { persistSession: false } }
   );
 
-  const sent = results.filter((r) => r.status === "fulfilled").length;
-  return NextResponse.json({ ok: true, sent });
+  const { data: users } = await supabaseAdmin.auth.admin.listUsers();
+  const ownerEmail = users?.users?.[0]?.email;
+
+  if (!ownerEmail) {
+    return NextResponse.json({ error: "No se encontró email del dueño" }, { status: 400 });
+  }
+
+  await resend.emails.send({
+    from: "onboarding@resend.dev",
+    to: ownerEmail,
+    subject: title,
+    html: `<p>${body}</p>`,
+  });
+
+  return NextResponse.json({ ok: true });
 }
