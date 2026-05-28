@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, ShoppingBag, Calendar, Megaphone, Settings, Bell, BellOff } from "lucide-react";
+import { LayoutDashboard, ShoppingBag, Calendar, Megaphone, Settings, Bell, BellOff, Tag } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { usePushNotifications } from "@/lib/usePushNotifications";
 
@@ -10,7 +10,7 @@ const VENUE_ID = "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee";
 const navItems = [
   { href: "/admin", label: "Inicio", icon: LayoutDashboard },
   { href: "/admin/products", label: "Productos", icon: ShoppingBag },
-  { href: "/admin/promotions", label: "Promos", icon: Megaphone },
+  { href: "/admin/categories", label: "Categorías", icon: Tag },
   { href: "/admin/reservations", label: "Reservas", icon: Calendar },
   { href: "/admin/settings", label: "Local", icon: Settings },
 ];
