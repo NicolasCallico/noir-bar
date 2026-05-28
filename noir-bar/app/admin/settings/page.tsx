@@ -102,7 +102,6 @@ export default function AdminSettings() {
         instagram: settings.instagram,
         address: settings.address,
         logo_url: settings.logo_url,
-        primary_color: settings.primary_color,
         show_unavailable: settings.show_unavailable,
         birthday_promo_text: settings.birthday_promo_text || "",
       })
@@ -119,7 +118,6 @@ export default function AdminSettings() {
           instagram: settings.instagram,
           address: settings.address,
           logo_url: settings.logo_url,
-          primary_color: settings.primary_color,
           show_unavailable: settings.show_unavailable,
         })
         .eq("id", settings.id);
@@ -349,25 +347,6 @@ export default function AdminSettings() {
                 <p className="text-xs text-[#aaa]">Subiendo logo...</p>
               ) : null}
             </div>
-          </div>
-        </div>
-
-        {/* Color primario */}
-        <div>
-          <label className="text-[10px] uppercase tracking-wider text-[#888] mb-1.5 block">Color primario</label>
-          <div className="flex gap-3">
-            <input
-              className="w-16 h-10 bg-[#111] border border-[#2A2A2A] rounded-md cursor-pointer"
-              type="color"
-              value={settings.primary_color}
-              onChange={(e) => setSettings({ ...settings, primary_color: e.target.value })}
-            />
-            <input
-              className={`flex-1 ${inputClass}`}
-              type="text"
-              value={settings.primary_color}
-              onChange={(e) => setSettings({ ...settings, primary_color: e.target.value })}
-            />
           </div>
         </div>
 
