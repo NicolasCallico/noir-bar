@@ -79,7 +79,6 @@ export function ProductList({ products, categories, showUnavailable }: Props) {
               onClick={() => toggleSection(group.category.id)}
               className="w-full flex items-center gap-3 py-3.5 px-1 mb-0 cursor-pointer bg-transparent border-none text-left group"
             >
-              <span className="text-[9px] uppercase tracking-[.18em] text-[#C8A96B] opacity-70">Carta</span>
               <span className="font-serif text-2xl text-[#F5F5F5]">
                 {group.category.icon} {group.category.name}
               </span>
