@@ -18,7 +18,11 @@ export function AdminNav() {
   return (
     <>
       <div className="flex items-center justify-between px-4 py-3 border-b border-[#2A2A2A] bg-[#111]">
+<<<<<<< HEAD
 <img src="/nox-logo.jpg" alt="NOX" className="h-8 w-auto" style={{mixBlendMode: 'screen'}} />
+=======
+    <img src="/nox-logo.png" alt="NOX" className="h-8 w-auto" />
+>>>>>>> 6e8b1bda0ece2be0e38c28693057d352c6872149
         <div className="flex items-center gap-2 flex-shrink-0">
           {supported && (
             <button
