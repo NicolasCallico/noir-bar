@@ -77,31 +77,32 @@ export default function AdminReservations() {
         </button>
       </div>
 
-      {/* Filtros */}
-      <div className="flex gap-2 mb-4 overflow-x-auto no-scrollbar pb-1">
+{/* Filtros */}
+      <div className="flex gap-2 mb-4 pb-1">
         {([
-          { key: "all", label: "Todas" },
-          { key: "new", label: "Pendientes" },
-          { key: "confirmed", label: "Confirmadas" },
-          { key: "cancelled", label: "Canceladas" },
-        ] as const).map(({ key, label }) => (
+          { key: "all", labelMobile: "Todas", labelDesktop: "Todas" },
+          { key: "new", labelMobile: "Pend.", labelDesktop: "Pendientes" },
+          { key: "confirmed", labelMobile: "Conf.", labelDesktop: "Confirmadas" },
+          { key: "cancelled", labelMobile: "Canc.", labelDesktop: "Canceladas" },
+        ] as const).map(({ key, labelMobile, labelDesktop }) => (
           <button
             key={key}
             onClick={() => setFilter(key)}
-            className={`flex-shrink-0 text-xs px-3 py-1.5 rounded-full border transition-colors flex items-center gap-1.5 ${
+            className={`flex-1 text-xs px-2 py-1.5 rounded-full border transition-colors flex items-center justify-center gap-1.5 ${
               filter === key
                 ? "bg-[#C8A96B] text-[#0D0D0D] border-[#C8A96B] font-medium"
                 : "border-[#2A2A2A] text-[#888]"
             }`}
           >
-            {label}
+            <span className="md:hidden">{labelMobile}</span>
+            <span className="hidden md:inline">{labelDesktop}</span>
             <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${filter === key ? "bg-[#0D0D0D]/20" : "bg-[#2A2A2A]"}`}>
               {counts[key]}
             </span>
           </button>
         ))}
       </div>
-
+      
       {loading ? (
         <div className="flex justify-center py-16">
           <Loader2 className="animate-spin text-[#888]" size={24} />
