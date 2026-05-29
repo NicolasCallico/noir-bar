@@ -35,7 +35,6 @@ export default function AdminProducts() {
     setCategories(cats || []);
     if (cats && cats.length > 0) {
       setForm((f) => ({ ...f, category_id: cats[0].id }));
-      // Abre la primera categoría por defecto
       setOpenSections(new Set([cats[0].id]));
     }
     setLoading(false);
@@ -63,6 +62,13 @@ export default function AdminProducts() {
   function openNew() {
     setEditingId(null);
     setForm({ name: "", description: "", price: "", emoji: "🍽️", category_id: categories[0]?.id || "", badge: "", available: true, image_url: "" });
+    setShowModal(true);
+  }
+
+  // ← NUEVO: abre el modal con la categoría preseleccionada
+  function openNewInCategory(categoryId: string) {
+    setEditingId(null);
+    setForm({ name: "", description: "", price: "", emoji: "🍽️", category_id: categoryId, badge: "", available: true, image_url: "" });
     setShowModal(true);
   }
 
@@ -106,15 +112,12 @@ export default function AdminProducts() {
 
   const inputClass = "w-full bg-[#111] border border-[#2A2A2A] rounded-md px-3 py-2.5 text-sm text-[#F5F5F5] placeholder-[#888] focus:outline-none focus:border-[#8a7248] transition-colors";
 
-  // Agrupar productos por categoría
   const grouped = categories
     .map((cat) => ({
       category: cat,
       products: products.filter((p) => p.category_id === cat.id),
-    }))
-    .filter((g) => g.products.length > 0);
+    }));
 
-  // Productos sin categoría asignada
   const uncategorized = products.filter((p) => !categories.find((c) => c.id === p.category_id));
 
   return (
@@ -144,27 +147,37 @@ export default function AdminProducts() {
             const isOpen = openSections.has(group.category.id);
             return (
               <div key={group.category.id} className="border border-[#2A2A2A] rounded-lg overflow-hidden">
-                {/* Header de categoría */}
-                <button
-                  onClick={() => toggleSection(group.category.id)}
-                  className="w-full flex items-center justify-between px-4 py-3 bg-[#1A1A1A] hover:bg-[#1f1f1f] transition-colors"
-                >
-                  <div className="flex items-center gap-2">
-                    <span className="text-base">{group.category.icon}</span>
-                    <span className="font-serif text-[#F5F5F5] text-sm">{group.category.name}</span>
-                    <span className="text-[10px] text-[#555] bg-[#111] border border-[#2A2A2A] px-2 py-0.5 rounded-full">
-                      {group.products.length}
-                    </span>
-                  </div>
-                  <motion.div
-                    animate={{ rotate: isOpen ? 180 : 0 }}
-                    transition={{ duration: 0.2 }}
+                <div className="flex items-center bg-[#1A1A1A] hover:bg-[#1f1f1f] transition-colors">
+                  {/* Header clickeable para abrir/cerrar */}
+                  <button
+                    onClick={() => toggleSection(group.category.id)}
+                    className="flex-1 flex items-center justify-between px-4 py-3"
                   >
-                    <ChevronDown size={15} className="text-[#C8A96B]" />
-                  </motion.div>
-                </button>
+                    <div className="flex items-center gap-2">
+                      <span className="text-base">{group.category.icon}</span>
+                      <span className="font-serif text-[#F5F5F5] text-sm">{group.category.name}</span>
+                      <span className="text-[10px] text-[#555] bg-[#111] border border-[#2A2A2A] px-2 py-0.5 rounded-full">
+                        {group.products.length}
+                      </span>
+                    </div>
+                    <motion.div animate={{ rotate: isOpen ? 180 : 0 }} transition={{ duration: 0.2 }}>
+                      <ChevronDown size={15} className="text-[#C8A96B]" />
+                    </motion.div>
+                  </button>
 
-                {/* Productos */}
+                  {/* ← BOTÓN + por categoría */}
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      openNewInCategory(group.category.id);
+                    }}
+                    className="flex items-center justify-center w-10 h-10 mr-2 rounded-lg border border-dashed border-[#C8A96B]/40 text-[#C8A96B] hover:bg-[#C8A96B]/10 transition-colors flex-shrink-0"
+                    title={`Agregar producto en ${group.category.name}`}
+                  >
+                    <Plus size={14} />
+                  </button>
+                </div>
+
                 <AnimatePresence initial={false}>
                   {isOpen && (
                     <motion.div
@@ -176,30 +189,42 @@ export default function AdminProducts() {
                       style={{ overflow: "hidden" }}
                     >
                       <div className="flex flex-col divide-y divide-[#1f1f1f]">
-                        {group.products.map((p) => (
-                          <div key={p.id} className="bg-[#161616] px-3.5 py-3 flex items-center gap-3">
-                            {p.image_url && (
-                              <img src={p.image_url} alt={p.name} className="w-10 h-10 rounded-md object-cover flex-shrink-0" />
-                            )}
-                            <div className="flex-1 min-w-0">
-                              <p className="text-sm font-medium truncate">{p.name}</p>
-                              <p className="text-[11px] text-[#888] truncate">{p.description}</p>
-                            </div>
-                            <span className="text-sm text-[#C8A96B] font-medium mr-1 flex-shrink-0">{formatPrice(p.price)}</span>
+                        {group.products.length === 0 ? (
+                          <div className="px-4 py-4 text-center">
+                            <p className="text-xs text-[#555] mb-2">No hay productos en esta categoría</p>
                             <button
-                              onClick={() => toggleAvailable(p.id, !p.available)}
-                              className={`relative w-9 h-5 rounded-full transition-colors flex-shrink-0 ${p.available ? "bg-[#C8A96B]/25" : "bg-[#333]"}`}
+                              onClick={() => openNewInCategory(group.category.id)}
+                              className="text-xs text-[#C8A96B] border border-dashed border-[#C8A96B]/30 px-3 py-1.5 rounded-lg hover:bg-[#C8A96B]/5 transition-colors"
                             >
-                              <span className={`absolute top-0.5 w-4 h-4 rounded-full transition-all ${p.available ? "left-4 bg-[#C8A96B]" : "left-0.5 bg-[#666]"}`} />
-                            </button>
-                            <button onClick={() => openEdit(p)} className="w-7 h-7 flex items-center justify-center border border-[#2A2A2A] rounded-md text-[#888] hover:text-[#C8A96B] hover:border-[#8a7248] transition-colors">
-                              <Edit3 size={13} />
-                            </button>
-                            <button onClick={() => deleteProduct(p.id)} className="w-7 h-7 flex items-center justify-center border border-[#2A2A2A] rounded-md text-[#888] hover:text-red-400 hover:border-red-900 transition-colors">
-                              <Trash2 size={13} />
+                              + Agregar el primero
                             </button>
                           </div>
-                        ))}
+                        ) : (
+                          group.products.map((p) => (
+                            <div key={p.id} className="bg-[#161616] px-3.5 py-3 flex items-center gap-3">
+                              {p.image_url && (
+                                <img src={p.image_url} alt={p.name} className="w-10 h-10 rounded-md object-cover flex-shrink-0" />
+                              )}
+                              <div className="flex-1 min-w-0">
+                                <p className="text-sm font-medium truncate">{p.name}</p>
+                                <p className="text-[11px] text-[#888] truncate">{p.description}</p>
+                              </div>
+                              <span className="text-sm text-[#C8A96B] font-medium mr-1 flex-shrink-0">{formatPrice(p.price)}</span>
+                              <button
+                                onClick={() => toggleAvailable(p.id, !p.available)}
+                                className={`relative w-9 h-5 rounded-full transition-colors flex-shrink-0 ${p.available ? "bg-[#C8A96B]/25" : "bg-[#333]"}`}
+                              >
+                                <span className={`absolute top-0.5 w-4 h-4 rounded-full transition-all ${p.available ? "left-4 bg-[#C8A96B]" : "left-0.5 bg-[#666]"}`} />
+                              </button>
+                              <button onClick={() => openEdit(p)} className="w-7 h-7 flex items-center justify-center border border-[#2A2A2A] rounded-md text-[#888] hover:text-[#C8A96B] hover:border-[#8a7248] transition-colors">
+                                <Edit3 size={13} />
+                              </button>
+                              <button onClick={() => deleteProduct(p.id)} className="w-7 h-7 flex items-center justify-center border border-[#2A2A2A] rounded-md text-[#888] hover:text-red-400 hover:border-red-900 transition-colors">
+                                <Trash2 size={13} />
+                              </button>
+                            </div>
+                          ))
+                        )}
                       </div>
                     </motion.div>
                   )}
@@ -208,7 +233,6 @@ export default function AdminProducts() {
             );
           })}
 
-          {/* Productos sin categoría */}
           {uncategorized.length > 0 && (
             <div className="border border-dashed border-[#2A2A2A] rounded-lg overflow-hidden">
               <button
@@ -257,7 +281,6 @@ export default function AdminProducts() {
         </div>
       )}
 
-      {/* Modal — exactamente igual al original */}
       <AnimatePresence>
         {showModal && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-black/80 z-50 flex items-end justify-center" onClick={() => setShowModal(false)}>
@@ -318,9 +341,9 @@ export default function AdminProducts() {
                     <label className="text-[10px] uppercase tracking-wider text-[#888] mb-1 block">Badge</label>
                     <select className={inputClass} value={form.badge} onChange={(e) => setForm((f) => ({ ...f, badge: e.target.value as any }))}>
                       <option value="">Sin badge</option>
-                      <option value="gold">⭐ Destacado</option>
-                      <option value="new">Nuevo</option>
-                      <option value="hot">🔥 Más vendido</option>
+                      <option value="gold">👨‍🍳 Del chef</option>
+                      <option value="new">✨ Temporada</option>
+                      <option value="hot">🍷 La preferida</option>
                     </select>
                   </div>
                 </div>
