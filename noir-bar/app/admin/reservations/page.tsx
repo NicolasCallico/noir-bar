@@ -78,25 +78,24 @@ export default function AdminReservations() {
       </div>
 
 {/* Filtros */}
-      <div className="flex gap-2 mb-4 pb-1">
+      <div className="flex gap-1.5 mb-4 pb-1">
         {([
-          { key: "all", labelMobile: "Todas", labelDesktop: "Todas" },
-          { key: "new", labelMobile: "Pend.", labelDesktop: "Pendientes" },
-          { key: "confirmed", labelMobile: "Conf.", labelDesktop: "Confirmadas" },
-          { key: "cancelled", labelMobile: "Canc.", labelDesktop: "Canceladas" },
-        ] as const).map(({ key, labelMobile, labelDesktop }) => (
+          { key: "all", label: "Todas" },
+          { key: "new", label: "Pendientes" },
+          { key: "confirmed", label: "Confirmadas" },
+          { key: "cancelled", label: "Canceladas" },
+        ] as const).map(({ key, label }) => (
           <button
             key={key}
             onClick={() => setFilter(key)}
-            className={`flex-1 text-xs px-2 py-1.5 rounded-full border transition-colors flex items-center justify-center gap-1.5 ${
+            className={`flex-1 text-[10px] px-1.5 py-1.5 rounded-full border transition-colors flex items-center justify-center gap-1 ${
               filter === key
                 ? "bg-[#C8A96B] text-[#0D0D0D] border-[#C8A96B] font-medium"
                 : "border-[#2A2A2A] text-[#888]"
             }`}
           >
-            <span className="md:hidden">{labelMobile}</span>
-            <span className="hidden md:inline">{labelDesktop}</span>
-            <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${filter === key ? "bg-[#0D0D0D]/20" : "bg-[#2A2A2A]"}`}>
+            {label}
+            <span className={`text-[9px] px-1 py-0.5 rounded-full ${filter === key ? "bg-[#0D0D0D]/20" : "bg-[#2A2A2A]"}`}>
               {counts[key]}
             </span>
           </button>
