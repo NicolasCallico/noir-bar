@@ -41,7 +41,7 @@ export default async function MenuPage({ params }: Props) {
     .from("products")
     .select("*, categories(*)")
     .eq("venue_id", venue.id)
-    .order("created_at", { ascending: false });
+  .order("order", { ascending: true });
   const products = (productsResult.data as unknown) as Product[] | null;
   const promotionsResult = await supabase
     .from("promotions")
