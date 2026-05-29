@@ -2,7 +2,8 @@
 
 import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus, Trash2, Edit3, X, Loader2, Camera, ImageOff, ChevronDown, ChevronUp, GripVertical } from "lucide-react";
+import { Plus, Trash2, Edit3, X, Loader2, Camera, ImageOff, ChevronDown, ChevronUp } from "lucide-react";
+import { DragDropContext, Droppable, Draggable, DropResult } from "@hello-pangea/dnd";
 import { supabase } from "@/lib/supabase";
 import type { Product, Category } from "@/lib/types";
 import { formatPrice } from "@/lib/utils";
@@ -16,7 +17,6 @@ export default function AdminProducts() {
   const [uploadingImage, setUploadingImage] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [openSections, setOpenSections] = useState<Set<string>>(new Set());
-  const [dragIndex, setDragIndex] = useState<{ categoryId: string; index: number } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [form, setForm] = useState({
@@ -81,28 +81,19 @@ export default function AdminProducts() {
     await saveOrder(reordered);
   }
 
-  function handleDragStart(categoryId: string, index: number) {
-    setDragIndex({ categoryId, index });
-  }
-
-  function handleDragOver(e: React.DragEvent, categoryId: string, index: number) {
-    e.preventDefault();
-    if (!dragIndex || dragIndex.categoryId !== categoryId || dragIndex.index === index) return;
+  async function handleDragEnd(result: DropResult) {
+    if (!result.destination) return;
+    const categoryId = result.source.droppableId;
+    if (result.destination.droppableId !== categoryId) return;
     const categoryProducts = products.filter((p) => p.category_id === categoryId);
     const reordered = [...categoryProducts];
-    const [moved] = reordered.splice(dragIndex.index, 1);
-    reordered.splice(index, 0, moved);
-    setDragIndex({ categoryId, index });
+    const [moved] = reordered.splice(result.source.index, 1);
+    reordered.splice(result.destination.index, 0, moved);
     setProducts((prev) => [
       ...prev.filter((p) => p.category_id !== categoryId),
       ...reordered,
     ]);
-  }
-
-  async function handleDragEnd(categoryId: string) {
-    setDragIndex(null);
-    const categoryProducts = products.filter((p) => p.category_id === categoryId);
-    await saveOrder(categoryProducts);
+    await saveOrder(reordered);
   }
 
   function openNew() {
@@ -165,64 +156,6 @@ export default function AdminProducts() {
 
   const uncategorized = products.filter((p) => !categories.find((c) => c.id === p.category_id));
 
-  const ProductRow = ({ p, index, categoryId, total }: { p: Product; index: number; categoryId: string; total: number }) => (
-    <div
-      draggable
-      onDragStart={() => handleDragStart(categoryId, index)}
-      onDragOver={(e) => handleDragOver(e, categoryId, index)}
-      onDragEnd={() => handleDragEnd(categoryId)}
-      className={`bg-[#161616] px-3.5 py-3 flex flex-col gap-2 cursor-grab active:cursor-grabbing transition-opacity ${dragIndex?.categoryId === categoryId && dragIndex?.index === index ? "opacity-50" : ""}`}
-    >
-      {/* Fila superior: grip (desktop) + imagen + info + precio */}
-      <div className="flex items-center gap-3">
-        <GripVertical size={14} className="hidden md:block text-[#444] flex-shrink-0" />
-        {p.image_url && (
-          <img src={p.image_url} alt={p.name} className="w-10 h-10 rounded-md object-cover flex-shrink-0" />
-        )}
-        <div className="flex-1 min-w-0">
-          <p className="text-sm font-medium truncate">{p.name}</p>
-          <p className="text-[11px] text-[#888] truncate">{p.description}</p>
-        </div>
-        <span className="text-sm text-[#C8A96B] font-medium flex-shrink-0">{formatPrice(p.price)}</span>
-      </div>
-
-      {/* Fila inferior: flechitas (mobile) + toggle + acciones */}
-      <div className="flex items-center justify-end gap-2">
-        {/* Flechitas solo en mobile */}
-        <div className="flex md:hidden flex-col gap-0.5 mr-auto">
-          <button
-            onClick={() => moveProduct(categoryId, index, "up")}
-            disabled={index === 0}
-            className="w-6 h-5 flex items-center justify-center border border-[#2A2A2A] rounded text-[#555] hover:text-[#C8A96B] hover:border-[#8a7248] disabled:opacity-20 transition-colors"
-          >
-            <ChevronUp size={11} />
-          </button>
-          <button
-            onClick={() => moveProduct(categoryId, index, "down")}
-            disabled={index === total - 1}
-            className="w-6 h-5 flex items-center justify-center border border-[#2A2A2A] rounded text-[#555] hover:text-[#C8A96B] hover:border-[#8a7248] disabled:opacity-20 transition-colors"
-          >
-            <ChevronDown size={11} />
-          </button>
-        </div>
-
-        <button
-          onClick={() => toggleAvailable(p.id, !p.available)}
-          className={`relative w-9 h-5 rounded-full transition-colors flex-shrink-0 ${p.available ? "bg-[#C8A96B]/25" : "bg-[#333]"}`}
-        >
-          <span className={`absolute top-0.5 w-4 h-4 rounded-full transition-all ${p.available ? "left-4 bg-[#C8A96B]" : "left-0.5 bg-[#666]"}`} />
-        </button>
-        <span className="text-[10px] text-[#555]">{p.available ? "Disponible" : "Sin stock"}</span>
-        <button onClick={() => openEdit(p)} className="w-7 h-7 flex items-center justify-center border border-[#2A2A2A] rounded-md text-[#888] hover:text-[#C8A96B] hover:border-[#8a7248] transition-colors">
-          <Edit3 size={13} />
-        </button>
-        <button onClick={() => deleteProduct(p.id)} className="w-7 h-7 flex items-center justify-center border border-[#2A2A2A] rounded-md text-[#888] hover:text-red-400 hover:border-red-900 transition-colors">
-          <Trash2 size={13} />
-        </button>
-      </div>
-    </div>
-  );
-
   return (
     <div className="px-4 pt-5 pb-24">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-5">
@@ -245,46 +178,46 @@ export default function AdminProducts() {
           <Loader2 className="animate-spin" size={24} />
         </div>
       ) : (
-        <div className="flex flex-col gap-2">
-          {grouped.map((group) => {
-            const isOpen = openSections.has(group.category.id);
-            return (
-              <div key={group.category.id} className="border border-[#2A2A2A] rounded-lg overflow-hidden">
-                <div className="flex items-center bg-[#1A1A1A] hover:bg-[#1f1f1f] transition-colors">
-                  <button
-                    onClick={() => toggleSection(group.category.id)}
-                    className="flex-1 flex items-center justify-between px-4 py-3"
-                  >
-                    <div className="flex items-center gap-2">
-                      <span className="text-base">{group.category.icon}</span>
-                      <span className="font-serif text-[#F5F5F5] text-sm">{group.category.name}</span>
-                      <span className="text-[10px] text-[#555] bg-[#111] border border-[#2A2A2A] px-2 py-0.5 rounded-full">
-                        {group.products.length}
-                      </span>
-                    </div>
-                    <motion.div animate={{ rotate: isOpen ? 180 : 0 }} transition={{ duration: 0.2 }}>
-                      <ChevronDown size={15} className="text-[#C8A96B]" />
-                    </motion.div>
-                  </button>
-                  <button
-                    onClick={(e) => { e.stopPropagation(); openNewInCategory(group.category.id); }}
-                    className="flex items-center justify-center w-10 h-10 mr-2 rounded-lg border border-dashed border-[#C8A96B]/40 text-[#C8A96B] hover:bg-[#C8A96B]/10 transition-colors flex-shrink-0"
-                  >
-                    <Plus size={14} />
-                  </button>
-                </div>
-
-                <AnimatePresence initial={false}>
-                  {isOpen && (
-                    <motion.div
-                      key="content"
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
-                      exit={{ opacity: 0, height: 0 }}
-                      transition={{ duration: 0.25, ease: "easeInOut" }}
-                      style={{ overflow: "hidden" }}
+        <DragDropContext onDragEnd={handleDragEnd}>
+          <div className="flex flex-col gap-2">
+            {grouped.map((group) => {
+              const isOpen = openSections.has(group.category.id);
+              return (
+                <div key={group.category.id} className="border border-[#2A2A2A] rounded-lg overflow-hidden">
+                  <div className="flex items-center bg-[#1A1A1A] hover:bg-[#1f1f1f] transition-colors">
+                    <button
+                      onClick={() => toggleSection(group.category.id)}
+                      className="flex-1 flex items-center justify-between px-4 py-3"
                     >
-                      <div className="flex flex-col divide-y divide-[#1f1f1f]">
+                      <div className="flex items-center gap-2">
+                        <span className="text-base">{group.category.icon}</span>
+                        <span className="font-serif text-[#F5F5F5] text-sm">{group.category.name}</span>
+                        <span className="text-[10px] text-[#555] bg-[#111] border border-[#2A2A2A] px-2 py-0.5 rounded-full">
+                          {group.products.length}
+                        </span>
+                      </div>
+                      <motion.div animate={{ rotate: isOpen ? 180 : 0 }} transition={{ duration: 0.2 }}>
+                        <ChevronDown size={15} className="text-[#C8A96B]" />
+                      </motion.div>
+                    </button>
+                    <button
+                      onClick={(e) => { e.stopPropagation(); openNewInCategory(group.category.id); }}
+                      className="flex items-center justify-center w-10 h-10 mr-2 rounded-lg border border-dashed border-[#C8A96B]/40 text-[#C8A96B] hover:bg-[#C8A96B]/10 transition-colors flex-shrink-0"
+                    >
+                      <Plus size={14} />
+                    </button>
+                  </div>
+
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <motion.div
+                        key="content"
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.25, ease: "easeInOut" }}
+                        style={{ overflow: "hidden" }}
+                      >
                         {group.products.length === 0 ? (
                           <div className="px-4 py-4 text-center">
                             <p className="text-xs text-[#555] mb-2">No hay productos en esta categoría</p>
@@ -296,53 +229,88 @@ export default function AdminProducts() {
                             </button>
                           </div>
                         ) : (
-                          group.products.map((p, i) => (
-                            <ProductRow key={p.id} p={p} index={i} categoryId={group.category.id} total={group.products.length} />
-                          ))
+                          <Droppable droppableId={group.category.id}>
+                            {(provided) => (
+                              <div
+                                ref={provided.innerRef}
+                                {...provided.droppableProps}
+                                className="flex flex-col divide-y divide-[#1f1f1f]"
+                              >
+                                {group.products.map((p, i) => (
+                                  <Draggable key={p.id} draggableId={p.id} index={i}>
+                                    {(provided, snapshot) => (
+                                      <div
+                                        ref={provided.innerRef}
+                                        {...provided.draggableProps}
+                                        className={`bg-[#161616] px-3.5 py-3 flex flex-col gap-2 ${snapshot.isDragging ? "opacity-80 shadow-lg" : ""}`}
+                                      >
+                                        <div className="flex items-center gap-3">
+                                          {/* Grip solo en desktop */}
+                                          <div {...provided.dragHandleProps} className="hidden md:flex items-center text-[#444] cursor-grab active:cursor-grabbing flex-shrink-0">
+                                            <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor">
+                                              <circle cx="4" cy="3" r="1.2"/><circle cx="10" cy="3" r="1.2"/>
+                                              <circle cx="4" cy="7" r="1.2"/><circle cx="10" cy="7" r="1.2"/>
+                                              <circle cx="4" cy="11" r="1.2"/><circle cx="10" cy="11" r="1.2"/>
+                                            </svg>
+                                          </div>
+                                          {p.image_url && (
+                                            <img src={p.image_url} alt={p.name} className="w-10 h-10 rounded-md object-cover flex-shrink-0" />
+                                          )}
+                                          <div className="flex-1 min-w-0">
+                                            <p className="text-sm font-medium truncate">{p.name}</p>
+                                            <p className="text-[11px] text-[#888] truncate">{p.description}</p>
+                                          </div>
+                                          <span className="text-sm text-[#C8A96B] font-medium flex-shrink-0">{formatPrice(p.price)}</span>
+                                        </div>
+                                        <div className="flex items-center justify-end gap-2">
+                                          {/* Flechitas solo en mobile */}
+                                          <div className="flex md:hidden flex-col gap-0.5 mr-auto">
+                                            <button
+                                              onClick={() => moveProduct(group.category.id, i, "up")}
+                                              disabled={i === 0}
+                                              className="w-6 h-5 flex items-center justify-center border border-[#2A2A2A] rounded text-[#555] hover:text-[#C8A96B] hover:border-[#8a7248] disabled:opacity-20 transition-colors"
+                                            >
+                                              <ChevronUp size={11} />
+                                            </button>
+                                            <button
+                                              onClick={() => moveProduct(group.category.id, i, "down")}
+                                              disabled={i === group.products.length - 1}
+                                              className="w-6 h-5 flex items-center justify-center border border-[#2A2A2A] rounded text-[#555] hover:text-[#C8A96B] hover:border-[#8a7248] disabled:opacity-20 transition-colors"
+                                            >
+                                              <ChevronDown size={11} />
+                                            </button>
+                                          </div>
+                                          <button
+                                            onClick={() => toggleAvailable(p.id, !p.available)}
+                                            className={`relative w-9 h-5 rounded-full transition-colors flex-shrink-0 ${p.available ? "bg-[#C8A96B]/25" : "bg-[#333]"}`}
+                                          >
+                                            <span className={`absolute top-0.5 w-4 h-4 rounded-full transition-all ${p.available ? "left-4 bg-[#C8A96B]" : "left-0.5 bg-[#666]"}`} />
+                                          </button>
+                                          <span className="text-[10px] text-[#555]">{p.available ? "Disponible" : "Sin stock"}</span>
+                                          <button onClick={() => openEdit(p)} className="w-7 h-7 flex items-center justify-center border border-[#2A2A2A] rounded-md text-[#888] hover:text-[#C8A96B] hover:border-[#8a7248] transition-colors">
+                                            <Edit3 size={13} />
+                                          </button>
+                                          <button onClick={() => deleteProduct(p.id)} className="w-7 h-7 flex items-center justify-center border border-[#2A2A2A] rounded-md text-[#888] hover:text-red-400 hover:border-red-900 transition-colors">
+                                            <Trash2 size={13} />
+                                          </button>
+                                        </div>
+                                      </div>
+                                    )}
+                                  </Draggable>
+                                ))}
+                                {provided.placeholder}
+                              </div>
+                            )}
+                          </Droppable>
                         )}
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            );
-          })}
-
-          {uncategorized.length > 0 && (
-            <div className="border border-dashed border-[#2A2A2A] rounded-lg overflow-hidden">
-              <button
-                onClick={() => toggleSection("__uncategorized__")}
-                className="w-full flex items-center justify-between px-4 py-3 bg-[#1A1A1A]"
-              >
-                <div className="flex items-center gap-2">
-                  <span className="font-serif text-[#888] text-sm">Sin categoría</span>
-                  <span className="text-[10px] text-[#555] bg-[#111] border border-[#2A2A2A] px-2 py-0.5 rounded-full">
-                    {uncategorized.length}
-                  </span>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
-                <ChevronDown size={15} className="text-[#555]" />
-              </button>
-              <AnimatePresence initial={false}>
-                {openSections.has("__uncategorized__") && (
-                  <motion.div
-                    key="uncategorized"
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.25, ease: "easeInOut" }}
-                    style={{ overflow: "hidden" }}
-                  >
-                    <div className="flex flex-col divide-y divide-[#1f1f1f]">
-                      {uncategorized.map((p, i) => (
-                        <ProductRow key={p.id} p={p} index={i} categoryId="__uncategorized__" total={uncategorized.length} />
-                      ))}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          )}
-        </div>
+              );
+            })}
+          </div>
+        </DragDropContext>
       )}
 
       <AnimatePresence>
