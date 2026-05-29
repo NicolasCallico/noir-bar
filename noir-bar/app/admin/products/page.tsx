@@ -230,7 +230,7 @@ export default function AdminProducts() {
                           </div>
                         ) : (
                           <Droppable droppableId={group.category.id}>
-                            {(provided) => (
+                            {(provided: any) => (
                               <div
                                 ref={provided.innerRef}
                                 {...provided.droppableProps}
