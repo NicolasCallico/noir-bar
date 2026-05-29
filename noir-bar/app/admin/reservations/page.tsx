@@ -62,7 +62,7 @@ export default function AdminReservations() {
   };
 
   return (
-    <div className="px-4 md:px-8 pt-5 pb-24 max-w-5xl mx-auto">
+    <div className="px-4 md:px-8 pt-5 pb-24 max-w-5xl mx-auto overflow-x-hidden">
       {/* Header */}
       <div className="flex items-center justify-between mb-5">
         <div>
