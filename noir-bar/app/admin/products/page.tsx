@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus, Trash2, Edit3, X, Loader2, Camera, ImageOff, ChevronDown } from "lucide-react";
+import { Plus, Trash2, Edit3, X, Loader2, Camera, ImageOff, ChevronDown, ChevronUp, GripVertical } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import type { Product, Category } from "@/lib/types";
 import { formatPrice } from "@/lib/utils";
@@ -16,6 +16,7 @@ export default function AdminProducts() {
   const [uploadingImage, setUploadingImage] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [openSections, setOpenSections] = useState<Set<string>>(new Set());
+  const [dragIndex, setDragIndex] = useState<{ categoryId: string; index: number } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [form, setForm] = useState({
@@ -28,7 +29,7 @@ export default function AdminProducts() {
 
   async function fetchData() {
     const [{ data: prods }, { data: cats }] = await Promise.all([
-      supabase.from("products").select("*, categories(*)").order("created_at", { ascending: false }),
+      supabase.from("products").select("*, categories(*)").order("order", { ascending: true }),
       supabase.from("categories").select("*").order("order"),
     ]);
     setProducts(prods || []);
@@ -57,6 +58,51 @@ export default function AdminProducts() {
     if (!confirm("¿Eliminar este producto?")) return;
     await supabase.from("products").delete().eq("id", id);
     setProducts((prev) => prev.filter((p) => p.id !== id));
+  }
+
+  async function saveOrder(categoryProducts: Product[]) {
+    await Promise.all(
+      categoryProducts.map((p, i) =>
+        supabase.from("products").update({ order: i + 1 }).eq("id", p.id)
+      )
+    );
+  }
+
+  async function moveProduct(categoryId: string, index: number, direction: "up" | "down") {
+    const categoryProducts = products.filter((p) => p.category_id === categoryId);
+    const newIndex = direction === "up" ? index - 1 : index + 1;
+    if (newIndex < 0 || newIndex >= categoryProducts.length) return;
+    const reordered = [...categoryProducts];
+    [reordered[index], reordered[newIndex]] = [reordered[newIndex], reordered[index]];
+    setProducts((prev) => [
+      ...prev.filter((p) => p.category_id !== categoryId),
+      ...reordered,
+    ]);
+    await saveOrder(reordered);
+  }
+
+  function handleDragStart(categoryId: string, index: number) {
+    setDragIndex({ categoryId, index });
+  }
+
+  function handleDragOver(e: React.DragEvent, categoryId: string, index: number) {
+    e.preventDefault();
+    if (!dragIndex || dragIndex.categoryId !== categoryId || dragIndex.index === index) return;
+    const categoryProducts = products.filter((p) => p.category_id === categoryId);
+    const reordered = [...categoryProducts];
+    const [moved] = reordered.splice(dragIndex.index, 1);
+    reordered.splice(index, 0, moved);
+    setDragIndex({ categoryId, index });
+    setProducts((prev) => [
+      ...prev.filter((p) => p.category_id !== categoryId),
+      ...reordered,
+    ]);
+  }
+
+  async function handleDragEnd(categoryId: string) {
+    setDragIndex(null);
+    const categoryProducts = products.filter((p) => p.category_id === categoryId);
+    await saveOrder(categoryProducts);
   }
 
   function openNew() {
@@ -102,7 +148,8 @@ export default function AdminProducts() {
     if (editingId) {
       await supabase.from("products").update(payload).eq("id", editingId);
     } else {
-      await supabase.from("products").insert({ ...payload, venue_id: venueId });
+      const categoryProducts = products.filter((p) => p.category_id === form.category_id);
+      await supabase.from("products").insert({ ...payload, venue_id: venueId, order: categoryProducts.length + 1 });
     }
     setSaving(false);
     setShowModal(false);
@@ -118,9 +165,17 @@ export default function AdminProducts() {
 
   const uncategorized = products.filter((p) => !categories.find((c) => c.id === p.category_id));
 
-  const ProductRow = ({ p }: { p: Product }) => (
-    <div className="bg-[#161616] px-3.5 py-3 flex flex-col gap-2">
+  const ProductRow = ({ p, index, categoryId, total }: { p: Product; index: number; categoryId: string; total: number }) => (
+    <div
+      draggable
+      onDragStart={() => handleDragStart(categoryId, index)}
+      onDragOver={(e) => handleDragOver(e, categoryId, index)}
+      onDragEnd={() => handleDragEnd(categoryId)}
+      className={`bg-[#161616] px-3.5 py-3 flex flex-col gap-2 cursor-grab active:cursor-grabbing transition-opacity ${dragIndex?.categoryId === categoryId && dragIndex?.index === index ? "opacity-50" : ""}`}
+    >
+      {/* Fila superior: grip (desktop) + imagen + info + precio */}
       <div className="flex items-center gap-3">
+        <GripVertical size={14} className="hidden md:block text-[#444] flex-shrink-0" />
         {p.image_url && (
           <img src={p.image_url} alt={p.name} className="w-10 h-10 rounded-md object-cover flex-shrink-0" />
         )}
@@ -130,14 +185,34 @@ export default function AdminProducts() {
         </div>
         <span className="text-sm text-[#C8A96B] font-medium flex-shrink-0">{formatPrice(p.price)}</span>
       </div>
+
+      {/* Fila inferior: flechitas (mobile) + toggle + acciones */}
       <div className="flex items-center justify-end gap-2">
+        {/* Flechitas solo en mobile */}
+        <div className="flex md:hidden flex-col gap-0.5 mr-auto">
+          <button
+            onClick={() => moveProduct(categoryId, index, "up")}
+            disabled={index === 0}
+            className="w-6 h-5 flex items-center justify-center border border-[#2A2A2A] rounded text-[#555] hover:text-[#C8A96B] hover:border-[#8a7248] disabled:opacity-20 transition-colors"
+          >
+            <ChevronUp size={11} />
+          </button>
+          <button
+            onClick={() => moveProduct(categoryId, index, "down")}
+            disabled={index === total - 1}
+            className="w-6 h-5 flex items-center justify-center border border-[#2A2A2A] rounded text-[#555] hover:text-[#C8A96B] hover:border-[#8a7248] disabled:opacity-20 transition-colors"
+          >
+            <ChevronDown size={11} />
+          </button>
+        </div>
+
         <button
           onClick={() => toggleAvailable(p.id, !p.available)}
           className={`relative w-9 h-5 rounded-full transition-colors flex-shrink-0 ${p.available ? "bg-[#C8A96B]/25" : "bg-[#333]"}`}
         >
           <span className={`absolute top-0.5 w-4 h-4 rounded-full transition-all ${p.available ? "left-4 bg-[#C8A96B]" : "left-0.5 bg-[#666]"}`} />
         </button>
-        <span className="text-[10px] text-[#555] mr-auto">{p.available ? "Disponible" : "Sin stock"}</span>
+        <span className="text-[10px] text-[#555]">{p.available ? "Disponible" : "Sin stock"}</span>
         <button onClick={() => openEdit(p)} className="w-7 h-7 flex items-center justify-center border border-[#2A2A2A] rounded-md text-[#888] hover:text-[#C8A96B] hover:border-[#8a7248] transition-colors">
           <Edit3 size={13} />
         </button>
@@ -159,7 +234,7 @@ export default function AdminProducts() {
           <button onClick={fetchData} className="text-[#888] border border-[#2A2A2A] px-3 py-2 rounded text-xs hover:border-[#C8A96B] hover:text-[#F5F5F5] transition-colors">
             Recargar
           </button>
-          <button onClick={openNew} className="flex items-center gap-1.5 bg-[#C8A96B] text-[#0D0D0D] text-xs font-medium px-3 py-2 rounded">
+          <button onClick={openNew} className="flex items-center gap-1.5 bg-[#C8A96B] text-[#0D0D0D] text-xs font-medium px-3 py-2 rounded self-start">
             <Plus size={14} /> Agregar
           </button>
         </div>
@@ -221,7 +296,9 @@ export default function AdminProducts() {
                             </button>
                           </div>
                         ) : (
-                          group.products.map((p) => <ProductRow key={p.id} p={p} />)
+                          group.products.map((p, i) => (
+                            <ProductRow key={p.id} p={p} index={i} categoryId={group.category.id} total={group.products.length} />
+                          ))
                         )}
                       </div>
                     </motion.div>
@@ -256,7 +333,9 @@ export default function AdminProducts() {
                     style={{ overflow: "hidden" }}
                   >
                     <div className="flex flex-col divide-y divide-[#1f1f1f]">
-                      {uncategorized.map((p) => <ProductRow key={p.id} p={p} />)}
+                      {uncategorized.map((p, i) => (
+                        <ProductRow key={p.id} p={p} index={i} categoryId="__uncategorized__" total={uncategorized.length} />
+                      ))}
                     </div>
                   </motion.div>
                 )}
