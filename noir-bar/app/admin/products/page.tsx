@@ -65,7 +65,6 @@ export default function AdminProducts() {
     setShowModal(true);
   }
 
-  // ← NUEVO: abre el modal con la categoría preseleccionada
   function openNewInCategory(categoryId: string) {
     setEditingId(null);
     setForm({ name: "", description: "", price: "", emoji: "🍽️", category_id: categoryId, badge: "", available: true, image_url: "" });
@@ -112,16 +111,45 @@ export default function AdminProducts() {
 
   const inputClass = "w-full bg-[#111] border border-[#2A2A2A] rounded-md px-3 py-2.5 text-sm text-[#F5F5F5] placeholder-[#888] focus:outline-none focus:border-[#8a7248] transition-colors";
 
-  const grouped = categories
-    .map((cat) => ({
-      category: cat,
-      products: products.filter((p) => p.category_id === cat.id),
-    }));
+  const grouped = categories.map((cat) => ({
+    category: cat,
+    products: products.filter((p) => p.category_id === cat.id),
+  }));
 
   const uncategorized = products.filter((p) => !categories.find((c) => c.id === p.category_id));
 
+  const ProductRow = ({ p }: { p: Product }) => (
+    <div className="bg-[#161616] px-3.5 py-3 flex flex-col gap-2">
+      <div className="flex items-center gap-3">
+        {p.image_url && (
+          <img src={p.image_url} alt={p.name} className="w-10 h-10 rounded-md object-cover flex-shrink-0" />
+        )}
+        <div className="flex-1 min-w-0">
+          <p className="text-sm font-medium truncate">{p.name}</p>
+          <p className="text-[11px] text-[#888] truncate">{p.description}</p>
+        </div>
+        <span className="text-sm text-[#C8A96B] font-medium flex-shrink-0">{formatPrice(p.price)}</span>
+      </div>
+      <div className="flex items-center justify-end gap-2">
+        <button
+          onClick={() => toggleAvailable(p.id, !p.available)}
+          className={`relative w-9 h-5 rounded-full transition-colors flex-shrink-0 ${p.available ? "bg-[#C8A96B]/25" : "bg-[#333]"}`}
+        >
+          <span className={`absolute top-0.5 w-4 h-4 rounded-full transition-all ${p.available ? "left-4 bg-[#C8A96B]" : "left-0.5 bg-[#666]"}`} />
+        </button>
+        <span className="text-[10px] text-[#555] mr-auto">{p.available ? "Disponible" : "Sin stock"}</span>
+        <button onClick={() => openEdit(p)} className="w-7 h-7 flex items-center justify-center border border-[#2A2A2A] rounded-md text-[#888] hover:text-[#C8A96B] hover:border-[#8a7248] transition-colors">
+          <Edit3 size={13} />
+        </button>
+        <button onClick={() => deleteProduct(p.id)} className="w-7 h-7 flex items-center justify-center border border-[#2A2A2A] rounded-md text-[#888] hover:text-red-400 hover:border-red-900 transition-colors">
+          <Trash2 size={13} />
+        </button>
+      </div>
+    </div>
+  );
+
   return (
-    <div className="px-5 pt-5 pb-24">
+    <div className="px-4 pt-5 pb-24">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-5">
         <div>
           <h2 className="font-serif text-xl">Productos</h2>
@@ -148,7 +176,6 @@ export default function AdminProducts() {
             return (
               <div key={group.category.id} className="border border-[#2A2A2A] rounded-lg overflow-hidden">
                 <div className="flex items-center bg-[#1A1A1A] hover:bg-[#1f1f1f] transition-colors">
-                  {/* Header clickeable para abrir/cerrar */}
                   <button
                     onClick={() => toggleSection(group.category.id)}
                     className="flex-1 flex items-center justify-between px-4 py-3"
@@ -164,15 +191,9 @@ export default function AdminProducts() {
                       <ChevronDown size={15} className="text-[#C8A96B]" />
                     </motion.div>
                   </button>
-
-                  {/* ← BOTÓN + por categoría */}
                   <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      openNewInCategory(group.category.id);
-                    }}
+                    onClick={(e) => { e.stopPropagation(); openNewInCategory(group.category.id); }}
                     className="flex items-center justify-center w-10 h-10 mr-2 rounded-lg border border-dashed border-[#C8A96B]/40 text-[#C8A96B] hover:bg-[#C8A96B]/10 transition-colors flex-shrink-0"
-                    title={`Agregar producto en ${group.category.name}`}
                   >
                     <Plus size={14} />
                   </button>
@@ -200,30 +221,7 @@ export default function AdminProducts() {
                             </button>
                           </div>
                         ) : (
-                          group.products.map((p) => (
-                            <div key={p.id} className="bg-[#161616] px-3.5 py-3 flex items-center gap-3">
-                              {p.image_url && (
-                                <img src={p.image_url} alt={p.name} className="w-10 h-10 rounded-md object-cover flex-shrink-0" />
-                              )}
-                              <div className="flex-1 min-w-0">
-                                <p className="text-sm font-medium truncate">{p.name}</p>
-                                <p className="text-[11px] text-[#888] truncate">{p.description}</p>
-                              </div>
-                              <span className="text-sm text-[#C8A96B] font-medium mr-1 flex-shrink-0">{formatPrice(p.price)}</span>
-                              <button
-                                onClick={() => toggleAvailable(p.id, !p.available)}
-                                className={`relative w-9 h-5 rounded-full transition-colors flex-shrink-0 ${p.available ? "bg-[#C8A96B]/25" : "bg-[#333]"}`}
-                              >
-                                <span className={`absolute top-0.5 w-4 h-4 rounded-full transition-all ${p.available ? "left-4 bg-[#C8A96B]" : "left-0.5 bg-[#666]"}`} />
-                              </button>
-                              <button onClick={() => openEdit(p)} className="w-7 h-7 flex items-center justify-center border border-[#2A2A2A] rounded-md text-[#888] hover:text-[#C8A96B] hover:border-[#8a7248] transition-colors">
-                                <Edit3 size={13} />
-                              </button>
-                              <button onClick={() => deleteProduct(p.id)} className="w-7 h-7 flex items-center justify-center border border-[#2A2A2A] rounded-md text-[#888] hover:text-red-400 hover:border-red-900 transition-colors">
-                                <Trash2 size={13} />
-                              </button>
-                            </div>
-                          ))
+                          group.products.map((p) => <ProductRow key={p.id} p={p} />)
                         )}
                       </div>
                     </motion.div>
@@ -258,20 +256,7 @@ export default function AdminProducts() {
                     style={{ overflow: "hidden" }}
                   >
                     <div className="flex flex-col divide-y divide-[#1f1f1f]">
-                      {uncategorized.map((p) => (
-                        <div key={p.id} className="bg-[#161616] px-3.5 py-3 flex items-center gap-3">
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium truncate">{p.name}</p>
-                          </div>
-                          <span className="text-sm text-[#C8A96B] font-medium mr-1">{formatPrice(p.price)}</span>
-                          <button onClick={() => openEdit(p)} className="w-7 h-7 flex items-center justify-center border border-[#2A2A2A] rounded-md text-[#888] hover:text-[#C8A96B] transition-colors">
-                            <Edit3 size={13} />
-                          </button>
-                          <button onClick={() => deleteProduct(p.id)} className="w-7 h-7 flex items-center justify-center border border-[#2A2A2A] rounded-md text-[#888] hover:text-red-400 transition-colors">
-                            <Trash2 size={13} />
-                          </button>
-                        </div>
-                      ))}
+                      {uncategorized.map((p) => <ProductRow key={p.id} p={p} />)}
                     </div>
                   </motion.div>
                 )}
@@ -284,7 +269,7 @@ export default function AdminProducts() {
       <AnimatePresence>
         {showModal && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-black/80 z-50 flex items-end justify-center" onClick={() => setShowModal(false)}>
-            <motion.div initial={{ y: "100%" }} animate={{ y: 0 }} exit={{ y: "100%" }} transition={{ type: "spring", damping: 28 }} className="bg-[#161616] border border-[#2A2A2A] rounded-t-2xl p-5 w-full max-w-lg" onClick={(e) => e.stopPropagation()}>
+            <motion.div initial={{ y: "100%" }} animate={{ y: 0 }} exit={{ y: "100%" }} transition={{ type: "spring", damping: 28 }} className="bg-[#161616] border border-[#2A2A2A] rounded-t-2xl p-5 w-full max-w-lg max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-serif text-lg">{editingId ? "Editar producto" : "Nuevo producto"}</h3>
                 <button onClick={() => setShowModal(false)} className="text-[#888]"><X size={18} /></button>
