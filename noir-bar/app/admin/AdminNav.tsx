@@ -4,7 +4,9 @@ import { usePathname } from "next/navigation";
 import { LayoutDashboard, ShoppingBag, Calendar, Settings, Bell, BellOff, Tag } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { usePushNotifications } from "@/lib/usePushNotifications";
+
 const VENUE_ID = "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee";
+
 const navItems = [
   { href: "/admin", label: "Inicio", icon: LayoutDashboard },
   { href: "/admin/products", label: "Productos", icon: ShoppingBag },
@@ -12,17 +14,15 @@ const navItems = [
   { href: "/admin/reservations", label: "Reservas", icon: Calendar },
   { href: "/admin/settings", label: "Local", icon: Settings },
 ];
+
 export function AdminNav() {
   const pathname = usePathname();
   const { supported, subscribed, loading, subscribe, unsubscribe } = usePushNotifications(VENUE_ID);
+
   return (
     <>
       <div className="flex items-center justify-between px-4 py-3 border-b border-[#2A2A2A] bg-[#111]">
-<<<<<<< HEAD
-<img src="/nox-logo.jpg" alt="NOX" className="h-8 w-auto" style={{mixBlendMode: 'screen'}} />
-=======
-    <img src="/nox-logo.png" alt="NOX" className="h-8 w-auto" />
->>>>>>> 6e8b1bda0ece2be0e38c28693057d352c6872149
+        <img src="/nox-logo.jpg" alt="NOX" className="h-8 w-auto" style={{mixBlendMode: 'screen'}} />
         <div className="flex items-center gap-2 flex-shrink-0">
           {supported && (
             <button
