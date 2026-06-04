@@ -50,6 +50,15 @@ export default function AdminReservations() {
     }
   }
 
+  function formatWhatsappPhone(phone: string) {
+    let digits = phone.replace(/\D/g, "");
+    if (!digits) return "";
+    if (digits.startsWith("00")) digits = digits.slice(2);
+    if (digits.startsWith("54")) return digits;
+    if (digits.startsWith("0")) digits = digits.slice(1);
+    return `54${digits}`;
+  }
+
   const filtered = filter === "all"
     ? reservations
     : reservations.filter((r) => r.status === filter);
@@ -181,7 +190,7 @@ export default function AdminReservations() {
                           </button>
                         )}
                         <a
-                          href={`https://wa.me/${r.phone.replace(/\D/g, "")}?text=${encodeURIComponent(`Hola ${r.name}, confirmamos tu reserva para el ${r.date} a las ${r.time} hs para ${r.people} personas. ¡Te esperamos!`)}`}
+                          href={`https://wa.me/${formatWhatsappPhone(r.phone)}?text=${encodeURIComponent(`Hola ${r.name}, confirmamos tu reserva para el ${r.date} a las ${r.time} hs para ${r.people} personas. ¡Te esperamos!`)}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           title="WhatsApp"
@@ -260,7 +269,7 @@ export default function AdminReservations() {
                     </button>
                   )}
                   <a
-                    href={`https://wa.me/${r.phone.replace(/\D/g, "")}?text=${encodeURIComponent(`Hola ${r.name}, confirmamos tu reserva para el ${r.date} a las ${r.time} hs para ${r.people} personas. ¡Te esperamos!`)}`}
+                    href={`https://wa.me/${formatWhatsappPhone(r.phone)}?text=${encodeURIComponent(`Hola ${r.name}, confirmamos tu reserva para el ${r.date} a las ${r.time} hs para ${r.people} personas. ¡Te esperamos!`)}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-center gap-1.5 text-xs text-[#25D366] border border-[#25D366]/25 px-3 py-2 rounded-lg hover:bg-[#25D366]/5 transition-colors"
