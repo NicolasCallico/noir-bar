@@ -102,7 +102,7 @@ export default function AdminCategories() {
           <h2 className="font-serif text-xl">Categorías</h2>
           <p className="text-xs text-[#888]">Crear, renombrar, reordenar y eliminar categorías.</p>
         </div>
-    <button onClick={openNew} className="flex items-center gap-1.5 bg-[#C8A96B] text-[#0D0D0D] text-xs font-medium px-3 py-2 rounded self-start">
+        <button onClick={openNew} className="flex items-center gap-1.5 bg-[#C8A96B] text-[#0D0D0D] text-xs font-medium px-3 py-2 rounded">
           <Plus size={14} /> Nueva categoría
         </button>
       </div>
