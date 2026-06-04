@@ -45,7 +45,7 @@ export function ReservaModal({ isOpen, onClose, venueId, venueName, birthdayProm
     setForm((prev) => ({ ...prev, [field]: value }));
   }
 
-async function handleSubmit() {
+  async function handleSubmit() {
     if (!form.name || !form.phone || !form.date) {
       alert("Completá nombre, teléfono y fecha.");
       return;
@@ -67,44 +67,32 @@ async function handleSubmit() {
         },
       ]);
 
-if (error) {
-  console.error(error);
-  return;
-}
+      if (error) {
+        console.error(error);
+        return;
+      }
 
-// Notificación email al admin
-try {
-  await fetch(`/api/admin/push-notify`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      venueId: venueId,
-      title: `Nueva reserva para ${venueName}`,
-      body: `Tenés una reserva de ${form.people} personas para el día ${form.date} a las ${form.time}hs. Cliente: ${form.name} — Tel: ${form.phone}.`,
-      url: "/admin/reservations",
-    }),
-  });
-} catch (e) {
-  console.error("Error enviando notificación:", e);
-}
-      const mensaje =
-        "🍸 *Nueva Reserva — " + venueName + "*\n\n" +
-        "👤 *Nombre:* " + form.name + "\n" +
-        "📱 *Teléfono:* " + form.phone + "\n" +
-        "👥 *Personas:* " + form.people + "\n" +
-        "📅 *Fecha:* " + form.date + "\n" +
-        "🕐 *Horario:* " + form.time + " hs\n" +
-        "🎂 *Cumpleaños:* " + (form.is_birthday ? "Sí 🎉" : "No") + "\n" +
-        "📝 *Notas:* " + (form.notes || "Sin notas");
-
-const whatsappUrl = "https://wa.me/5491130863536?text=" + encodeURIComponent(mensaje);
-const link = document.createElement("a");
-link.href = whatsappUrl;
-link.target = "_blank";
-link.rel = "noopener noreferrer";
-document.body.appendChild(link);
-link.click();
-document.body.removeChild(link);
+      try {
+        await fetch(`/api/admin/push-notify`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            venueId: venueId,
+            title: `Tenés una RESERVA pendiente de ${form.name}`,
+            body: `
+              <p><strong>Cliente:</strong> ${form.name}</p>
+              <p><strong>Teléfono:</strong> ${form.phone}</p>
+              <p><strong>Personas:</strong> ${form.people}</p>
+              <p><strong>Fecha:</strong> ${form.date}</p>
+              <p><strong>Hora:</strong> ${form.time} hs</p>
+              ${form.notes ? `<p><strong>Notas:</strong> ${form.notes}</p>` : ""}
+            `,
+            url: "/admin/reservations",
+          }),
+        });
+      } catch (e) {
+        console.error("Error enviando notificación:", e);
+      }
 
       setSuccess(true);
     } catch (err) {
@@ -144,11 +132,10 @@ document.body.removeChild(link);
               <div className="flex flex-col items-center py-8 text-center">
                 <CheckCircle className="text-gold mb-4" size={48} />
                 <h3 className="font-serif text-2xl mb-2">
-                  ¡Reserva recibida!
+                  Solicitud enviada correctamente
                 </h3>
                 <p className="text-muted text-sm mb-6">
-                  Te contactamos a la brevedad para confirmar tu reserva en{" "}
-                  {venueName}.
+                  El local revisará tu reserva y se comunicará para confirmarla.
                 </p>
                 <button
                   onClick={handleClose}
