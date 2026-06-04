@@ -9,7 +9,7 @@ interface Props {
   message?: string;
 }
 
-export function WhatsAppFAB({ phone, instagram, message = "Hola, quiero reservar una mesa 🍸" }: Props) {
+export function WhatsAppFAB({ phone, instagram, message = "Hola, tengo una consulta." }: Props) {
   const [open, setOpen] = useState(false);
   const whatsappUrl = `https://wa.me/${phone.replace(/\D/g, "")}?text=${encodeURIComponent(message)}`;
   const instagramUrl = `https://instagram.com/${instagram}`;
