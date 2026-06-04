@@ -14,7 +14,6 @@ export default function AdminMaterials() {
   const [qrUrl, setQrUrl] = useState("");
   const [copied, setCopied] = useState(false);
   const qrRef = useRef<HTMLDivElement>(null);
-  const pdfRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     fetchVenueData();
@@ -50,64 +49,88 @@ export default function AdminMaterials() {
 
   async function downloadQRPNG() {
     if (!qrRef.current) return;
-    const canvas = qrRef.current.querySelector("canvas");
-    if (!canvas) return;
-
-    const link = document.createElement("a");
-    link.href = canvas.toDataURL("image/png");
-    link.download = `qr-menu-${venue?.slug || "local"}.png`;
-    link.click();
-  }
-
-  async function downloadQRPDF() {
-    if (!pdfRef.current || !venue) return;
 
     try {
-      const canvas = await html2canvas(pdfRef.current, {
-        backgroundColor: "#0D0D0D",
+      const canvas = await html2canvas(qrRef.current, {
+        backgroundColor: "white",
         scale: 2,
         useCORS: true,
       });
 
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF("portrait", "mm", "A4");
+      const link = document.createElement("a");
+      link.href = canvas.toDataURL("image/png");
+      link.download = `qr-menu-${venue?.slug || "local"}.png`;
+      link.click();
+    } catch (error) {
+      console.error("Error descargando PNG:", error);
+      alert("Error al descargar el QR");
+    }
+  }
 
-      // Margen
-      const margin = 20;
+  async function downloadQRPDF() {
+    if (!qrRef.current || !venue) return;
+
+    try {
+      // Extraer el QR como imagen
+      const canvas = await html2canvas(qrRef.current, {
+        backgroundColor: "white",
+        scale: 2,
+        useCORS: true,
+      });
+
+      const qrImageData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("portrait", "mm", "A4");
       const pageWidth = pdf.internal.pageSize.getWidth();
       const pageHeight = pdf.internal.pageSize.getHeight();
 
+      // Fondo oscuro
+      pdf.setFillColor(13, 13, 13); // #0D0D0D
+      pdf.rect(0, 0, pageWidth, pageHeight, "F");
+
+      let yPosition = 30;
+
+      // Logo si existe
+      if (venue.logo_url) {
+        const logoHeight = 20;
+        const logoWidth = 40;
+        pdf.addImage(venue.logo_url, "PNG", (pageWidth - logoWidth) / 2, yPosition, logoWidth, logoHeight);
+        yPosition += logoHeight + 15;
+      }
+
       // Título
       pdf.setFont("Helvetica", "bold");
-      pdf.setFontSize(20);
-      pdf.setTextColor(200, 169, 107); // Color #C8A96B
-      pdf.text("MATERIAL DEL LOCAL", margin, margin + 10);
+      pdf.setFontSize(16);
+      pdf.setTextColor(200, 169, 107); // #C8A96B
+      pdf.text(venue.name || "Sin nombre", pageWidth / 2, yPosition, { align: "center" });
+      yPosition += 12;
 
-      // Nombre del local
+      // Tagline
       pdf.setFont("Helvetica", "normal");
-      pdf.setFontSize(14);
-      pdf.setTextColor(245, 245, 245); // #F5F5F5
-      pdf.text(venue.name || "Sin nombre", margin, margin + 25);
-
-      // Instrucción
-      pdf.setFontSize(11);
+      pdf.setFontSize(9);
       pdf.setTextColor(136, 136, 136); // #888
-      const textLines = pdf.splitTextToSize(
-        "Imprime este código QR en el local. Los clientes podrán acceder al menú con su celular.",
-        pageWidth - margin * 2
-      );
-      pdf.text(textLines, margin, margin + 35);
+      if (venue.tagline) {
+        pdf.text(venue.tagline, pageWidth / 2, yPosition, { align: "center" });
+        yPosition += 10;
+      }
 
-      // Imagen del contenido
-      const imgWidth = pageWidth - margin * 2;
-      const imgHeight = (canvas.height / canvas.width) * imgWidth;
-      pdf.addImage(imgData, "PNG", margin, margin + 55, imgWidth, imgHeight);
+      yPosition += 8;
 
-      // URL del menú en el footer
-      const footerY = pageHeight - margin - 10;
-      pdf.setFontSize(10);
-      pdf.setTextColor(200, 169, 107);
-      pdf.text(`Enlace directo: ${qrUrl}`, margin, footerY);
+      // QR centrado y grande
+      const qrSize = 100; // mm
+      const qrX = (pageWidth - qrSize) / 2;
+      pdf.addImage(qrImageData, "PNG", qrX, yPosition, qrSize, qrSize);
+
+      // Footer con instrucción y URL
+      const footerY = pageHeight - 25;
+      pdf.setFont("Helvetica", "normal");
+      pdf.setFontSize(9);
+      pdf.setTextColor(245, 245, 245); // #F5F5F5
+      pdf.text("Escanea este código QR", pageWidth / 2, footerY, { align: "center" });
+      pdf.text("para acceder al menú digital", pageWidth / 2, footerY + 5, { align: "center" });
+
+      pdf.setFontSize(8);
+      pdf.setTextColor(136, 136, 136); // #888
+      pdf.text(`${qrUrl}`, pageWidth / 2, pageHeight - 8, { align: "center" });
 
       pdf.save(`menu-qr-${venue.slug}.pdf`);
     } catch (error) {
@@ -150,9 +173,8 @@ export default function AdminMaterials() {
 
       {/* Card Principal */}
       <div className="bg-[#1A1A1A] border border-[#2A2A2A] rounded-xl p-8 mb-8">
-        {/* Vista previa para PDF */}
+        {/* Vista previa para PNG */}
         <div
-          ref={pdfRef}
           className="mb-8 p-8 bg-[#0D0D0D] rounded-lg border border-[#2A2A2A] flex flex-col items-center text-center"
         >
           {/* Logo si existe */}
