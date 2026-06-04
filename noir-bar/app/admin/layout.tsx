@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { AdminNav } from "./AdminNav";
-import { LayoutDashboard, ShoppingBag, Tag, Calendar, Settings, Megaphone } from "lucide-react";
+import { LayoutDashboard, ShoppingBag, Tag, Calendar, Settings, Megaphone, FileText } from "lucide-react";
 import Link from "next/link";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -86,6 +86,7 @@ function AdminSidebarLinks() {
     { href: "/admin/categories", label: "Categorías", icon: Tag },
     { href: "/admin/reservations", label: "Reservas", icon: Calendar },
     { href: "/admin/promotions", label: "Promociones", icon: Megaphone },
+    { href: "/admin/materials", label: "Material", icon: FileText },
     { href: "/admin/settings", label: "Local", icon: Settings },
   ];
 

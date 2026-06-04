@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import { LayoutDashboard, ShoppingBag, Calendar, Settings, Bell, BellOff, Tag } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { usePushNotifications } from "@/lib/usePushNotifications";
+import { FileText } from "lucide-react";
 
 const VENUE_ID = "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee";
 
@@ -12,6 +13,7 @@ const navItems = [
   { href: "/admin/products", label: "Productos", icon: ShoppingBag },
   { href: "/admin/categories", label: "Categorías", icon: Tag },
   { href: "/admin/reservations", label: "Reservas", icon: Calendar },
+  { href: "/admin/materials", label: "Material", icon: FileText },
   { href: "/admin/settings", label: "Local", icon: Settings },
 ];
 
