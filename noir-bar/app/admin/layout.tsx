@@ -24,7 +24,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     }
     checkAuth();
 
-    const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
+    const { data: authListener } = supabase.auth.onAuthStateChange((event: string, session: any) => {
       if (!session && pathname !== "/admin/login") {
         router.replace("/admin/login");
         setAuthenticated(false);

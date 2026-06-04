@@ -3,28 +3,38 @@ import { Resend } from "resend";
 import { createClient } from "@supabase/supabase-js";
 import webpush from "web-push";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resendApiKey = process.env.RESEND_API_KEY;
+const resend = resendApiKey ? new Resend(resendApiKey) : null;
 
-webpush.setVapidDetails(
-  "mailto:admin@noir-bar.com",
-  process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
-  process.env.VAPID_PRIVATE_KEY!
-);
+const vapidPublicKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
+const vapidPrivateKey = process.env.VAPID_PRIVATE_KEY;
+
+if (vapidPublicKey && vapidPrivateKey) {
+  webpush.setVapidDetails("mailto:admin@noir-bar.com", vapidPublicKey, vapidPrivateKey);
+}
 
 export async function POST(req: NextRequest) {
   const { venueId, title, body, url } = await req.json();
 
-  const supabaseAdmin = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    { auth: { persistSession: false } }
-  );
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+  if (!supabaseUrl || !supabaseServiceRoleKey) {
+    return NextResponse.json(
+      { error: "Faltan variables de entorno de Supabase para notificaciones." },
+      { status: 500 }
+    );
+  }
+
+  const supabaseAdmin = createClient(supabaseUrl, supabaseServiceRoleKey, {
+    auth: { persistSession: false },
+  });
 
   // 1. Enviar mail
   const { data: users } = await supabaseAdmin.auth.admin.listUsers();
   const ownerEmail = users?.users?.[0]?.email;
 
-  if (ownerEmail) {
+  if (ownerEmail && resend) {
     await resend.emails.send({
       from: "onboarding@resend.dev",
       to: ownerEmail,

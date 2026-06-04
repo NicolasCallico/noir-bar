@@ -1,6 +1,15 @@
 import { supabase } from "@/lib/supabase";
 
 export default async function SeedPage() {
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    return (
+      <div style={{ padding: 20 }}>
+        <h1>⚠️ Configuración de Supabase incompleta</h1>
+        <p>La página de seed requiere las variables de entorno de Supabase para funcionar.</p>
+      </div>
+    );
+  }
+
   const result = await supabase
     .from("venue_settings")
     .select("*")
