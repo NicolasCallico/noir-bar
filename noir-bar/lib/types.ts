@@ -62,6 +62,8 @@ export interface VenueSettings {
   primary_color: string;
   show_unavailable: boolean;
   birthday_promo_text?: string;
+  reservation_time_open?: string;
+  reservation_time_close?: string;
 }
 
 // Supabase Database type
