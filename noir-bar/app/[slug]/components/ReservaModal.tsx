@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Loader2, CheckCircle, Minus, Plus, Calendar } from "lucide-react";
+import { X, Loader2, CheckCircle, Minus, Plus, Calendar, Clock } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import type { Reservation } from "@/lib/types";
 
@@ -243,17 +243,24 @@ if (form.people === 20) {
 </div>
                   </div>
 
-                  <select
-                    className={inputClass}
-                    value={form.time}
-                    onChange={(e) => handleChange("time", e.target.value)}
-                  >
-                    {times.map((t) => (
-                      <option key={t} value={t}>
-                        {t}
-                      </option>
-                    ))}
-                  </select>
+<div className="relative">
+  <select
+    className={inputClass}
+    value={form.time}
+    onChange={(e) => handleChange("time", e.target.value)}
+    style={{ paddingLeft: "2.25rem" }}
+  >
+    {times.map((t) => (
+      <option key={t} value={t}>
+        {t}
+      </option>
+    ))}
+  </select>
+  <Clock
+    size={14}
+    className="absolute left-3 top-1/2 -translate-y-1/2 text-muted pointer-events-none"
+  />
+</div>
 
                   <div className="rounded-3xl border border-gold/20 bg-[#1c150b] p-4 text-sm text-[#f5f5f5] shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05)]">
                     <p className="font-semibold text-gold mb-1">Promoción de cumple</p>
