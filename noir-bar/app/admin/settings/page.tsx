@@ -93,19 +93,21 @@ export default function AdminSettings() {
       return;
     }
 
-    let updateResult = await supabase
-      .from("venue_settings")
-      .update({
-        name: settings.name,
-        tagline: settings.tagline,
-        whatsapp: settings.whatsapp,
-        instagram: settings.instagram,
-        address: settings.address,
-        logo_url: settings.logo_url,
-        show_unavailable: settings.show_unavailable,
-        birthday_promo_text: settings.birthday_promo_text || "",
-      })
-      .eq("id", settings.id);
+let updateResult = await supabase
+  .from("venue_settings")
+  .update({
+    name: settings.name,
+    tagline: settings.tagline,
+    whatsapp: settings.whatsapp,
+    instagram: settings.instagram,
+    address: settings.address,
+    logo_url: settings.logo_url,
+    show_unavailable: settings.show_unavailable,
+    birthday_promo_text: settings.birthday_promo_text || "",
+    reservation_time_open: settings.reservation_time_open || "20:00",
+    reservation_time_close: settings.reservation_time_close || "22:30",
+  })
+  .eq("id", settings.id);
 
     if (updateResult.error && updateResult.error.message?.includes("birthday_promo_text")) {
       console.warn("Birthday promo column missing in DB schema, retrying without it.", updateResult.error);
