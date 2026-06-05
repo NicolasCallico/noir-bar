@@ -83,7 +83,7 @@ export function ProductList({ products, categories, showUnavailable }: Props) {
                 {group.category.icon} {group.category.name}
               </span>
               <div className="flex-1 h-[1px] bg-gradient-to-r from-[rgba(200,169,107,0.3)] to-transparent" />
-              <span className="text-[10px] text-[#444] mr-1">{group.products.length}</span>
+              <span />
               {/* Chevron animado */}
               <motion.span
                 animate={{ rotate: isOpen ? 180 : 0 }}
