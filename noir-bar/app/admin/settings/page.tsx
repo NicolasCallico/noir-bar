@@ -349,7 +349,31 @@ export default function AdminSettings() {
             </div>
           </div>
         </div>
-
+        {/* Horario de reservas */}
+<div>
+  <label className="text-[10px] uppercase tracking-wider text-[#888] mb-1.5 block">Horario de reservas</label>
+  <div className="grid grid-cols-2 gap-3">
+    <div>
+      <label className="text-[10px] text-[#888] mb-1 block">Desde</label>
+      <input
+        className={inputClass}
+        type="time"
+        value={settings.reservation_time_open || "20:00"}
+        onChange={(e) => setSettings({ ...settings, reservation_time_open: e.target.value })}
+      />
+    </div>
+    <div>
+      <label className="text-[10px] text-[#888] mb-1 block">Hasta</label>
+      <input
+        className={inputClass}
+        type="time"
+        value={settings.reservation_time_close || "22:30"}
+        onChange={(e) => setSettings({ ...settings, reservation_time_close: e.target.value })}
+      />
+    </div>
+  </div>
+  <p className="text-xs text-[#888] mt-2">Los clientes solo podrán elegir horarios dentro de este rango.</p>
+</div>
         {/* Mostrar productos no disponibles */}
         <div className="flex items-center gap-3">
           <button
