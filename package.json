@@ -1,4 +1,8 @@
 {
+  "scripts": {
+    "build": "cd noir-bar && npm install && npm run build",
+    "vercel-build": "cd noir-bar && npm install && npm run build"
+  },
   "dependencies": {
     "@hello-pangea/dnd": "^18.0.1",
     "resend": "^6.12.4",
