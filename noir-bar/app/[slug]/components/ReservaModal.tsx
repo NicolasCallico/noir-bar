@@ -219,7 +219,7 @@ if (form.people === 20) {
 
 <div
   className="relative cursor-pointer"
-  onClick={() => document.getElementById("date-input")?.showPicker()}
+  onClick={() => (document.getElementById("date-input") as HTMLInputElement)?.showPicker()}
 >
   <input
     id="date-input"
