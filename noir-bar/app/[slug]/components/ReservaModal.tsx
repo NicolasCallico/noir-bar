@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Loader2, CheckCircle, Minus, Plus } from "lucide-react";
+import { X, Loader2, CheckCircle, Minus, Plus, Calendar } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import type { Reservation } from "@/lib/types";
 
@@ -217,12 +217,26 @@ if (form.people === 20) {
   )}
 </div>
 
-                    <input
-                      className={inputClass}
-                      type="date"
-                      value={form.date}
-                      onChange={(e) => handleChange("date", e.target.value)}
-                    />
+<div className="relative">
+  <input
+    type="date"
+    value={form.date}
+    onChange={(e) => handleChange("date", e.target.value)}
+    className="absolute inset-0 opacity-0 w-full h-full cursor-pointer z-10"
+  />
+  <div className="flex items-center gap-2 bg-[#111] border border-border rounded-md px-3 py-2.5 text-sm pointer-events-none">
+    <Calendar size={14} className="text-muted shrink-0" />
+    <span className={form.date ? "text-[#F5F5F5]" : "text-muted"}>
+      {form.date
+        ? new Date(form.date + "T00:00:00").toLocaleDateString("es-AR", {
+            weekday: "short",
+            day: "numeric",
+            month: "long",
+          })
+        : "Seleccioná una fecha"}
+    </span>
+  </div>
+</div>
                   </div>
 
                   <select
