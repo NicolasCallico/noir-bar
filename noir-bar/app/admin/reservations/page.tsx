@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Loader2, CheckCircle, XCircle, Phone, Trash2 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
+import { getVenueByOwner } from "@/lib/venue";
 import type { Reservation } from "@/lib/types";
 
 const statusConfig = {
@@ -15,18 +16,24 @@ export default function AdminReservations() {
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<"all" | "new" | "confirmed" | "cancelled">("all");
+  const [venueId, setVenueId] = useState<string | null>(null);
 
   useEffect(() => { fetchReservations(); }, []);
 
-  async function fetchReservations() {
-    setLoading(true);
-    const { data, error } = await supabase
-      .from("reservations")
-      .select("*")
-      .order("created_at", { ascending: false });
-    if (!error) setReservations(data || []);
-    setLoading(false);
-  }
+async function fetchReservations() {
+  setLoading(true);
+  const venue = await getVenueByOwner();
+  if (!venue) return;
+  setVenueId(venue.id);
+
+  const { data, error } = await supabase
+    .from("reservations")
+    .select("*")
+    .eq("venue_id", venue.id)
+    .order("created_at", { ascending: false });
+  if (!error) setReservations(data || []);
+  setLoading(false);
+}
 
   async function updateStatus(id: string, status: Reservation["status"]) {
     const { error } = await supabase

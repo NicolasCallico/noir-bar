@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { ShoppingBag, Calendar, TrendingUp, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
+import { getVenueByOwner } from "@/lib/venue";
 import type { Reservation } from "@/lib/types";
 
 const statusLabel: Record<string, { label: string; class: string }> = {
@@ -17,18 +18,20 @@ export default function AdminDashboard() {
   const [totalProducts, setTotalProducts] = useState(0);
   const [loading, setLoading] = useState(true);
 
-  async function fetchData() {
-    const today = new Date().toISOString().split("T")[0];
+async function fetchData() {
+  const venue = await getVenueByOwner();
+  if (!venue) return;
 
-    const [productsRes, reservationsRes] = await Promise.all([
-      supabase.from("products").select("*", { count: "exact", head: true }),
-      supabase.from("reservations").select("*").order("created_at", { ascending: false }),
-    ]);
+  const today = new Date().toISOString().split("T")[0];
 
-    setTotalProducts(productsRes.count ?? 0);
-    setReservations(reservationsRes.data ?? []);
-    setLoading(false);
-  }
+  const [productsRes, reservationsRes] = await Promise.all([
+    supabase.from("products").select("*", { count: "exact", head: true }).eq("venue_id", venue.id),
+    supabase.from("reservations").select("*").eq("venue_id", venue.id).order("created_at", { ascending: false }),
+  ]);
+  setTotalProducts(productsRes.count ?? 0);
+  setReservations(reservationsRes.data ?? []);
+  setLoading(false);
+}
 
   useEffect(() => {
     fetchData();
@@ -45,12 +48,9 @@ export default function AdminDashboard() {
   }, []);
 
   const today = new Date().toISOString().split("T")[0];
-  const todayLabel = new Date().toLocaleDateString("es-AR", { weekday: "long", day: "numeric", month: "long" });
   const pending = reservations.filter((r) => r.status === "new");
   const confirmed = reservations.filter((r) => r.status === "confirmed");
   const todayReservations = reservations.filter((r) => r.date === today);
-  const todayConfirmed = todayReservations.filter((r) => r.status === "confirmed");
-  const todayPending = todayReservations.filter((r) => r.status === "new");
   const recent = reservations.slice(0, 5);
 
   const stats = [
@@ -65,47 +65,7 @@ export default function AdminDashboard() {
         <h1 className="font-serif text-2xl mb-1">Panel de administración</h1>
         <p className="text-xs text-[#888]">Carga productos, promociones y controla reservas desde el admin.</p>
       </div>
-{/* Hoy */}
-      {!loading && todayReservations.length > 0 && (
-        <div className="bg-[#C8A96B]/5 border border-[#C8A96B]/20 rounded-lg p-4 mb-5">
-          <p className="text-[10px] uppercase tracking-wider text-[#C8A96B] mb-3">
-            📅 Hoy — {todayLabel}
-          </p>
-          <div className="flex gap-3 mb-3">
-            <div className="flex-1 bg-[#111] rounded-lg px-3 py-2 text-center">
-              <p className="text-[9px] text-[#888] uppercase tracking-wider mb-0.5">Confirmadas</p>
-              <p className="text-lg font-serif text-emerald-400">{todayConfirmed.length}</p>
-            </div>
-            <div className="flex-1 bg-[#111] rounded-lg px-3 py-2 text-center">
-              <p className="text-[9px] text-[#888] uppercase tracking-wider mb-0.5">Pendientes</p>
-              <p className="text-lg font-serif text-yellow-400">{todayPending.length}</p>
-            </div>
-            <div className="flex-1 bg-[#111] rounded-lg px-3 py-2 text-center">
-              <p className="text-[9px] text-[#888] uppercase tracking-wider mb-0.5">Personas</p>
-              <p className="text-lg font-serif text-[#C8A96B]">{todayReservations.reduce((acc, r) => acc + r.people, 0)}</p>
-            </div>
-          </div>
-          <div className="flex flex-col gap-1.5">
-            {todayReservations
-              .sort((a, b) => a.time.localeCompare(b.time))
-              .map((r) => (
-                <Link href="/admin/reservations" key={r.id} className="flex items-center justify-between bg-[#111] rounded-lg px-3 py-2">
-                  <span className="text-sm text-[#F5F5F5]">{r.name} {r.is_birthday ? "🎂" : ""}</span>
-                  <div className="flex items-center gap-2">
-                    <span className="text-[11px] text-[#888]">🕐 {r.time} · 👥 {r.people}</span>
-                    <span className={`text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-full font-medium ${
-                      r.status === "confirmed" ? "text-emerald-400 bg-emerald-400/10" :
-                      r.status === "cancelled" ? "text-red-400 bg-red-400/10" :
-                      "text-yellow-400 bg-yellow-400/10"
-                    }`}>
-                      {r.status === "confirmed" ? "Confirmada" : r.status === "cancelled" ? "Cancelada" : "Pendiente"}
-                    </span>
-                  </div>
-                </Link>
-              ))}
-          </div>
-        </div>
-      )}
+
       {/* Stats */}
       <div className="grid grid-cols-3 gap-2.5 mb-6">
         {stats.map((stat) => (

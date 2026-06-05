@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Plus, X, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/lib/supabase";
+import { getVenueByOwner } from "@/lib/venue";
 import type { Promotion } from "@/lib/types";
 
 export default function AdminPromotions() {
@@ -11,34 +12,39 @@ export default function AdminPromotions() {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [venueId, setVenueId] = useState<string | null>(null);
   const [form, setForm] = useState({ name: "", description: "", time_range: "", active: true });
 
   useEffect(() => { fetchPromos(); }, []);
 
-  async function fetchPromos() {
-    setLoading(true);
-    const { data } = await supabase.from("promotions").select("*").order("created_at", { ascending: false });
-    setPromos(data || []);
-    setLoading(false);
-  }
+async function fetchPromos() {
+  const venue = await getVenueByOwner();
+  if (!venue) return;
+  setVenueId(venue.id);
+
+  const { data } = await supabase
+    .from("promotions")
+    .select("*")
+    .eq("venue_id", venue.id)
+    .order("created_at", { ascending: false });
+  setPromos(data || []);
+  setLoading(false);
+}
 
   async function togglePromo(id: string, val: boolean) {
     await supabase.from("promotions").update({ active: val }).eq("id", id);
     setPromos((prev) => prev.map((p) => (p.id === id ? { ...p, active: val } : p)));
   }
 
-  async function savePromo() {
-    if (!form.name) return alert("Ingresá un nombre.");
-    setSaving(true);
-
-    const { data: { session } } = await supabase.auth.getSession();
-    const venueId = session?.user?.user_metadata?.venue_id || "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee";
-
-    await supabase.from("promotions").insert({ ...form, venue_id: venueId });
-    setSaving(false);
-    setShowModal(false);
-    fetchPromos();
-  }
+async function savePromo() {
+  if (!form.name) return alert("Ingresá un nombre.");
+  if (!venueId) return alert("No se encontró el venue.");
+  setSaving(true);
+  await supabase.from("promotions").insert({ ...form, venue_id: venueId });
+  setSaving(false);
+  setShowModal(false);
+  fetchPromos();
+}
 
   const inputClass = "w-full bg-[#111] border border-[#2A2A2A] rounded-md px-3 py-2.5 text-sm text-[#F5F5F5] placeholder-[#888] focus:outline-none focus:border-[#8a7248] transition-colors";
 

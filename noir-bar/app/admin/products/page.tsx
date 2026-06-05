@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Trash2, Edit3, X, Loader2, Camera, ImageOff, ChevronDown, ChevronUp } from "lucide-react";
 import { DragDropContext, Droppable, Draggable, DropResult } from "@hello-pangea/dnd";
 import { supabase } from "@/lib/supabase";
+import { getVenueByOwner } from "@/lib/venue";
 import type { Product, Category } from "@/lib/types";
 import { formatPrice } from "@/lib/utils";
 
@@ -16,6 +17,7 @@ export default function AdminProducts() {
   const [saving, setSaving] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [venueId, setVenueId] = useState<string | null>(null);
   const [openSections, setOpenSections] = useState<Set<string>>(new Set());
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -27,19 +29,20 @@ export default function AdminProducts() {
 
   useEffect(() => { fetchData(); }, []);
 
-  async function fetchData() {
-    const [{ data: prods }, { data: cats }] = await Promise.all([
-      supabase.from("products").select("*, categories(*)").order("order", { ascending: true }),
-      supabase.from("categories").select("*").order("order"),
-    ]);
-    setProducts(prods || []);
-    setCategories(cats || []);
-    if (cats && cats.length > 0) {
-      setForm((f) => ({ ...f, category_id: cats[0].id }));
-      setOpenSections(new Set([cats[0].id]));
-    }
-    setLoading(false);
-  }
+async function fetchData() {
+  const venue = await getVenueByOwner();
+  if (!venue) return;
+  setVenueId(venue.id);
+
+  const [{ data: prods }, { data: cats }] = await Promise.all([
+    supabase.from("products").select("*, categories(*)").eq("venue_id", venue.id).order("created_at", { ascending: false }),
+    supabase.from("categories").select("*").eq("venue_id", venue.id).order("order"),
+  ]);
+  setProducts(prods || []);
+  setCategories(cats || []);
+  if (cats && cats.length > 0) setForm((f) => ({ ...f, category_id: cats[0].id }));
+  setLoading(false);
+}
 
   function toggleSection(id: string) {
     setOpenSections((prev) => {
@@ -127,26 +130,24 @@ export default function AdminProducts() {
     setUploadingImage(false);
   }
 
-  async function saveProduct() {
-    if (!form.name || !form.price) return alert("Completá nombre y precio.");
-    setSaving(true);
-    const payload = {
-      name: form.name, description: form.description, price: parseFloat(form.price),
-      emoji: form.emoji, category_id: form.category_id, badge: form.badge,
-      available: form.available, image_url: form.image_url || null,
-    };
-    const venueId = "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee";
-    if (editingId) {
-      await supabase.from("products").update(payload).eq("id", editingId);
-    } else {
-      const categoryProducts = products.filter((p) => p.category_id === form.category_id);
-      await supabase.from("products").insert({ ...payload, venue_id: venueId, order: categoryProducts.length + 1 });
-    }
-    setSaving(false);
-    setShowModal(false);
-    fetchData();
+async function saveProduct() {
+  if (!form.name || !form.price) return alert("Completá nombre y precio.");
+  if (!venueId) return alert("No se encontró el venue.");
+  setSaving(true);
+  const payload = {
+    name: form.name, description: form.description, price: parseFloat(form.price),
+    emoji: form.emoji, category_id: form.category_id, badge: form.badge,
+    available: form.available, image_url: form.image_url || null,
+  };
+  if (editingId) {
+    await supabase.from("products").update(payload).eq("id", editingId);
+  } else {
+    await supabase.from("products").insert({ ...payload, venue_id: venueId });
   }
-
+  setSaving(false);
+  setShowModal(false);
+  fetchData();
+}
   const inputClass = "w-full bg-[#111] border border-[#2A2A2A] rounded-md px-3 py-2.5 text-sm text-[#F5F5F5] placeholder-[#888] focus:outline-none focus:border-[#8a7248] transition-colors";
 
   const grouped = categories.map((cat) => ({

@@ -3,11 +3,8 @@
 import { useEffect, useState, type ChangeEvent } from "react";
 import { Loader2 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
+import { getVenueByOwner } from "@/lib/venue";
 import type { VenueSettings } from "@/lib/types";
-
-const DEFAULT_VENUE_ID = "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee";
-const DEFAULT_VENUE_SLUG = "noir-bar";
-const LOGO_BUCKET = "products";
 
 export default function AdminSettings() {
   const [loading, setLoading] = useState(true);
@@ -21,51 +18,33 @@ export default function AdminSettings() {
     fetchSettings();
   }, []);
 
-  async function fetchSettings() {
-    setLoading(true);
-
-    const { data, error } = await supabase
-      .from("venue_settings")
-      .select("*")
-      .eq("slug", DEFAULT_VENUE_SLUG)
-      .single();
-
-    if (data) {
-      setSettings(data);
-      setFetchError(null);
-      setLoading(false);
-      return;
-    }
-
-    if (error) {
-      const { data: createdData, error: createError } = await supabase
-        .from("venue_settings")
-        .insert({
-          id: DEFAULT_VENUE_ID,
-          slug: DEFAULT_VENUE_SLUG,
-          name: "Noir Bar",
-          tagline: "Cocktails artesanales & gastronomía de autor",
-          whatsapp: "5491112345678",
-          instagram: "noirbar.ba",
-          address: "Palermo, Buenos Aires",
-          birthday_promo_text:
-            "Recordá que si vas a festejar tu cumpleaños, presentando el DNI tenés un 20% OFF.",
-        })
-        .single();
-
-      if (createdData) {
-        setSettings(createdData);
-        setFetchError(null);
-      } else {
-        setSettings(null);
-        setFetchError(createError?.message || error.message || "No se encontró la configuración del local.");
-      }
-    }
-
+async function fetchSettings() {
+  setLoading(true);
+  const venue = await getVenueByOwner();
+  if (!venue) {
+    setFetchError("No se encontró el local asociado a tu cuenta.");
     setLoading(false);
+    return;
   }
 
-  async function requireSession() {
+  const { data, error } = await supabase
+    .from("venue_settings")
+    .select("*")
+    .eq("id", venue.id)
+    .single();
+
+  if (data) {
+    setSettings(data);
+    setFetchError(null);
+  } else {
+    setSettings(null);
+    setFetchError(error?.message || "No se encontró la configuración del local.");
+  }
+
+  setLoading(false);
+}
+
+    async function requireSession() {
     const { data, error } = await supabase.auth.getSession();
 
     console.log("Supabase session check:", { data, error });

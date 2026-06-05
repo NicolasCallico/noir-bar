@@ -4,9 +4,8 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Trash2, Edit3, X, Loader2, GripVertical } from "lucide-react";
 import { supabase } from "@/lib/supabase";
+import { getVenueByOwner } from "@/lib/venue";
 import type { Category } from "@/lib/types";
-
-const VENUE_ID = "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee";
 
 export default function AdminCategories() {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -15,6 +14,7 @@ export default function AdminCategories() {
   const [showModal, setShowModal] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [dragIndex, setDragIndex] = useState<number | null>(null);
+  const [venueId, setVenueId] = useState<string | null>(null);
 
   const [form, setForm] = useState({ name: "", slug: "", icon: "🍽️" });
 
@@ -22,15 +22,19 @@ export default function AdminCategories() {
 
   useEffect(() => { fetchCategories(); }, []);
 
-  async function fetchCategories() {
-    const { data } = await supabase
-      .from("categories")
-      .select("*")
-      .eq("venue_id", VENUE_ID)
-      .order("order");
-    setCategories(data || []);
-    setLoading(false);
-  }
+async function fetchCategories() {
+  const venue = await getVenueByOwner();
+  if (!venue) return;
+  setVenueId(venue.id);
+
+  const { data } = await supabase
+    .from("categories")
+    .select("*")
+    .eq("venue_id", venue.id)
+    .order("order");
+  setCategories(data || []);
+  setLoading(false);
+}
 
   function openNew() {
     setEditingId(null);
@@ -58,7 +62,8 @@ export default function AdminCategories() {
       await supabase.from("categories").update(payload).eq("id", editingId);
     } else {
       const nextOrder = categories.length + 1;
-      await supabase.from("categories").insert({ ...payload, venue_id: VENUE_ID, order: nextOrder });
+      if (!venueId) return;
+    await supabase.from("categories").insert({ ...payload, venue_id: venueId, order: nextOrder });
     }
 
     setSaving(false);
