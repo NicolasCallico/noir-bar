@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Loader2, CheckCircle } from "lucide-react";
+import { X, Loader2, CheckCircle, Minus, Plus } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import type { Reservation } from "@/lib/types";
 
@@ -21,7 +21,7 @@ export function ReservaModal({ isOpen, onClose, venueId, venueName, birthdayProm
   const [form, setForm] = useState({
     name: "",
     phone: "",
-    people: "2",
+    people: 2,
     date: "",
     time: "21:00",
     is_birthday: false,
@@ -41,8 +41,16 @@ export function ReservaModal({ isOpen, onClose, venueId, venueName, birthdayProm
     "23:30",
   ];
 
-  function handleChange(field: string, value: string | boolean) {
+  function handleChange(field: string, value: string | boolean | number) {
     setForm((prev) => ({ ...prev, [field]: value }));
+  }
+
+  function decreasePeople() {
+    setForm((prev) => ({ ...prev, people: Math.max(1, prev.people - 1) }));
+  }
+
+  function increasePeople() {
+    setForm((prev) => ({ ...prev, people: Math.min(20, prev.people + 1) }));
   }
 
   async function handleSubmit() {
@@ -59,7 +67,7 @@ export function ReservaModal({ isOpen, onClose, venueId, venueName, birthdayProm
           venue_id: venueId,
           name: form.name,
           phone: form.phone,
-          people: Number(form.people),
+          people: form.people,
           date: form.date,
           time: form.time,
           is_birthday: form.is_birthday,
@@ -162,47 +170,61 @@ export function ReservaModal({ isOpen, onClose, venueId, venueName, birthdayProm
                       className={inputClass}
                       placeholder="Nombre"
                       value={form.name}
-                      onChange={(e) =>
-                        handleChange("name", e.target.value)
-                      }
+                      onChange={(e) => handleChange("name", e.target.value)}
                     />
-
                     <input
                       className={inputClass}
                       placeholder="Teléfono"
                       value={form.phone}
-                      onChange={(e) =>
-                        handleChange("phone", e.target.value)
-                      }
+                      onChange={(e) => handleChange("phone", e.target.value)}
                     />
                   </div>
 
                   <div className="grid grid-cols-2 gap-3">
-                    <input
-                      className={inputClass}
-                      type="number"
-                      value={form.people}
-                      onChange={(e) =>
-                        handleChange("people", e.target.value)
-                      }
-                    />
+{/* STEPPER DE PERSONAS */}
+<div className="flex flex-col gap-1">
+  <div className="flex items-center bg-[#111] border border-border rounded-md overflow-hidden">
+    <button
+      type="button"
+      onClick={decreasePeople}
+      className="px-3 py-2.5 text-muted hover:text-[#F5F5F5] hover:bg-white/5 transition-colors"
+    >
+      <Minus size={14} />
+    </button>
+    <span className="flex-1 text-center text-sm text-[#F5F5F5]">
+      {form.people === 20 ? "20+" : `${form.people} ${form.people === 1 ? "persona" : "personas"}`}
+    </span>
+    <button
+      type="button"
+      onClick={increasePeople}
+      className="px-3 py-2.5 text-muted hover:text-[#F5F5F5] hover:bg-white/5 transition-colors"
+    >
+      <Plus size={14} />
+    </button>
+  </div>
+  {form.people === 20 && (
+    <input
+      className={inputClass}
+      type="number"
+      min={20}
+      placeholder="¿Cuántas personas?"
+      onChange={(e) => handleChange("people", Number(e.target.value))}
+    />
+  )}
+</div>
 
                     <input
                       className={inputClass}
                       type="date"
                       value={form.date}
-                      onChange={(e) =>
-                        handleChange("date", e.target.value)
-                      }
+                      onChange={(e) => handleChange("date", e.target.value)}
                     />
                   </div>
 
                   <select
                     className={inputClass}
                     value={form.time}
-                    onChange={(e) =>
-                      handleChange("time", e.target.value)
-                    }
+                    onChange={(e) => handleChange("time", e.target.value)}
                   >
                     {times.map((t) => (
                       <option key={t} value={t}>
@@ -226,9 +248,7 @@ export function ReservaModal({ isOpen, onClose, venueId, venueName, birthdayProm
                     className={inputClass}
                     placeholder="Notas"
                     value={form.notes}
-                    onChange={(e) =>
-                      handleChange("notes", e.target.value)
-                    }
+                    onChange={(e) => handleChange("notes", e.target.value)}
                   />
                 </div>
 
