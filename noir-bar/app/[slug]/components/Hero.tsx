@@ -60,13 +60,15 @@ export function Hero({ venue }: Props) {
         </button>
 
       </div>
-      <ReservaModal
-        isOpen={showReserva}
-        onClose={() => setShowReserva(false)}
-        venueId={venue.id}
-        venueName={venue.name}
-        birthdayPromoText={venue.birthday_promo_text}
-      />
+<ReservaModal
+  isOpen={showReserva}
+  onClose={() => setShowReserva(false)}
+  venueId={venue.id}
+  venueName={venue.name}
+  birthdayPromoText={venue.birthday_promo_text}
+  reservationTimeOpen={venue.reservation_time_open}
+  reservationTimeClose={venue.reservation_time_close}
+/>
     </div>
   );
 }
