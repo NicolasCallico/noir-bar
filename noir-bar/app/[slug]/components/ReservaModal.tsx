@@ -54,10 +54,14 @@ export function ReservaModal({ isOpen, onClose, venueId, venueName, birthdayProm
   }
 
   async function handleSubmit() {
-    if (!form.name || !form.phone || !form.date) {
-      alert("Completá nombre, teléfono y fecha.");
-      return;
-    }
+if (!form.name || !form.phone || !form.date) {
+  alert("Completá nombre, teléfono y fecha.");
+  return;
+}
+if (form.people === 20) {
+  alert("Indicá la cantidad exacta de personas.");
+  return;
+}
 
     setLoading(true);
 
