@@ -12,9 +12,11 @@ interface Props {
   venueId: string;
   venueName: string;
   birthdayPromoText?: string;
+  reservationTimeOpen?: string;
+  reservationTimeClose?: string;
 }
 
-export function ReservaModal({ isOpen, onClose, venueId, venueName, birthdayPromoText }: Props) {
+export function ReservaModal({ isOpen, onClose, venueId, venueName, birthdayPromoText, reservationTimeOpen = "20:00", reservationTimeClose = "22:30" }: Props) {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
@@ -28,18 +30,21 @@ export function ReservaModal({ isOpen, onClose, venueId, venueName, birthdayProm
     notes: "",
   });
 
-  const times = [
-    "19:00",
-    "19:30",
-    "20:00",
-    "20:30",
-    "21:00",
-    "21:30",
-    "22:00",
-    "22:30",
-    "23:00",
-    "23:30",
-  ];
+function generateTimes(open: string, close: string) {
+    const times: string[] = [];
+    const [openH, openM] = open.split(":").map(Number);
+    const [closeH, closeM] = close.split(":").map(Number);
+    let h = openH;
+    let m = openM;
+    while (h < closeH || (h === closeH && m <= closeM)) {
+      times.push(`${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`);
+      m += 30;
+      if (m >= 60) { m -= 60; h++; }
+    }
+    return times;
+  }
+
+  const times = generateTimes(reservationTimeOpen, reservationTimeClose);
 
   function handleChange(field: string, value: string | boolean | number) {
     setForm((prev) => ({ ...prev, [field]: value }));
