@@ -219,7 +219,7 @@ let updateResult = await supabase
   }
 
   return (
-    <div className="px-5 pt-5 max-w-2xl">
+    <div className="px-5 pt-5 pb-32 max-w-2xl">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-6">
         <div>
           <h2 className="font-serif text-2xl">Datos del Local</h2>
