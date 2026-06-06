@@ -355,6 +355,27 @@ let updateResult = await supabase
   </div>
   <p className="text-xs text-[#888] mt-2">Los clientes solo podrán elegir horarios dentro de este rango.</p>
 </div>
+        {/* Tema del menú */}
+        <div>
+          <label className="text-[10px] uppercase tracking-wider text-[#888] mb-2 block">Tema del menú</label>
+          <div className="grid grid-cols-2 gap-3">
+            <button
+              type="button"
+              onClick={() => setSettings({ ...settings, theme: "dark" })}
+              className={`py-3 rounded-lg border text-sm font-medium transition-colors ${settings.theme !== "light" ? "bg-[#0D0D0D] border-[#C8A96B] text-[#C8A96B]" : "bg-[#111] border-[#2A2A2A] text-[#888]"}`}
+            >
+              🌙 Modo oscuro
+            </button>
+            <button
+              type="button"
+              onClick={() => setSettings({ ...settings, theme: "light" })}
+              className={`py-3 rounded-lg border text-sm font-medium transition-colors ${settings.theme === "light" ? "bg-[#FAF8F3] border-[#8A6535] text-[#8A6535]" : "bg-[#111] border-[#2A2A2A] text-[#888]"}`}
+            >
+              ☀️ Modo claro
+            </button>
+          </div>
+          <p className="text-xs text-[#888] mt-2">Define el estilo visual del menú público.</p>
+        </div>
         {/* Mostrar productos no disponibles */}
         <div className="flex items-center gap-3">
           <button
