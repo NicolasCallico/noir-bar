@@ -59,12 +59,13 @@ export default async function MenuPage({ params }: Props) {
         {promotions && promotions.length > 0 && (
           <PromoBar promotions={promotions} />
         )}
-        <CategoryFilter categories={categories || []} />
+        <CategoryFilter categories={categories || []} isLight={isLight} />
       </div>
       <ProductList
         products={products || []}
         categories={categories || []}
         showUnavailable={venue.show_unavailable}
+        isLight={isLight}
       />
       <WhatsAppFAB phone={venue.whatsapp} instagram={venue.instagram} />
     </main>
