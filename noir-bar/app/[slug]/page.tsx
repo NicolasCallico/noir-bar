@@ -67,7 +67,7 @@ export default async function MenuPage({ params }: Props) {
         showUnavailable={venue.show_unavailable}
         isLight={isLight}
       />
-      <WhatsAppFAB phone={venue.whatsapp} instagram={venue.instagram} />
+      <WhatsAppFAB phone={venue.whatsapp} instagram={venue.instagram} isLight={isLight} />
     </main>
   );
 }
