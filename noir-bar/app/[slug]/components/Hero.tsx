@@ -9,7 +9,7 @@ export function Hero({ venue }: Props) {
   const [showReserva, setShowReserva] = useState(false);
 
   return (
-    <div className="w-full border-b border-[#1a1a1a] bg-[#0D0D0D] px-4 py-3.5">
+    <div style={{ borderBottom: `1px solid ${venue.theme === "light" ? "#E0D9CC" : "#1a1a1a"}`, backgroundColor: venue.theme === "light" ? "#FAF8F3" : "#0D0D0D" }} className="w-full px-4 py-3.5">
       <div className="mx-auto flex items-center gap-3 max-w-3xl">
 
         {venue.logo_url && (
@@ -37,10 +37,10 @@ export function Hero({ venue }: Props) {
         )}
 
         <div className="flex-1 min-w-0">
-          <h1 className="font-serif text-[20px] sm:text-2xl font-light tracking-wide text-[#F5F5F5] leading-tight truncate">
+          <h1 className={`font-serif text-[20px] sm:text-2xl font-light tracking-wide leading-tight truncate ${venue.theme === "light" ? "text-[#1C1814]" : "text-[#F5F5F5]"}`}>
             {venue.name}
           </h1>
-          <p className="text-[11px] text-[#666] mt-0.5 leading-snug line-clamp-2">
+          <p className={`text-[11px] mt-0.5 leading-snug line-clamp-2 ${venue.theme === "light" ? "text-[#9E917E]" : "text-[#666]"}`}>
             {venue.tagline}
           </p>
           <div className="flex items-center gap-1.5 mt-1">
