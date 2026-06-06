@@ -21,11 +21,11 @@ export function PromoBar({ promotions, isLight }: Props) {
         <div style={{ backgroundColor: isLight ? "#EDE8DF" : "#1a1400", border: `1px solid ${isLight ? "#D5CCBC" : "rgba(200,169,107,0.2)"}` }} className="flex items-center justify-center gap-2 rounded-full px-4 py-2">
           <span className="text-sm">🥂</span>
           <div className="flex items-center gap-1.5 flex-wrap justify-center">
-            <span className="text-gold text-[11px] font-semibold uppercase tracking-widest">{promo.name}</span>
-            <span className="text-gold/40 text-[10px]">—</span>
+            <span style={{ color: isLight ? "#8A6535" : undefined }} className="text-gold text-[11px] font-semibold uppercase tracking-widest">{promo.name}</span>
+            <span style={{ color: isLight ? "#9E917E" : undefined }} className="text-gold/40 text-[10px]">—</span>
             <span className={`text-[11px] tracking-wide ${isLight ? "text-[#1C1814]" : "text-[#F5F5F5]"}`}>{promo.description}</span>
-            <span className="text-gold/40 text-[10px]">·</span>
-            <span className="text-gold/60 text-[10px] tracking-wide">{promo.time_range}</span>
+            <span style={{ color: isLight ? "#9E917E" : undefined }} className="text-gold/40 text-[10px]">·</span>
+            <span style={{ color: isLight ? "#8A6535" : undefined }} className="text-gold/60 text-[10px] tracking-wide">{promo.time_range}</span>
           </div>
           <span className="text-sm">🥂</span>
         </div>
