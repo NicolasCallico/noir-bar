@@ -57,7 +57,7 @@ export default async function MenuPage({ params }: Props) {
       <Hero venue={venue} />
       <div style={{ position: "sticky", top: 0, zIndex: 30, backgroundColor: bg }}>
         {promotions && promotions.length > 0 && (
-          <PromoBar promotions={promotions} />
+          <PromoBar promotions={promotions} isLight={isLight} />
         )}
         <CategoryFilter categories={categories || []} isLight={isLight} />
       </div>
