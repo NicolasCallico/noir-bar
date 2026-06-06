@@ -4,6 +4,7 @@ import { formatPrice } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 interface Props {
   product: Product;
+  isLight?: boolean;
 }
 function isExternalUrl(url?: string) {
   return !!url && (url.startsWith("http://") || url.startsWith("https://"));
@@ -21,11 +22,11 @@ const badgeConfig: Record<string, { label: string; class: string }> = {
   new: { label: "NOVEDAD", class: "text-[#50c878] bg-[rgba(80,200,120,0.1)] border border-[rgba(80,200,120,0.2)]" },
   gold: { label: "RECOMENDADO", class: "text-[#C8A96B] bg-[rgba(200,169,107,0.1)] border border-[rgba(200,169,107,0.2)]" },
 };
-export function ProductCard({ product }: Props) {
+export function ProductCard({ product, isLight }: Props) {
   const imageUrl = getProductImageUrl(product.image_url);
   const badge = product.badge ? badgeConfig[product.badge] : null;
   return (
-    <div className={cn("flex items-center gap-3 py-3 border-b border-[#141414]", !product.available && "opacity-40")}>
+    <div className={cn("flex items-center gap-3 py-3", !product.available && "opacity-40")} style={{ borderBottom: `1px solid ${isLight ? "#E0D9CC" : "#141414"}` }}>
       {imageUrl ? (
         <div className="w-14 h-14 flex-shrink-0 rounded-xl overflow-hidden bg-[#141414]">
           <img src={imageUrl} alt={product.name} loading="lazy" className="w-full h-full object-cover" />
@@ -43,7 +44,7 @@ export function ProductCard({ product }: Props) {
           </span>
         )}
         <div className="flex items-start justify-between gap-2">
-          <h3 className="font-serif text-[17px] font-medium text-[#F5F5F5] leading-tight">{product.name}</h3>
+          <h3 className={`font-serif text-[17px] font-medium leading-tight ${isLight ? "text-[#1C1814]" : "text-[#F5F5F5]"}`}>{product.name}</h3>
           <div className="flex-shrink-0 text-right">
             <p className="text-[14px] font-medium text-[#C8A96B]">{formatPrice(product.price)}</p>
             {product.original_price && (
@@ -51,7 +52,7 @@ export function ProductCard({ product }: Props) {
             )}
           </div>
         </div>
-        <p className="text-[11px] text-[#666] mt-0.5 leading-snug line-clamp-1">{product.description}</p>
+        <p className={`text-[11px] mt-0.5 leading-snug line-clamp-1 ${isLight ? "text-[#9E917E]" : "text-[#666]"}`}>{product.description}</p>
       </div>
     </div>
   );
