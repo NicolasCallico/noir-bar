@@ -48,9 +48,9 @@ export function Hero({ venue }: Props) {
           >
             Reservar<br />mesa
           </button>
-          {venue.whatsapp && (
+            {venue.whatsapp && (
             
-              href={`https://wa.me/${venue.whatsapp.replace(/\D/g, "")}`}
+           <a   href={`https://wa.me/${venue.whatsapp.replace(/\D/g, "")}`}
               target="_blank"
               rel="noopener noreferrer"
               style={{ width: 32, height: 32, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", background: "#25D366", flexShrink: 0 }}
@@ -60,7 +60,7 @@ export function Hero({ venue }: Props) {
           )}
           {venue.instagram && (
             
-              href={`https://instagram.com/${venue.instagram}`}
+             <a href={`https://instagram.com/${venue.instagram}`}
               target="_blank"
               rel="noopener noreferrer"
               style={{ width: 32, height: 32, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", background: "radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%)", flexShrink: 0 }}
