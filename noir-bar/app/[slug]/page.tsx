@@ -49,10 +49,13 @@ export default async function MenuPage({ params }: Props) {
     .eq("venue_id", venue.id)
     .eq("active", true);
   const promotions = (promotionsResult.data as unknown) as Promotion[] | null;
+  const isLight = venue.theme === "light";
+  const bg = isLight ? "#FAF8F3" : "#0D0D0D";
+
   return (
-    <main className="bg-[#0D0D0D]">
+    <main style={{ backgroundColor: bg, minHeight: "100vh" }}>
       <Hero venue={venue} />
-      <div style={{ position: "sticky", top: 0, zIndex: 30, backgroundColor: "#0D0D0D" }}>
+      <div style={{ position: "sticky", top: 0, zIndex: 30, backgroundColor: bg }}>
         {promotions && promotions.length > 0 && (
           <PromoBar promotions={promotions} />
         )}
