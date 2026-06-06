@@ -40,7 +40,7 @@ className={`flex-shrink-0 text-xs px-4 py-1.5 rounded-full border transition-all
           className={`flex-shrink-0 text-xs px-4 py-1.5 rounded-full border transition-all duration-200 whitespace-nowrap ${
             active === cat.id
               ? "bg-[#C8A96B] text-[#0D0D0D] border-[#C8A96B] font-medium"
-              : "border-[#2A2A2A] text-[#888] hover:text-[#F5F5F5]"
+      : isLight ? "border-[#D5CCBC] text-[#8A7E6E] hover:text-[#1C1814]" : "border-[#2A2A2A] text-[#888] hover:text-[#F5F5F5]"
           }`}
         >
           {cat.icon} {cat.name}
