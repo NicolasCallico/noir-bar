@@ -8,9 +8,9 @@ interface Props {
   products: Product[];
   categories: Category[];
   showUnavailable: boolean;
+  isLight?: boolean;
 }
-
-export function ProductList({ products, categories, showUnavailable }: Props) {
+export function ProductList({ products, categories, showUnavailable, isLight }: Props) {
   const [activeCategoryId, setActiveCategoryId] = useState<string | null>(null);
   const [openSections, setOpenSections] = useState<Set<string>>(new Set());
 
@@ -59,8 +59,8 @@ export function ProductList({ products, categories, showUnavailable }: Props) {
     return (
       <div className="flex min-h-[200px] flex-col items-center justify-center p-8 text-center">
         <span className="text-4xl mb-3">😔</span>
-        <p className="text-sm font-medium text-white">No hay productos disponibles.</p>
-        <p className="mt-1 text-xs text-[#555]">Intentá cambiar de categoría.</p>
+        <p className={`text-sm font-medium ${isLight ? "text-[#1C1814]" : "text-white"}`}>No hay productos disponibles.</p>
+        <p className={`mt-1 text-xs ${isLight ? "text-[#9E917E]" : "text-[#555]"}`}>Intentá cambiar de categoría.</p>
       </div>
     );
   }
@@ -79,7 +79,7 @@ export function ProductList({ products, categories, showUnavailable }: Props) {
               onClick={() => toggleSection(group.category.id)}
               className="w-full flex items-center gap-3 py-3.5 px-1 mb-0 cursor-pointer bg-transparent border-none text-left group"
             >
-              <span className="font-serif text-2xl text-[#F5F5F5]">
+              <span className={`font-serif text-2xl ${isLight ? "text-[#1C1814]" : "text-[#F5F5F5]"}`}>
                 {group.category.icon} {group.category.name}
               </span>
               <div className="flex-1 h-[1px] bg-gradient-to-r from-[rgba(200,169,107,0.3)] to-transparent" />
@@ -95,7 +95,7 @@ export function ProductList({ products, categories, showUnavailable }: Props) {
             </motion.button>
 
             {/* Línea separadora */}
-            <div className="h-[1px] bg-[#1a1a1a] mb-1" />
+            <div className={`h-[1px] mb-1 ${isLight ? "bg-[#E0D9CC]" : "bg-[#1a1a1a]"}`} />
 
             {/* Productos con animación */}
             <AnimatePresence initial={false}>
@@ -115,7 +115,7 @@ export function ProductList({ products, categories, showUnavailable }: Props) {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.2, delay: idx * 0.03 }}
                     >
-                      <ProductCard product={product} />
+                      <ProductCard product={product} isLight={isLight}/>
                     </motion.div>
                   ))}
                 </motion.div>
