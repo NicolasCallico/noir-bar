@@ -44,8 +44,8 @@ export function Hero({ venue }: Props) {
             {venue.tagline}
           </p>
           <div className="flex items-center gap-1.5 mt-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#C8A96B] flex-shrink-0" />
-            <span className="text-[9px] text-[#C8A96B] tracking-widest uppercase opacity-70 truncate">
+            <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${venue.theme === "light" ? "bg-[#8A6535]" : "bg-[#C8A96B]"}`} />
+            <span className={`text-[9px] tracking-widest uppercase opacity-70 truncate ${venue.theme === "light" ? "text-[#8A6535]" : "text-[#C8A96B]"}`}>
               {venue.address}
             </span>
           </div>
