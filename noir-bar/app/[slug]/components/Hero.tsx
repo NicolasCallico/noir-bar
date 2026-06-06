@@ -40,12 +40,12 @@ export function Hero({ venue }: Props) {
           <h1 className={`font-serif text-[20px] sm:text-2xl font-light tracking-wide leading-tight truncate ${venue.theme === "light" ? "text-[#1C1814]" : "text-[#F5F5F5]"}`}>
             {venue.name}
           </h1>
-          <p className={`text-[11px] mt-0.5 leading-snug line-clamp-2 ${venue.theme === "light" ? "text-[#9E917E]" : "text-[#666]"}`}>
+          <p className={`text-[11px] mt-0.5 leading-snug line-clamp-2 ${venue.theme === "light" ? "text-[#6B5E4E]" : "text-[#666]"}`}>
             {venue.tagline}
           </p>
           <div className="flex items-center gap-1.5 mt-1">
             <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${venue.theme === "light" ? "bg-[#8A6535]" : "bg-[#C8A96B]"}`} />
-            <span className={`text-[9px] tracking-widest uppercase opacity-70 truncate ${venue.theme === "light" ? "text-[#8A6535]" : "text-[#C8A96B]"}`}>
+            <span className={`text-[9px] tracking-widest uppercase truncate ${venue.theme === "light" ? "text-[#6B5038]" : "text-[#C8A96B] opacity-70"}`}>
               {venue.address}
             </span>
           </div>
