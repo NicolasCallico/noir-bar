@@ -7,9 +7,9 @@ interface Props {
   phone: string;
   instagram?: string;
   message?: string;
+  isLight?: boolean;
 }
-
-export function WhatsAppFAB({ phone, instagram, message = "Hola, tengo una consulta." }: Props) {
+export function WhatsAppFAB({ phone, instagram, message = "Hola, tengo una consulta.", isLight }: Props) {
   const [open, setOpen] = useState(false);
   const whatsappUrl = `https://wa.me/${phone.replace(/\D/g, "")}?text=${encodeURIComponent(message)}`;
   const instagramUrl = `https://instagram.com/${instagram}`;
@@ -92,7 +92,7 @@ export function WhatsAppFAB({ phone, instagram, message = "Hola, tengo una consu
           alignItems: "center",
           justifyContent: "center",
           gap: 8,
-          background: open ? "#C8A96B" : "rgba(200,169,107,0.45)",
+          background: open ? "#C8A96B" : isLight ? "#8A6535" : "rgba(200,169,107,0.45)",
           border: "none",
           boxShadow: open ? "0 4px 20px rgba(200,169,107,0.35)" : "none",
           cursor: "pointer",
