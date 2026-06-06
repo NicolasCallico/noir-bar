@@ -84,7 +84,8 @@ let updateResult = await supabase
     show_unavailable: settings.show_unavailable,
     birthday_promo_text: settings.birthday_promo_text || "",
     reservation_time_open: settings.reservation_time_open || "20:00",
-    reservation_time_close: settings.reservation_time_close || "22:30",
+reservation_time_close: settings.reservation_time_close || "22:30",
+    theme: settings.theme || "dark",
   })
   .eq("id", settings.id);
 
