@@ -4,7 +4,6 @@ import { Hero } from "./components/Hero";
 import { PromoBar } from "./components/PromoBar";
 import { CategoryFilter } from "./components/CategoryFilter";
 import { ProductList } from "./components/ProductList";
-import { WhatsAppFAB } from "./components/WhatsAppFAB";
 import { notFound } from "next/navigation";
 export const revalidate = 0;
 interface Props {
