@@ -15,12 +15,12 @@ export function Hero({ venue }: Props) {
         {venue.logo_url && (
           <div
             className="flex-shrink-0 flex items-center justify-center rounded-2xl overflow-hidden"
-            style={{ width: 72, height: 72, minWidth: 72, boxShadow: "0 0 0 1px rgba(200,169,107,0.15)" }}
+            style={{ width: 72, height: 72, minWidth: 72, boxShadow: "0 0 0 1px rgba(200,169,107,0.15)", backgroundColor: venue.theme === "light" ? "#1C1814" : "transparent" }}
           >
             <img
               src={venue.logo_url}
               alt={venue.name}
-              style={{ width: "100%", height: "100%", objectFit: "contain", padding: 6, mixBlendMode: "screen" }}
+              style={{ width: "100%", height: "100%", objectFit: "contain", padding: 6, mixBlendMode: venue.theme === "light" ? "normal" : "screen" }}
             />
           </div>
         )}
