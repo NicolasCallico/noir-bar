@@ -1,5 +1,423 @@
-import { redirect } from "next/navigation";
+import Link from "next/link";
 
-export default function Home() {
-  redirect("/noir-bar");
+export const metadata = {
+  title: "NOX Menu — Menú digital para bares y restaurantes",
+  description:
+    "Sistema de menú digital con QR, reservas, stock en tiempo real y panel admin. Para bares, cafés y restaurantes de Argentina.",
+};
+
+export default function LandingPage() {
+  const whatsappUrl =
+    "https://wa.me/541130863536?text=Hola%2C%20quiero%20m%C3%A1s%20info%20sobre%20NOX%20Menu";
+
+  return (
+    <main className="landing">
+      {/* ── NAV ── */}
+      <nav className="nav">
+        <span className="nav-logo">
+          NOX <span className="nav-logo-light">menu</span>
+        </span>
+        <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="nav-cta">
+          Contactar →
+        </a>
+      </nav>
+
+      {/* ── HERO DÍA / NOCHE ── */}
+      <section className="hero">
+        <div className="hero-night">
+          <span className="hero-tag tag-night">
+            <span className="tag-dot dot-gold" />
+            Para bares y pubs
+          </span>
+          <h1 className="hero-h1 h1-night">
+            Tu carta,<br />
+            en modo<br />
+            noche.
+          </h1>
+          <p className="hero-sub sub-night">
+            Menú digital premium para locales nocturnos. Reservas, stock y
+            promociones en tiempo real.
+          </p>
+          
+            href="https://noir-bar.vercel.app/noir-bar"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hero-btn btn-night"
+          >
+            Ver demo nocturno →
+          </a>
+          <span className="hero-hint hint-night">noir-bar.vercel.app</span>
+        </div>
+
+        <div className="hero-divider" />
+
+        <div className="hero-day">
+          <span className="hero-tag tag-day">
+            <span className="tag-dot dot-brown" />
+            Para cafés y restaurantes
+          </span>
+          <h1 className="hero-h1 h1-day">
+            Tu carta,<br />
+            en modo<br />
+            día.
+          </h1>
+          <p className="hero-sub sub-day">
+            El mismo sistema, estética clara y cálida. Perfecto para
+            cafeterías y restaurantes diurnos.
+          </p>
+          <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="hero-btn btn-day">
+            Pedir demo →
+          </a>
+          <span className="hero-hint hint-day">consultá por tu local</span>
+        </div>
+      </section>
+
+      {/* ── PRODUCTO ── */}
+      <section className="product-section">
+        <div className="product-text">
+          <h2 className="product-h2">
+            Todo desde el celular.<br />Sin saber tecnología.
+          </h2>
+          <p className="product-p">
+            El dueño del local maneja todo desde un panel simple. Cambia
+            precios, activa promociones y confirma reservas en segundos.
+          </p>
+          <ul className="feature-list">
+            {[
+              "Reservas con notificación por mail",
+              "Control de stock en tiempo real",
+              "Modo claro y oscuro incluidos",
+              "Instagram y WhatsApp integrados",
+              "Cargá tu logo, descripción y ubicación",
+              "Categorías y productos sin límite",
+            ].map((f) => (
+              <li key={f} className="feature-item">
+                <span className="feat-dot" />
+                {f}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Phone mockup */}
+        <div className="phone-mockup" aria-hidden="true">
+          <div className="pm-header">
+            <div className="pm-logo">NOX</div>
+            <div className="pm-info">
+              <div className="pm-name">Noir Bar</div>
+              <div className="pm-sub">Cocktails &amp; Gastronomía</div>
+            </div>
+            <div className="pm-reservar">Reservar</div>
+          </div>
+          <div className="pm-promo">2X1 EN GIN TONIC · TODA LA NOCHE</div>
+          <div className="pm-tabs">
+            <span className="pm-tab pm-tab-active">Todos</span>
+            <span className="pm-tab">Cocktails</span>
+            <span className="pm-tab">Cerv…</span>
+          </div>
+          <div className="pm-cat">🍺 Cervezas</div>
+          {[
+            ["Imperial Lager", "$10.000"],
+            ["Imperial IPA", "$10.000"],
+            ["Imperial Stout", "$10.000"],
+          ].map(([name, price]) => (
+            <div key={name} className="pm-item">
+              <span className="pm-item-name">{name}</span>
+              <span className="pm-item-price">{price}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── FEATURES ── */}
+      <section className="features-section">
+        <h2 className="features-h2">Todo lo que tu local necesita</h2>
+        <p className="features-sub">
+          Un solo sistema. Sin contratos. Sin complicaciones.
+        </p>
+        <div className="feat-grid">
+          {[
+            {
+              icon: "📅",
+              title: "Sistema de reservas",
+              desc: "Los clientes reservan desde el menú. Te llega un mail al instante.",
+            },
+            {
+              icon: "📦",
+              title: "Control de stock",
+              desc: "Marcá productos sin disponibilidad. Se actualiza en vivo.",
+            },
+            {
+              icon: "📣",
+              title: "Promociones",
+              desc: "Happy hour, 2x1, descuentos. Activá y desactivá cuando quieras.",
+            },
+            {
+              icon: "🌗",
+              title: "Modo claro y oscuro",
+              desc: "Elegí la estética que va con tu local. Cambiable desde el admin.",
+            },
+            {
+              icon: "📱",
+              title: "Redes integradas",
+              desc: "WhatsApp e Instagram conectados directo en el menú.",
+            },
+            {
+              icon: "☰",
+              title: "Categorías flexibles",
+              desc: "Creá, eliminá y reordenás categorías y productos como quieras.",
+            },
+          ].map(({ icon, title, desc }) => (
+            <div key={title} className="feat-card">
+              <div className="feat-icon-wrap">{icon}</div>
+              <div className="feat-card-title">{title}</div>
+              <div className="feat-card-desc">{desc}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── PRICING ── */}
+      <section className="pricing-section">
+        <h2 className="pricing-h2">Un solo plan. Todo incluido.</h2>
+        <p className="pricing-sub">
+          Sin sorpresas. Sin planes chicos con funciones recortadas.
+        </p>
+        <div className="price-card">
+          <div className="price-badge">PLAN ÚNICO</div>
+          <div className="price-amount">$35.000</div>
+          <div className="price-period">pesos argentinos / mes</div>
+          <div className="price-setup">+ $25.000 setup inicial único</div>
+          <ul className="price-features">
+            {[
+              "Menú digital con QR",
+              "Sistema de reservas completo",
+              "Control de stock en tiempo real",
+              "Panel admin sin conocimientos técnicos",
+              "Modo claro y oscuro",
+              "Soporte por WhatsApp",
+            ].map((f) => (
+              <li key={f} className="price-feat-item">
+                <span className="price-check">✓</span>
+                {f}
+              </li>
+            ))}
+          </ul>
+          
+            href={whatsappUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="price-cta"
+          >
+            Quiero mi menú digital →
+          </a>
+        </div>
+        <p className="price-note">Sin permanencia. Cancelás cuando querés.</p>
+      </section>
+
+      {/* ── FOOTER ── */}
+      <footer className="footer">
+        <span className="footer-logo">
+          NOX <span className="footer-logo-dim">menu</span>
+        </span>
+        <span className="footer-text">Buenos Aires, Argentina</span>
+      </footer>
+
+      <style>{`
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        .landing { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; width: 100%; }
+        a { text-decoration: none; }
+
+        .nav {
+          display: flex; align-items: center; justify-content: space-between;
+          padding: 20px 48px; background: #0a0a0a;
+          border-bottom: 0.5px solid #1e1e1e;
+          position: sticky; top: 0; z-index: 50;
+        }
+        .nav-logo { font-size: 20px; font-weight: 800; letter-spacing: 0.14em; color: #d4a847; }
+        .nav-logo-light { color: #444; font-weight: 400; }
+        .nav-cta {
+          background: #d4a847; color: #0a0a0a;
+          font-size: 13px; font-weight: 700;
+          padding: 10px 22px; border-radius: 24px;
+          letter-spacing: 0.04em; transition: opacity 0.15s;
+        }
+        .nav-cta:hover { opacity: 0.85; }
+
+        .hero { display: grid; grid-template-columns: 1fr 0.5px 1fr; min-height: 520px; }
+        .hero-night {
+          background: #0a0a0a; padding: 72px 56px;
+          display: flex; flex-direction: column; justify-content: center;
+        }
+        .hero-divider { background: #1e1e1e; }
+        .hero-day {
+          background: #f5f0e8; padding: 72px 56px;
+          display: flex; flex-direction: column; justify-content: center;
+        }
+        .hero-tag {
+          font-size: 10px; font-weight: 700; letter-spacing: 0.14em;
+          text-transform: uppercase; margin-bottom: 20px;
+          display: inline-flex; align-items: center; gap: 8px;
+        }
+        .tag-night { color: #d4a847; }
+        .tag-day { color: #7a5c1e; }
+        .tag-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+        .dot-gold { background: #d4a847; }
+        .dot-brown { background: #c49a30; }
+
+        .hero-h1 {
+          font-size: 52px; font-weight: 900;
+          line-height: 1.05; letter-spacing: -0.03em; margin-bottom: 18px;
+        }
+        .h1-night { color: #ffffff; }
+        .h1-day { color: #1a1208; }
+
+        .hero-sub { font-size: 14px; line-height: 1.65; margin-bottom: 32px; max-width: 280px; }
+        .sub-night { color: #777; }
+        .sub-day { color: #6b5b3e; }
+
+        .hero-btn {
+          display: inline-block; font-size: 13px; font-weight: 700;
+          padding: 13px 26px; border-radius: 28px;
+          letter-spacing: 0.04em; transition: opacity 0.15s; width: fit-content;
+        }
+        .hero-btn:hover { opacity: 0.85; }
+        .btn-night { background: #d4a847; color: #0a0a0a; }
+        .btn-day { background: #1a1208; color: #f5f0e8; }
+
+        .hero-hint { font-size: 11px; margin-top: 12px; }
+        .hint-night { color: #333; }
+        .hint-day { color: #bbb0a0; }
+
+        .product-section {
+          background: #111; padding: 80px 56px;
+          display: flex; align-items: center; gap: 64px;
+        }
+        .product-text { flex: 1; }
+        .product-h2 {
+          font-size: 32px; font-weight: 800; color: #fff;
+          line-height: 1.2; letter-spacing: -0.02em; margin-bottom: 16px;
+        }
+        .product-p { font-size: 14px; color: #666; line-height: 1.7; margin-bottom: 28px; }
+        .feature-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+        .feature-item { font-size: 13px; color: #999; display: flex; align-items: center; gap: 10px; }
+        .feat-dot { width: 6px; height: 6px; border-radius: 50%; background: #d4a847; flex-shrink: 0; }
+
+        .phone-mockup {
+          width: 200px; flex-shrink: 0;
+          background: #1a1a1a; border-radius: 24px;
+          border: 0.5px solid #2a2a2a; padding: 16px 14px;
+        }
+        .pm-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+        .pm-logo {
+          width: 34px; height: 34px; background: #252525; border-radius: 8px;
+          display: flex; align-items: center; justify-content: center;
+          font-size: 9px; color: #d4a847; font-weight: 800; letter-spacing: 0.05em;
+        }
+        .pm-info { flex: 1; }
+        .pm-name { font-size: 11px; font-weight: 600; color: #f0f0f0; }
+        .pm-sub { font-size: 9px; color: #555; margin-top: 1px; }
+        .pm-reservar {
+          background: #d4a847; border-radius: 12px;
+          padding: 4px 8px; font-size: 8px; color: #111; font-weight: 700;
+        }
+        .pm-promo {
+          background: #222; border-radius: 8px; padding: 7px 10px;
+          margin-bottom: 10px; font-size: 8.5px; color: #d4a847;
+          text-align: center; letter-spacing: 0.04em;
+        }
+        .pm-tabs { display: flex; gap: 5px; margin-bottom: 10px; }
+        .pm-tab {
+          font-size: 8.5px; padding: 4px 8px; border-radius: 12px;
+          color: #666; background: #222; border: 0.5px solid #333;
+        }
+        .pm-tab-active { background: #d4a847 !important; color: #111 !important; font-weight: 700; border-color: #d4a847 !important; }
+        .pm-cat { font-size: 10px; font-weight: 600; color: #d4a847; padding: 6px 2px 4px; border-bottom: 0.5px solid #252525; margin-bottom: 4px; }
+        .pm-item { display: flex; justify-content: space-between; padding: 6px 2px; border-bottom: 0.5px solid #1e1e1e; }
+        .pm-item-name { font-size: 9px; color: #ccc; }
+        .pm-item-price { font-size: 9px; color: #d4a847; font-weight: 600; }
+
+        .features-section { background: #f5f0e8; padding: 80px 56px; }
+        .features-h2 {
+          font-size: 28px; font-weight: 800; color: #1a1208;
+          text-align: center; margin-bottom: 8px; letter-spacing: -0.02em;
+        }
+        .features-sub { font-size: 14px; color: #9a8060; text-align: center; margin-bottom: 40px; }
+        .feat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        .feat-card {
+          background: #fff; border-radius: 14px; padding: 22px 20px;
+          border: 0.5px solid #e8dfc8;
+        }
+        .feat-icon-wrap { font-size: 22px; margin-bottom: 12px; }
+        .feat-card-title { font-size: 13px; font-weight: 700; color: #1a1208; margin-bottom: 6px; }
+        .feat-card-desc { font-size: 12px; color: #9a8060; line-height: 1.55; }
+
+        .pricing-section {
+          background: #0a0a0a; padding: 80px 56px; text-align: center;
+        }
+        .pricing-h2 {
+          font-size: 28px; font-weight: 800; color: #fff;
+          margin-bottom: 8px; letter-spacing: -0.02em;
+        }
+        .pricing-sub { font-size: 14px; color: #555; margin-bottom: 40px; }
+        .price-card {
+          background: #111; border: 1px solid #d4a847;
+          border-radius: 20px; padding: 40px 36px;
+          max-width: 380px; margin: 0 auto 28px;
+        }
+        .price-badge {
+          background: #d4a847; color: #0a0a0a;
+          font-size: 10px; font-weight: 800;
+          padding: 5px 14px; border-radius: 20px;
+          display: inline-block; margin-bottom: 20px; letter-spacing: 0.1em;
+        }
+        .price-amount {
+          font-size: 52px; font-weight: 900; color: #fff;
+          letter-spacing: -0.03em; line-height: 1;
+        }
+        .price-period { font-size: 13px; color: #555; margin: 6px 0 4px; }
+        .price-setup { font-size: 12px; color: #444; margin-bottom: 28px; }
+        .price-features { list-style: none; text-align: left; display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+        .price-feat-item { font-size: 13px; color: #aaa; display: flex; align-items: center; gap: 10px; }
+        .price-check { color: #4caf7d; font-size: 13px; font-weight: 700; flex-shrink: 0; }
+        .price-cta {
+          display: block; width: 100%;
+          background: #d4a847; color: #0a0a0a;
+          font-size: 14px; font-weight: 800;
+          padding: 15px; border-radius: 28px;
+          letter-spacing: 0.04em; transition: opacity 0.15s; text-align: center;
+        }
+        .price-cta:hover { opacity: 0.85; }
+        .price-note { font-size: 12px; color: #333; }
+
+        .footer {
+          background: #050505; padding: 28px 56px;
+          display: flex; align-items: center; justify-content: space-between;
+          border-top: 0.5px solid #1a1a1a;
+        }
+        .footer-logo { font-size: 15px; font-weight: 800; letter-spacing: 0.14em; color: #d4a847; }
+        .footer-logo-dim { color: #333; font-weight: 400; }
+        .footer-text { font-size: 12px; color: #333; }
+
+        @media (max-width: 768px) {
+          .nav { padding: 16px 24px; }
+          .hero { grid-template-columns: 1fr; grid-template-rows: auto 0.5px auto; }
+          .hero-divider { height: 0.5px; width: 100%; }
+          .hero-night, .hero-day { padding: 56px 28px; }
+          .hero-h1 { font-size: 40px; }
+          .product-section { flex-direction: column; padding: 56px 28px; gap: 40px; }
+          .phone-mockup { width: 100%; max-width: 280px; margin: 0 auto; }
+          .features-section { padding: 56px 24px; }
+          .feat-grid { grid-template-columns: 1fr 1fr; }
+          .pricing-section { padding: 56px 24px; }
+          .footer { padding: 24px 24px; }
+          .product-h2 { font-size: 24px; }
+        }
+
+        @media (max-width: 480px) {
+          .feat-grid { grid-template-columns: 1fr; }
+        }
+      `}</style>
+    </main>
+  );
 }
