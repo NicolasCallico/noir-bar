@@ -14,9 +14,7 @@ export default function LandingPage() {
     <main className="landing">
       {/* ── NAV ── */}
       <nav className="nav">
-        <span className="nav-logo">
-          NOX <span className="nav-logo-light">menu</span>
-        </span>
+<img src="https://nkpsojhxljlluzfinaoq.supabase.co/storage/v1/object/public/assets/fondoOscuro.png" alt="NOX Menu" className="nav-logo-img" />
         <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="nav-cta">
           Contactar →
         </a>
@@ -397,6 +395,8 @@ export default function LandingPage() {
         .footer-logo { font-size: 15px; font-weight: 800; letter-spacing: 0.14em; color: #d4a847; }
         .footer-logo-dim { color: #333; font-weight: 400; }
         .footer-text { font-size: 12px; color: #333; }
+        .nav-logo-img { height: 36px; width: auto; object-fit: contain; }
+.footer-logo-img { height: 28px; width: auto; object-fit: contain; }
 
         @media (max-width: 768px) {
           .nav { padding: 16px 24px; }
