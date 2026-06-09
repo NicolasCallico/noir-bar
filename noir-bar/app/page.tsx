@@ -285,10 +285,11 @@ export default function LandingPage() {
           flex-shrink: 0; width: 220px;
           display: flex; align-items: center; justify-content: center;
         }
-        .hero-mockup-img {
-          width: 220px; height: auto; border-radius: 16px;
-          box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-        }
+.hero-mockup-img {
+  width: 220px; height: auto; border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  max-width: 100%;
+}
         .hero-tag {
           font-size: 10px; font-weight: 700; letter-spacing: 0.14em;
           text-transform: uppercase; margin-bottom: 20px;
@@ -464,13 +465,13 @@ export default function LandingPage() {
           .nav { padding: 8px 24px; }
           .nav-logo-img { height: 85px; }
 
-            .hero { grid-template-columns: 1fr; grid-template-rows: auto 0.5px auto; }
-            .hero-divider { height: 0.5px; width: 100%; }
-            .hero-night, .hero-day { padding: 48px 28px 40px; flex-direction: row; align-items: center; gap: 16px; }
-            .hero-mockup-img { width: 100px; }.hero-h1 { font-size: 32px; }.hero-mockup-wrap { width: 100%; display: flex; justify-content: center; }
-            .hero-mockup-img { width: 200px; }
-            .hero-h1 { font-size: 40px; }
-            .hero-sub { max-width: 100%; }
+.hero { grid-template-columns: 1fr; grid-template-rows: auto 0.5px auto; overflow: hidden; }
+.hero-divider { height: 0.5px; width: 100%; }
+.hero-night, .hero-day { padding: 48px 28px 40px; flex-direction: row; align-items: center; gap: 16px; }
+.hero-mockup-wrap { display: flex; justify-content: center; }
+.hero-mockup-img { width: 100px; }
+.hero-h1 { font-size: 32px; }
+.hero-sub { max-width: 100%; }
 
           .problem-section { padding: 56px 24px; }
           .problem-grid { grid-template-columns: 1fr; gap: 16px; }
