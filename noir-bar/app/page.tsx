@@ -39,7 +39,7 @@ export default function LandingPage() {
             promociones en tiempo real.
           </p>
           
-            href="https://noir-bar.vercel.app/noir-bar"
+           <a href="https://noir-bar.vercel.app/noir-bar"
             target="_blank"
             rel="noopener noreferrer"
             className="hero-btn btn-night"
@@ -204,7 +204,7 @@ export default function LandingPage() {
             ))}
           </ul>
           
-            href={whatsappUrl}
+           <a href={whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="price-cta"
