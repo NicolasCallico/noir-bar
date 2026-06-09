@@ -471,11 +471,10 @@ export default function LandingPage() {
 .hero-content { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto auto; gap: 0 16px; width: 100%; }
 .hero-tag { grid-column: 1 / 2; }
 .hero-h1 { grid-column: 1 / 2; margin-bottom: 0; }
-.hero-sub { grid-column: 2 / 3; grid-row: 1 / 3; align-self: start; font-size: 12px; margin-bottom: 0; padding-top: 4px; }
+.hero-sub { grid-column: 2 / 3; grid-row: 1 / 3; align-self: end; font-size: 12px; margin-bottom: 0; padding-top: 0; }
 .hero-mockup-wrap { display: flex; justify-content: center; margin-top: 24px; width: 100%; }
 .hero-mockup-img { width: 140px; }
-.hero-btn { margin-top: 24px; align-self: center; }
-.hero-hint { display: none; }
+.hero-btn { margin-top: 24px; align-self: center; display: block; margin-left: auto; margin-right: auto; }.hero-hint { display: none; }
 .hero-h1 { font-size: 32px; }
 
           .problem-section { padding: 56px 24px; }
