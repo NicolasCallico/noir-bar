@@ -227,7 +227,7 @@ export default function LandingPage() {
 
         .nav {
           display: flex; align-items: center; justify-content: space-between;
-          padding: 12px 48px; background: #0a0a0a;
+          padding: 8px 48px; background: #0a0a0a;
           border-bottom: 0.5px solid #1e1e1e;
           position: sticky; top: 0; z-index: 50;
         }
@@ -395,7 +395,7 @@ export default function LandingPage() {
         .footer-logo { font-size: 15px; font-weight: 800; letter-spacing: 0.14em; color: #d4a847; }
         .footer-logo-dim { color: #333; font-weight: 400; }
         .footer-text { font-size: 12px; color: #333; }
-.nav-logo-img { height: 72px; width: auto; object-fit: contain; }
+.nav-logo-img { height: 90px; width: auto; object-fit: contain; }
 .footer-logo-img { height: 28px; width: auto; object-fit: contain; }
 
         @media (max-width: 768px) {
