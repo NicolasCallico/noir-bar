@@ -14,7 +14,7 @@ export default function LandingPage() {
     <main className="landing">
       {/* ── NAV ── */}
       <nav className="nav">
-<img src="https://nkpsojhxljlluzfinaoq.supabase.co/storage/v1/object/public/assets/transparente.png" alt="NOX Menu" className="nav-logo-img" />
+        <img src="https://nkpsojhxljlluzfinaoq.supabase.co/storage/v1/object/public/assets/transparente.png" alt="NOX Menu" className="nav-logo-img" />
         <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="nav-cta">
           Contactar →
         </a>
@@ -36,8 +36,7 @@ export default function LandingPage() {
             Menú digital premium para locales nocturnos. Reservas, stock y
             promociones en tiempo real.
           </p>
-          
-           <a href="https://noir-bar.vercel.app/noir-bar"
+          <a href="https://noir-bar.vercel.app/noir-bar"
             target="_blank"
             rel="noopener noreferrer"
             className="hero-btn btn-night"
@@ -67,6 +66,64 @@ export default function LandingPage() {
             Pedir demo →
           </a>
           <span className="hero-hint hint-day">consultá por tu local</span>
+        </div>
+      </section>
+
+      {/* ── PROBLEMA ── */}
+      <section className="problem-section">
+        <div className="problem-inner">
+          <h2 className="problem-h2">La carta en papel ya no alcanza.</h2>
+          <div className="problem-grid">
+            <div className="problem-item">
+              <span className="problem-icon">📋</span>
+              <p className="problem-text">Se desactualiza. Cambiás un precio y tenés que reimprimir todo.</p>
+            </div>
+            <div className="problem-item">
+              <span className="problem-icon">📞</span>
+              <p className="problem-text">Las reservas llegan por WhatsApp, te perdés algunas, el local se desordena.</p>
+            </div>
+            <div className="problem-item">
+              <span className="problem-icon">❌</span>
+              <p className="problem-text">El cliente pide algo que se acabó. Incomodidad, quejas, mala experiencia.</p>
+            </div>
+          </div>
+          <p className="problem-cta-text">NOX Menu resuelve todo eso desde el día uno.</p>
+        </div>
+      </section>
+
+      {/* ── PRICING ── */}
+      <section className="pricing-section">
+        <h2 className="pricing-h2">Un solo plan. Todo incluido.</h2>
+        <p className="pricing-sub">
+          Sin sorpresas. Sin planes chicos con funciones recortadas.
+        </p>
+        <div className="price-card">
+          <div className="price-badge">PLAN ÚNICO</div>
+          <div className="price-amount">$35.000/mes</div>
+          <div className="price-period">Setup inicial: $25.000 (única vez)</div>
+          <div className="price-setup">Sin permanencia. Cancelás cuando querés.</div>
+          <ul className="price-features">
+            {[
+              "Menú digital con QR",
+              "Sistema de reservas completo",
+              "Control de stock en tiempo real",
+              "Panel admin sin conocimientos técnicos",
+              "Modo claro y oscuro",
+              "Soporte por WhatsApp",
+            ].map((f) => (
+              <li key={f} className="price-feat-item">
+                <span className="price-check">✓</span>
+                {f}
+              </li>
+            ))}
+          </ul>
+          <a href={whatsappUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="price-cta"
+          >
+            Quiero mi menú digital →
+          </a>
         </div>
       </section>
 
@@ -175,48 +232,9 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── PRICING ── */}
-      <section className="pricing-section">
-        <h2 className="pricing-h2">Un solo plan. Todo incluido.</h2>
-        <p className="pricing-sub">
-          Sin sorpresas. Sin planes chicos con funciones recortadas.
-        </p>
-        <div className="price-card">
-          <div className="price-badge">PLAN ÚNICO</div>
-          <div className="price-amount">$35.000/mes</div>
-          <div className="price-period">Setup inicial: $25.000 (única vez)</div>
-          <div className="price-setup">Sin permanencia. Cancelás cuando querés.</div>
-          <ul className="price-features">
-            {[
-              "Menú digital con QR",
-              "Sistema de reservas completo",
-              "Control de stock en tiempo real",
-              "Panel admin sin conocimientos técnicos",
-              "Modo claro y oscuro",
-              "Soporte por WhatsApp",
-            ].map((f) => (
-              <li key={f} className="price-feat-item">
-                <span className="price-check">✓</span>
-                {f}
-              </li>
-            ))}
-          </ul>
-          
-           <a href={whatsappUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="price-cta"
-          >
-            Quiero mi menú digital →
-          </a>
-        </div>
-      </section>
-
       {/* ── FOOTER ── */}
       <footer className="footer">
-        <span className="footer-logo">
-          NOX <span className="footer-logo-dim">menu</span>
-        </span>
+        <img src="https://nkpsojhxljlluzfinaoq.supabase.co/storage/v1/object/public/assets/transparente.png" alt="NOX Menu" className="footer-logo-img" />
         <span className="footer-text">Buenos Aires, Argentina</span>
       </footer>
 
@@ -225,14 +243,14 @@ export default function LandingPage() {
         .landing { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; width: 100%; }
         a { text-decoration: none; }
 
+        /* NAV */
         .nav {
           display: flex; align-items: center; justify-content: space-between;
           padding: 8px 48px; background: #0a0a0a;
           border-bottom: 0.5px solid #1e1e1e;
           position: sticky; top: 0; z-index: 50;
         }
-        .nav-logo { font-size: 20px; font-weight: 800; letter-spacing: 0.14em; color: #d4a847; }
-        .nav-logo-light { color: #444; font-weight: 400; }
+        .nav-logo-img { height: 90px; width: auto; object-fit: contain; display: block; }
         .nav-cta {
           background: #d4a847; color: #0a0a0a;
           font-size: 13px; font-weight: 700;
@@ -241,6 +259,7 @@ export default function LandingPage() {
         }
         .nav-cta:hover { opacity: 0.85; }
 
+        /* HERO */
         .hero { display: grid; grid-template-columns: 1fr 0.5px 1fr; min-height: 520px; }
         .hero-night {
           background: #0a0a0a; padding: 72px 56px;
@@ -261,18 +280,15 @@ export default function LandingPage() {
         .tag-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
         .dot-gold { background: #d4a847; }
         .dot-brown { background: #c49a30; }
-
         .hero-h1 {
           font-size: 52px; font-weight: 900;
           line-height: 1.05; letter-spacing: -0.03em; margin-bottom: 18px;
         }
         .h1-night { color: #ffffff; }
         .h1-day { color: #1a1208; }
-
         .hero-sub { font-size: 14px; line-height: 1.65; margin-bottom: 32px; max-width: 280px; }
         .sub-night { color: #777; }
         .sub-day { color: #6b5b3e; }
-
         .hero-btn {
           display: inline-block; font-size: 13px; font-weight: 700;
           padding: 13px 26px; border-radius: 28px;
@@ -281,11 +297,37 @@ export default function LandingPage() {
         .hero-btn:hover { opacity: 0.85; }
         .btn-night { background: #d4a847; color: #0a0a0a; }
         .btn-day { background: #1a1208; color: #f5f0e8; }
-
         .hero-hint { font-size: 11px; margin-top: 12px; }
         .hint-night { color: #333; }
         .hint-day { color: #bbb0a0; }
 
+        /* PROBLEMA */
+        .problem-section {
+          background: #0f0f0f; padding: 72px 56px;
+          border-bottom: 0.5px solid #1e1e1e;
+        }
+        .problem-inner { max-width: 860px; margin: 0 auto; }
+        .problem-h2 {
+          font-size: 28px; font-weight: 800; color: #fff;
+          letter-spacing: -0.02em; margin-bottom: 40px; text-align: center;
+        }
+        .problem-grid {
+          display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+          margin-bottom: 40px;
+        }
+        .problem-item {
+          background: #1a1a1a; border-radius: 14px;
+          padding: 24px 20px; border: 0.5px solid #2a2a2a;
+          display: flex; flex-direction: column; gap: 12px;
+        }
+        .problem-icon { font-size: 24px; }
+        .problem-text { font-size: 13px; color: #888; line-height: 1.6; }
+        .problem-cta-text {
+          text-align: center; font-size: 15px; font-weight: 700;
+          color: #d4a847; letter-spacing: 0.02em;
+        }
+
+        /* PRODUCTO */
         .product-section {
           background: #111; padding: 80px 56px;
           display: flex; align-items: center; gap: 64px;
@@ -300,6 +342,7 @@ export default function LandingPage() {
         .feature-item { font-size: 13px; color: #999; display: flex; align-items: center; gap: 10px; }
         .feat-dot { width: 6px; height: 6px; border-radius: 50%; background: #d4a847; flex-shrink: 0; }
 
+        /* PHONE MOCKUP */
         .phone-mockup {
           width: 280px; flex-shrink: 0;
           background: #1a1a1a; border-radius: 24px;
@@ -334,6 +377,7 @@ export default function LandingPage() {
         .pm-item-name { font-size: 9px; color: #ccc; }
         .pm-item-price { font-size: 9px; color: #d4a847; font-weight: 600; }
 
+        /* FEATURES */
         .features-section { background: #f5f0e8; padding: 80px 56px; }
         .features-h2 {
           font-size: 28px; font-weight: 800; color: #1a1208;
@@ -349,6 +393,7 @@ export default function LandingPage() {
         .feat-card-title { font-size: 13px; font-weight: 700; color: #1a1208; margin-bottom: 6px; }
         .feat-card-desc { font-size: 12px; color: #9a8060; line-height: 1.55; }
 
+        /* PRICING */
         .pricing-section {
           background: #0a0a0a; padding: 80px 56px; text-align: center;
         }
@@ -385,33 +430,40 @@ export default function LandingPage() {
           letter-spacing: 0.04em; transition: opacity 0.15s; text-align: center;
         }
         .price-cta:hover { opacity: 0.85; }
-        .price-note { font-size: 12px; color: #333; }
 
+        /* FOOTER */
         .footer {
           background: #050505; padding: 28px 56px;
           display: flex; align-items: center; justify-content: space-between;
           border-top: 0.5px solid #1a1a1a;
         }
-        .footer-logo { font-size: 15px; font-weight: 800; letter-spacing: 0.14em; color: #d4a847; }
-        .footer-logo-dim { color: #333; font-weight: 400; }
+        .footer-logo-img { height: 40px; width: auto; object-fit: contain; display: block; }
         .footer-text { font-size: 12px; color: #333; }
-.nav-logo-img { height: 90px; width: auto; object-fit: contain; display: block; }
 
-.footer-logo-img { height: 28px; width: auto; object-fit: contain; }
-
+        /* MOBILE */
         @media (max-width: 768px) {
           .nav { padding: 8px 24px; }
+          .nav-logo-img { height: 70px; }
+
           .hero { grid-template-columns: 1fr; grid-template-rows: auto 0.5px auto; }
           .hero-divider { height: 0.5px; width: 100%; }
           .hero-night, .hero-day { padding: 56px 28px; }
           .hero-h1 { font-size: 40px; }
+          .hero-sub { max-width: 100%; }
+
+          .problem-section { padding: 56px 24px; }
+          .problem-grid { grid-template-columns: 1fr; gap: 16px; }
+
           .product-section { flex-direction: column; padding: 56px 28px; gap: 40px; }
           .phone-mockup { width: 100%; max-width: 280px; margin: 0 auto; }
+          .product-h2 { font-size: 24px; }
+
           .features-section { padding: 56px 24px; }
           .feat-grid { grid-template-columns: 1fr 1fr; }
+
           .pricing-section { padding: 56px 24px; }
+
           .footer { padding: 24px 24px; }
-          .product-h2 { font-size: 24px; }
         }
 
         @media (max-width: 480px) {
