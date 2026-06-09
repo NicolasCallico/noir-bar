@@ -212,7 +212,6 @@ export default function LandingPage() {
             Quiero mi menú digital →
           </a>
         </div>
-        <p className="price-note">Sin permanencia. Cancelás cuando querés.</p>
       </section>
 
       {/* ── FOOTER ── */}
