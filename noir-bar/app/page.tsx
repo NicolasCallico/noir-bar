@@ -14,7 +14,7 @@ export default function LandingPage() {
     <main className="landing">
       {/* ── NAV ── */}
       <nav className="nav">
-<img src="https://nkpsojhxljlluzfinaoq.supabase.co/storage/v1/object/public/assets/fondoOscuro.png" alt="NOX Menu" className="nav-logo-img" />
+<img src="https://nkpsojhxljlluzfinaoq.supabase.co/storage/v1/object/public/assets/transparente.png" alt="NOX Menu" className="nav-logo-img" />
         <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="nav-cta">
           Contactar →
         </a>
