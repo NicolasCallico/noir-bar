@@ -100,7 +100,7 @@ export default function LandingPage() {
         <div className="price-card">
           <div className="price-badge">PLAN ÚNICO</div>
           <div className="price-amount">$35.000/mes</div>
-          <div className="price-period">Setup inicial: $25.000 (única vez)</div>
+          <div className="price-period">Setup inicial: +$20.000 (única vez) / Incluye carga de información, fotos, lista de artículos. Luego se actualiza por cuenta propia</div>
           <div className="price-setup">Sin permanencia. Cancelás cuando querés.</div>
           <ul className="price-features">
             {[
@@ -443,8 +443,7 @@ export default function LandingPage() {
         /* MOBILE */
         @media (max-width: 768px) {
           .nav { padding: 8px 24px; }
-          .nav-logo-img { height: 70px; }
-
+          .nav-logo-img { height: 85px; }
           .hero { grid-template-columns: 1fr; grid-template-rows: auto 0.5px auto; }
           .hero-divider { height: 0.5px; width: 100%; }
           .hero-night, .hero-day { padding: 56px 28px; }
