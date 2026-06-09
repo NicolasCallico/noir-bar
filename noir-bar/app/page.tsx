@@ -472,9 +472,9 @@ export default function LandingPage() {
 .hero-tag { grid-column: 1 / 2; }
 .hero-h1 { grid-column: 1 / 2; margin-bottom: 0; }
 .hero-sub { grid-column: 2 / 3; grid-row: 1 / 3; align-self: start; font-size: 12px; margin-bottom: 0; padding-top: 4px; }
-.hero-mockup-wrap { display: flex; justify-content: flex-start; margin-top: 24px; }
+.hero-mockup-wrap { display: flex; justify-content: center; margin-top: 24px; width: 100%; }
 .hero-mockup-img { width: 140px; }
-.hero-btn { margin-top: 24px; align-self: flex-end; }
+.hero-btn { margin-top: 24px; align-self: center; }
 .hero-hint { display: none; }
 .hero-h1 { font-size: 32px; }
 
