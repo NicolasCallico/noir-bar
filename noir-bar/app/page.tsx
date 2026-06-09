@@ -395,7 +395,7 @@ export default function LandingPage() {
         .footer-logo { font-size: 15px; font-weight: 800; letter-spacing: 0.14em; color: #d4a847; }
         .footer-logo-dim { color: #333; font-weight: 400; }
         .footer-text { font-size: 12px; color: #333; }
-        .nav-logo-img { height: 36px; width: auto; object-fit: contain; }
+.nav-logo-img { height: 56px; width: auto; object-fit: contain; }
 .footer-logo-img { height: 28px; width: auto; object-fit: contain; }
 
         @media (max-width: 768px) {
