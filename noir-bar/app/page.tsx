@@ -185,9 +185,9 @@ export default function LandingPage() {
         </p>
         <div className="price-card">
           <div className="price-badge">PLAN ÚNICO</div>
-          <div className="price-amount">$35.000</div>
-          <div className="price-period">pesos argentinos / mes</div>
-          <div className="price-setup">+ $25.000 setup inicial único</div>
+          <div className="price-amount">$35.000/mes</div>
+          <div className="price-period">Setup inicial: $25.000 (única vez)</div>
+          <div className="price-setup">Sin permanencia. Cancelás cuando querés.</div>
           <ul className="price-features">
             {[
               "Menú digital con QR",
