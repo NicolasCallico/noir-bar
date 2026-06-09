@@ -23,49 +23,59 @@ export default function LandingPage() {
       {/* ── HERO DÍA / NOCHE ── */}
       <section className="hero">
         <div className="hero-night">
-          <span className="hero-tag tag-night">
-            <span className="tag-dot dot-gold" />
-            Para bares y pubs
-          </span>
-          <h1 className="hero-h1 h1-night">
-            Tu carta,<br />
-            en modo<br />
-            noche.
-          </h1>
-          <p className="hero-sub sub-night">
-            Menú digital premium para locales nocturnos. Reservas, stock y
-            promociones en tiempo real.
-          </p>
-          <a href="https://noir-bar.vercel.app/noir-bar"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hero-btn btn-night"
-          >
-            Ver demo →
-          </a>
-          <span className="hero-hint hint-night">noir-bar.vercel.app</span>
+          <div className="hero-content">
+            <span className="hero-tag tag-night">
+              <span className="tag-dot dot-gold" />
+              Para bares y pubs
+            </span>
+            <h1 className="hero-h1 h1-night">
+              Tu carta,<br />
+              en modo<br />
+              noche.
+            </h1>
+            <p className="hero-sub sub-night">
+              Menú digital premium para locales nocturnos. Reservas, stock y
+              promociones en tiempo real.
+            </p>
+            <a href="https://noir-bar.vercel.app/noir-bar"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hero-btn btn-night"
+            >
+              Ver demo →
+            </a>
+            <span className="hero-hint hint-night">noir-bar.vercel.app</span>
+          </div>
+          <div className="hero-mockup-wrap">
+            <img src="https://nkpsojhxljlluzfinaoq.supabase.co/storage/v1/object/public/assets/noche.png" alt="Demo modo noche" className="hero-mockup-img" />
+          </div>
         </div>
 
         <div className="hero-divider" />
 
         <div className="hero-day">
-          <span className="hero-tag tag-day">
-            <span className="tag-dot dot-brown" />
-            Para cafés y restaurantes
-          </span>
-          <h1 className="hero-h1 h1-day">
-            Tu carta,<br />
-            en modo<br />
-            día.
-          </h1>
-          <p className="hero-sub sub-day">
-            El mismo sistema, estética clara y cálida. Perfecto para
-            cafeterías y restaurantes diurnos.
-          </p>
-          <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="hero-btn btn-day">
-            Pedir demo →
-          </a>
-          <span className="hero-hint hint-day">consultá por tu local</span>
+          <div className="hero-content">
+            <span className="hero-tag tag-day">
+              <span className="tag-dot dot-brown" />
+              Para cafés y restaurantes
+            </span>
+            <h1 className="hero-h1 h1-day">
+              Tu carta,<br />
+              en modo<br />
+              día.
+            </h1>
+            <p className="hero-sub sub-day">
+              El mismo sistema, estética clara y cálida. Perfecto para
+              cafeterías y restaurantes diurnos.
+            </p>
+            <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="hero-btn btn-day">
+              Pedir demo →
+            </a>
+            <span className="hero-hint hint-day">consultá por tu local</span>
+          </div>
+          <div className="hero-mockup-wrap">
+            <img src="https://nkpsojhxljlluzfinaoq.supabase.co/storage/v1/object/public/assets/dia.png" alt="Demo modo día" className="hero-mockup-img" />
+          </div>
         </div>
       </section>
 
@@ -100,7 +110,7 @@ export default function LandingPage() {
         <div className="price-card">
           <div className="price-badge">PLAN ÚNICO</div>
           <div className="price-amount">$35.000/mes</div>
-          <div className="price-period">Setup inicial: +$20.000 (única vez) / Incluye carga de información, fotos, lista de artículos. Luego se actualiza por cuenta propia</div>
+          <div className="price-period">Setup inicial: $25.000 (única vez)</div>
           <div className="price-setup">Sin permanencia. Cancelás cuando querés.</div>
           <ul className="price-features">
             {[
@@ -262,13 +272,22 @@ export default function LandingPage() {
         /* HERO */
         .hero { display: grid; grid-template-columns: 1fr 0.5px 1fr; min-height: 520px; }
         .hero-night {
-          background: #0a0a0a; padding: 72px 56px;
-          display: flex; flex-direction: column; justify-content: center;
+          background: #0a0a0a; padding: 56px 40px;
+          display: flex; flex-direction: row; align-items: center; gap: 24px;
         }
         .hero-divider { background: #1e1e1e; }
         .hero-day {
-          background: #f5f0e8; padding: 72px 56px;
-          display: flex; flex-direction: column; justify-content: center;
+          background: #f5f0e8; padding: 56px 40px;
+          display: flex; flex-direction: row; align-items: center; gap: 24px;
+        }
+        .hero-content { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+        .hero-mockup-wrap {
+          flex-shrink: 0; width: 160px;
+          display: flex; align-items: center; justify-content: center;
+        }
+        .hero-mockup-img {
+          width: 160px; height: auto; border-radius: 16px;
+          box-shadow: 0 8px 32px rgba(0,0,0,0.4);
         }
         .hero-tag {
           font-size: 10px; font-weight: 700; letter-spacing: 0.14em;
@@ -444,9 +463,11 @@ export default function LandingPage() {
         @media (max-width: 768px) {
           .nav { padding: 8px 24px; }
           .nav-logo-img { height: 85px; }
+
           .hero { grid-template-columns: 1fr; grid-template-rows: auto 0.5px auto; }
           .hero-divider { height: 0.5px; width: 100%; }
-          .hero-night, .hero-day { padding: 56px 28px; }
+          .hero-night, .hero-day { padding: 56px 28px; flex-direction: column; align-items: flex-start; }
+          .hero-mockup-wrap { display: none; }
           .hero-h1 { font-size: 40px; }
           .hero-sub { max-width: 100%; }
 
