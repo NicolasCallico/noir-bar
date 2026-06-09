@@ -395,11 +395,12 @@ export default function LandingPage() {
         .footer-logo { font-size: 15px; font-weight: 800; letter-spacing: 0.14em; color: #d4a847; }
         .footer-logo-dim { color: #333; font-weight: 400; }
         .footer-text { font-size: 12px; color: #333; }
-.nav-logo-img { height: 90px; width: auto; object-fit: contain; }
+.nav-logo-img { height: 90px; width: auto; object-fit: contain; display: block; }
+
 .footer-logo-img { height: 28px; width: auto; object-fit: contain; }
 
         @media (max-width: 768px) {
-          .nav { padding: 16px 24px; }
+          .nav { padding: 8px 24px; }
           .hero { grid-template-columns: 1fr; grid-template-rows: auto 0.5px auto; }
           .hero-divider { height: 0.5px; width: 100%; }
           .hero-night, .hero-day { padding: 56px 28px; }
