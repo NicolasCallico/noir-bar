@@ -466,8 +466,9 @@ export default function LandingPage() {
 
             .hero { grid-template-columns: 1fr; grid-template-rows: auto 0.5px auto; }
             .hero-divider { height: 0.5px; width: 100%; }
-            .hero-night, .hero-day { padding: 48px 28px 40px; flex-direction: column; align-items: flex-start; gap: 32px; }
-            .hero-mockup-wrap { width: 100%; display: flex; justify-content: center; }
+            .hero-night, .hero-day { padding: 48px 28px 40px; flex-direction: row; align-items: center; gap: 16px; }
+            .hero-mockup-img { width: 120px; }
+            .hero-h1 { font-size: 32px; }.hero-mockup-wrap { width: 100%; display: flex; justify-content: center; }
             .hero-mockup-img { width: 200px; }
             .hero-h1 { font-size: 40px; }
             .hero-sub { max-width: 100%; }
