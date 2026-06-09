@@ -467,11 +467,16 @@ export default function LandingPage() {
 
 .hero { grid-template-columns: 1fr; grid-template-rows: auto 0.5px auto; overflow: hidden; }
 .hero-divider { height: 0.5px; width: 100%; }
-.hero-night, .hero-day { padding: 48px 28px 40px; flex-direction: row; align-items: center; gap: 16px; }
-.hero-mockup-wrap { display: flex; justify-content: center; }
-.hero-mockup-img { width: 100px; }
+.hero-night, .hero-day { padding: 40px 28px; flex-direction: column; align-items: flex-start; gap: 0; }
+.hero-content { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto auto; gap: 0 16px; width: 100%; }
+.hero-tag { grid-column: 1 / 2; }
+.hero-h1 { grid-column: 1 / 2; margin-bottom: 0; }
+.hero-sub { grid-column: 2 / 3; grid-row: 1 / 3; align-self: start; font-size: 12px; margin-bottom: 0; padding-top: 4px; }
+.hero-mockup-wrap { display: flex; justify-content: flex-start; margin-top: 24px; }
+.hero-mockup-img { width: 140px; }
+.hero-btn { margin-top: 24px; align-self: flex-end; }
+.hero-hint { display: none; }
 .hero-h1 { font-size: 32px; }
-.hero-sub { max-width: 100%; }
 
           .problem-section { padding: 56px 24px; }
           .problem-grid { grid-template-columns: 1fr; gap: 16px; }
