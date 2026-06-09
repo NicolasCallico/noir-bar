@@ -303,7 +303,7 @@ export default function LandingPage() {
         .feat-dot { width: 6px; height: 6px; border-radius: 50%; background: #d4a847; flex-shrink: 0; }
 
         .phone-mockup {
-          width: 200px; flex-shrink: 0;
+          width: 280px; flex-shrink: 0;
           background: #1a1a1a; border-radius: 24px;
           border: 0.5px solid #2a2a2a; padding: 16px 14px;
         }
