@@ -44,7 +44,7 @@ export default function LandingPage() {
             rel="noopener noreferrer"
             className="hero-btn btn-night"
           >
-            Ver demo nocturno →
+            Ver demo →
           </a>
           <span className="hero-hint hint-night">noir-bar.vercel.app</span>
         </div>
