@@ -79,27 +79,33 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── PROBLEMA ── */}
-      <section className="problem-section">
-        <div className="problem-inner">
-          <h2 className="problem-h2">La carta en papel ya no alcanza.</h2>
-          <div className="problem-grid">
-            <div className="problem-item">
-              <span className="problem-icon">📋</span>
-              <p className="problem-text">Se desactualiza. Cambiás un precio y tenés que reimprimir todo.</p>
-            </div>
-            <div className="problem-item">
-              <span className="problem-icon">📞</span>
-              <p className="problem-text">Las reservas llegan por WhatsApp, te perdés algunas, el local se desordena.</p>
-            </div>
-            <div className="problem-item">
-              <span className="problem-icon">❌</span>
-              <p className="problem-text">El cliente pide algo que se acabó. Incomodidad, quejas, mala experiencia.</p>
-            </div>
-          </div>
-          <p className="problem-cta-text">NOX Menu resuelve todo eso desde el día uno.</p>
+{/* ── PROBLEMA ── */}
+<section className="problem-section">
+  <div className="problem-inner">
+    <h2 className="problem-h2">La carta en papel ya no alcanza.</h2>
+    <div className="problem-grid">
+      <div className="problem-item">
+        <div className="problem-item-header">
+          <span className="problem-icon">📋</span>
+          <p className="problem-text">Se desactualiza. Cambiás un precio y tenés que reimprimir todo.</p>
         </div>
-      </section>
+      </div>
+      <div className="problem-item">
+        <div className="problem-item-header">
+          <span className="problem-icon">📞</span>
+          <p className="problem-text">Las reservas llegan por WhatsApp, te perdés algunas, el local se desordena.</p>
+        </div>
+      </div>
+      <div className="problem-item">
+        <div className="problem-item-header">
+          <span className="problem-icon">❌</span>
+          <p className="problem-text">El cliente pide algo que se acabó. Incomodidad, quejas, mala experiencia.</p>
+        </div>
+      </div>
+    </div>
+    <p className="problem-cta-text">NOX Menu resuelve todo eso desde el día uno.</p>
+  </div>
+</section>
 
       {/* ── PRICING ── */}
       <section className="pricing-section">
@@ -337,17 +343,19 @@ export default function LandingPage() {
           display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
           margin-bottom: 40px;
         }
-        .problem-item {
-          background: #1a1a1a; border-radius: 14px;
-          padding: 24px 20px; border: 0.5px solid #2a2a2a;
-          display: flex; flex-direction: column; gap: 12px;
-        }
-        .problem-icon { font-size: 24px; }
-        .problem-text { font-size: 13px; color: #888; line-height: 1.6; }
-        .problem-cta-text {
-          text-align: center; font-size: 15px; font-weight: 700;
-          color: #d4a847; letter-spacing: 0.02em;
-        }
+.problem-item {
+  background: #1a1a1a; border-radius: 14px;
+  padding: 24px 20px; border: 0.5px solid #2a2a2a;
+}
+.problem-item-header {
+  display: flex; align-items: center; gap: 12px;
+}
+.problem-icon { font-size: 20px; flex-shrink: 0; line-height: 1; }
+.problem-text { font-size: 13px; color: #888; line-height: 1.6; }
+.problem-cta-text {
+  text-align: center; font-size: 15px; font-weight: 700;
+  color: #d4a847; letter-spacing: 0.02em;
+}
 
         /* PRODUCTO */
         .product-section {
