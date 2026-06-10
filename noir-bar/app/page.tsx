@@ -233,11 +233,13 @@ export default function LandingPage() {
               desc: "Creá, eliminá y reordenás categorías y productos como quieras.",
             },
           ].map(({ icon, title, desc }) => (
-            <div key={title} className="feat-card">
-              <div className="feat-icon-wrap">{icon}</div>
-              <div className="feat-card-title">{title}</div>
-              <div className="feat-card-desc">{desc}</div>
-            </div>
+<div key={title} className="feat-card">
+  <div className="feat-card-header">
+    <div className="feat-icon-wrap">{icon}</div>
+    <div className="feat-card-title">{title}</div>
+  </div>
+  <div className="feat-card-desc">{desc}</div>
+</div>
           ))}
         </div>
       </section>
@@ -405,13 +407,17 @@ export default function LandingPage() {
         }
         .features-sub { font-size: 14px; color: #9a8060; text-align: center; margin-bottom: 40px; }
         .feat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-        .feat-card {
-          background: #fff; border-radius: 14px; padding: 22px 20px;
-          border: 0.5px solid #e8dfc8;
-        }
-        .feat-icon-wrap { font-size: 22px; margin-bottom: 12px; }
-        .feat-card-title { font-size: 13px; font-weight: 700; color: #1a1208; margin-bottom: 6px; }
-        .feat-card-desc { font-size: 12px; color: #9a8060; line-height: 1.55; }
+.feat-card {
+  background: #fff; border-radius: 14px; padding: 22px 20px;
+  border: 0.5px solid #e8dfc8;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.feat-card-header {
+  display: flex; align-items: center; gap: 10px;
+}
+.feat-icon-wrap { font-size: 20px; flex-shrink: 0; line-height: 1; }
+.feat-card-title { font-size: 13px; font-weight: 700; color: #1a1208; }
+.feat-card-desc { font-size: 12px; color: #9a8060; line-height: 1.55; }
 
         /* PRICING */
         .pricing-section {
