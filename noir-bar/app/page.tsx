@@ -155,11 +155,11 @@ export default function LandingPage() {
             <span className="pm-tab">Cerv…</span>
           </div>
           <div className="pm-cat">🍺 Cervezas</div>
-          {[
-            ["Imperial Lager", "$10.000", true],
-            ["Imperial IPA", "$10.000", true],
-            ["Imperial Stout", "$10.000", false],
-          ].map(([name, price, available]) => (
+{[
+            { name: "Imperial Lager", price: "$10.000", available: true },
+            { name: "Imperial IPA", price: "$10.000", available: true },
+            { name: "Imperial Stout", price: "$10.000", available: false },
+          ].map(({ name, price, available }) => (
             <div key={name} className={`pm-item ${!available ? "pm-item-out" : ""}`}>
               <span className="pm-item-name">{name} {!available && <span className="pm-out-badge">sin stock</span>}</span>
               <span className="pm-item-price">{price}</span>
