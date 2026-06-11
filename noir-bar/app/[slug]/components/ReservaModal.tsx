@@ -30,7 +30,7 @@ export function ReservaModal({ isOpen, onClose, venueId, venueName, birthdayProm
     notes: "",
   });
 
-function generateTimes(open: string, close: string) {
+  function generateTimes(open: string, close: string) {
     const times: string[] = [];
     const [openH, openM] = open.split(":").map(Number);
     const [closeH, closeM] = close.split(":").map(Number);
@@ -59,14 +59,14 @@ function generateTimes(open: string, close: string) {
   }
 
   async function handleSubmit() {
-if (!form.name || !form.phone || !form.date) {
-  alert("Completá nombre, teléfono y fecha.");
-  return;
-}
-if (form.people === 20) {
-  alert("Indicá la cantidad exacta de personas.");
-  return;
-}
+    if (!form.name || !form.phone || !form.date) {
+      alert("Completá nombre, teléfono y fecha.");
+      return;
+    }
+    if (form.people === 20) {
+      alert("Indicá la cantidad exacta de personas.");
+      return;
+    }
 
     setLoading(true);
 
@@ -190,83 +190,86 @@ if (form.people === 20) {
                   </div>
 
                   <div className="grid grid-cols-2 gap-3">
-{/* STEPPER DE PERSONAS */}
-<
-  <p className="text-xs text-muted mb-0.5 px-0.5">¿Cuántas personas van a ser?</p>
-  <div className="flex items-center bg-[#111] border border-border rounded-md overflow-hidden">
-    <button
-      type="button"
-      onClick={decreasePeople}
-      className="px-3 py-2.5 text-muted hover:text-[#F5F5F5] hover:bg-white/5 transition-colors"
-    >
-      <Minus size={14} />
-    </button>
-    <span className="flex-1 text-center text-sm text-[#F5F5F5]">
-      {form.people === 20 ? "20+" : `${form.people} ${form.people === 1 ? "persona" : "personas"}`}
-    </span>
-    <button
-      type="button"
-      onClick={increasePeople}
-      className="px-3 py-2.5 text-muted hover:text-[#F5F5F5] hover:bg-white/5 transition-colors"
-    >
-      <Plus size={14} />
-    </button>
-  </div>
-  {form.people === 20 && (
-    <input
-      className={inputClass}
-      type="number"
-      min={20}
-      placeholder="¿Cuántas personas?"
-      onChange={(e) => handleChange("people", Number(e.target.value))}
-    />
-  )}
-</div>
 
-<div
-  className="relative cursor-pointer"
-  onClick={() => (document.getElementById("date-input") as HTMLInputElement)?.showPicker()}
->
-  <input
-    id="date-input"
-    type="date"
-    value={form.date}
-    onChange={(e) => handleChange("date", e.target.value)}
-    className="absolute inset-0 opacity-0 w-full h-full cursor-pointer z-10"
-  />
-  <div className="flex items-center gap-2 bg-[#111] border border-border rounded-md px-3 py-2.5 text-sm pointer-events-none">
-    <Calendar size={14} className="text-muted shrink-0" />
-    <span className={form.date ? "text-[#F5F5F5]" : "text-muted"}>
-      {form.date
-        ? new Date(form.date + "T00:00:00").toLocaleDateString("es-AR", {
-            weekday: "short",
-            day: "numeric",
-            month: "long",
-          })
-        : "Seleccioná una fecha"}
-    </span>
-  </div>
-</div>
+                    {/* STEPPER DE PERSONAS */}
+                    <div className="flex flex-col gap-1">
+                      <p className="text-xs text-muted mb-0.5 px-0.5">¿Cuántas personas van a ser?</p>
+                      <div className="flex items-center bg-[#111] border border-border rounded-md overflow-hidden">
+                        <button
+                          type="button"
+                          onClick={decreasePeople}
+                          className="px-3 py-2.5 text-muted hover:text-[#F5F5F5] hover:bg-white/5 transition-colors"
+                        >
+                          <Minus size={14} />
+                        </button>
+                        <span className="flex-1 text-center text-sm text-[#F5F5F5]">
+                          {form.people === 20 ? "20+" : `${form.people} ${form.people === 1 ? "persona" : "personas"}`}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={increasePeople}
+                          className="px-3 py-2.5 text-muted hover:text-[#F5F5F5] hover:bg-white/5 transition-colors"
+                        >
+                          <Plus size={14} />
+                        </button>
+                      </div>
+                      {form.people === 20 && (
+                        <input
+                          className={inputClass}
+                          type="number"
+                          min={20}
+                          placeholder="¿Cuántas personas?"
+                          onChange={(e) => handleChange("people", Number(e.target.value))}
+                        />
+                      )}
+                    </div>
+
+                    {/* SELECTOR DE FECHA */}
+                    <div
+                      className="relative cursor-pointer"
+                      onClick={() => (document.getElementById("date-input") as HTMLInputElement)?.showPicker()}
+                    >
+                      <input
+                        id="date-input"
+                        type="date"
+                        value={form.date}
+                        onChange={(e) => handleChange("date", e.target.value)}
+                        className="absolute inset-0 opacity-0 w-full h-full cursor-pointer z-10"
+                      />
+                      <div className="flex items-center gap-2 bg-[#111] border border-border rounded-md px-3 py-2.5 text-sm pointer-events-none">
+                        <Calendar size={14} className="text-muted shrink-0" />
+                        <span className={form.date ? "text-[#F5F5F5]" : "text-muted"}>
+                          {form.date
+                            ? new Date(form.date + "T00:00:00").toLocaleDateString("es-AR", {
+                                weekday: "short",
+                                day: "numeric",
+                                month: "long",
+                              })
+                            : "Seleccioná una fecha"}
+                        </span>
+                      </div>
+                    </div>
+
                   </div>
 
-<div className="relative">
-  <select
-    className={inputClass}
-    value={form.time}
-    onChange={(e) => handleChange("time", e.target.value)}
-    style={{ paddingLeft: "2.25rem" }}
-  >
-    {times.map((t) => (
-      <option key={t} value={t}>
-        {t}
-      </option>
-    ))}
-  </select>
-  <Clock
-    size={14}
-    className="absolute left-3 top-1/2 -translate-y-1/2 text-muted pointer-events-none"
-  />
-</div>
+                  <div className="relative">
+                    <select
+                      className={inputClass}
+                      value={form.time}
+                      onChange={(e) => handleChange("time", e.target.value)}
+                      style={{ paddingLeft: "2.25rem" }}
+                    >
+                      {times.map((t) => (
+                        <option key={t} value={t}>
+                          {t}
+                        </option>
+                      ))}
+                    </select>
+                    <Clock
+                      size={14}
+                      className="absolute left-3 top-1/2 -translate-y-1/2 text-muted pointer-events-none"
+                    />
+                  </div>
 
                   <div className="rounded-3xl border border-gold/20 bg-[#1c150b] p-4 text-sm text-[#f5f5f5] shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05)]">
                     <p className="font-semibold text-gold mb-1">Promoción de cumple</p>
