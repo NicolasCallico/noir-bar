@@ -34,7 +34,7 @@ export default function LandingPage() {
               48 horas.
             </h1>
             <p className="hero-sub sub-night">
-              Tus clientes escanean un QR, ven tu carta actualizada y hasta pueden reservar una mesa. Vos manejás todo desde el celular. Sin papeles, sin llamadas.
+              Tus clientes escanean un QR, ven tu carta actualizada y hasta pueden reservar una mesa. Vos manejás todo desde el celular o computadora. Sin papeles, sin llamadas.
             </p>
             <div className="hero-btns">
               <a href="https://noir-bar.vercel.app/noir-bar"
