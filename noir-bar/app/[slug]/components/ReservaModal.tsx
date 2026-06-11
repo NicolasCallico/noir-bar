@@ -191,7 +191,8 @@ if (form.people === 20) {
 
                   <div className="grid grid-cols-2 gap-3">
 {/* STEPPER DE PERSONAS */}
-<div className="flex flex-col gap-1">
+<
+  <p className="text-xs text-muted mb-0.5 px-0.5">¿Cuántas personas van a ser?</p>
   <div className="flex items-center bg-[#111] border border-border rounded-md overflow-hidden">
     <button
       type="button"
