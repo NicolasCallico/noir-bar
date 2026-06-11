@@ -34,7 +34,7 @@ export default function LandingPage() {
               48 horas.
             </h1>
             <p className="hero-sub sub-night">
-              Tus clientes escanean un QR, ven tu carta actualizada y reservan mesa. Vos manejás todo desde el celular. Sin papeles, sin llamadas, sin quilombos.
+              Tus clientes escanean un QR, ven tu carta actualizada y hasta pueden reservar una mesa. Vos manejás todo desde el celular. Sin papeles, sin llamadas.
             </p>
             <div className="hero-btns">
               <a href="https://noir-bar.vercel.app/noir-bar"
@@ -113,7 +113,7 @@ export default function LandingPage() {
         <div className="product-text">
           <span className="section-tag">El producto</span>
           <h2 className="product-h2">
-            Un sistema completo.<br />Sin saber tecnología.
+            Un sistema completo.<br />Desde el celular, o desde la computadora.
           </h2>
           <p className="product-p">
             El dueño del local tiene un panel simple donde cambia precios, activa promociones, confirma reservas y ve el stock en tiempo real. Todo desde el celular, en segundos.
@@ -215,8 +215,8 @@ export default function LandingPage() {
             },
             {
               icon: "📦",
-              title: "Control de stock en vivo",
-              desc: "Marcás un producto sin disponibilidad y desaparece del menú en segundos. Cero incomodidad con el cliente.",
+              title: "Control de disponibilidad del stock en vivo",
+              desc: "Marcás un producto sin disponibilidad y se visualiza en el menú al instante. Cero incomodidad con el cliente.",
             },
             {
               icon: "📣",
@@ -235,7 +235,7 @@ export default function LandingPage() {
             },
             {
               icon: "☰",
-              title: "Categorías sin límite",
+              title: "Control total de categorías de productos",
               desc: "Creás, eliminás y reordenás categorías y productos cuando quieras. Sin llamar a nadie.",
             },
           ].map(({ icon, title, desc }) => (
@@ -259,17 +259,17 @@ export default function LandingPage() {
         <div className="price-card">
           <div className="price-badge">PLAN ÚNICO · TODO INCLUIDO</div>
           <div className="price-amount">$35.000<span className="price-mes">/mes</span></div>
-          <div className="price-period">Setup inicial: $25.000 (una sola vez)</div>
+          <div className="price-period">Configuración inicial: +$25.000 (única vez)</div>
           <div className="price-setup">Sin permanencia. Cancelás cuando querés, sin preguntas.</div>
           <ul className="price-features">
             {[
               "Menú digital con QR personalizado",
               "Sistema de reservas completo con notificaciones",
               "Control de stock en tiempo real",
-              "Panel admin desde el celular, sin conocimientos técnicos",
+              "Panel admin desde el celular, o computadora",
               "Modo claro y oscuro incluidos",
               "Soporte directo por WhatsApp",
-              "Cargamos tu carta nosotros en el setup",
+              "Cargamos tu carta nosotros en el "Setup" inicial",
             ].map((f) => (
               <li key={f} className="price-feat-item">
                 <span className="price-check">✓</span>
