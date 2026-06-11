@@ -269,7 +269,7 @@ export default function LandingPage() {
               "Panel admin desde el celular, o computadora",
               "Modo claro y oscuro incluidos",
               "Soporte directo por WhatsApp",
-              "Cargamos tu carta nosotros en el "Setup" inicial",
+              "Nos encargamos de cargar los datos de tu carta en el Setup inicial.",
             ].map((f) => (
               <li key={f} className="price-feat-item">
                 <span className="price-check">✓</span>
