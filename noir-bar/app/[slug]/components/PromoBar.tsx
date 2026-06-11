@@ -1,42 +1,72 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useEffect, useRef } from "react";
 import type { Promotion } from "@/lib/types";
+
 interface Props {
   promotions: Promotion[];
   isLight?: boolean;
 }
+
 export function PromoBar({ promotions, isLight }: Props) {
-  const [current, setCurrent] = useState(0);
-  useEffect(() => {
-    if (promotions.length <= 1) return;
-    const interval = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % promotions.length);
-    }, 3000);
-    return () => clearInterval(interval);
-  }, [promotions.length]);
-  const promo = promotions[current];
+  if (!promotions.length) return null;
+
+  const items = [...promotions, ...promotions];
+
   return (
-    <div style={{ borderBottom: `1px solid ${isLight ? "#E0D9CC" : "rgba(200,169,107,0.1)"}`, backgroundColor: isLight ? "#FAF8F3" : "#0D0D0D" }} className="w-full px-4 py-2.5">
-      <div className="mx-auto max-w-lg">
-        <div style={{ backgroundColor: isLight ? "#EDE8DF" : "#1a1400", border: `1px solid ${isLight ? "#D5CCBC" : "rgba(200,169,107,0.2)"}` }} className="flex items-center justify-center gap-2 rounded-full px-4 py-2">
-          <span className="text-sm">🥂</span>
-          <div className="flex items-center gap-1.5 flex-wrap justify-center">
-            <span style={{ color: isLight ? "#8A6535" : undefined }} className="text-gold text-[11px] font-semibold uppercase tracking-widest">{promo.name}</span>
-            <span style={{ color: isLight ? "#9E917E" : undefined }} className="text-gold/40 text-[10px]">—</span>
-            <span className={`text-[11px] tracking-wide ${isLight ? "text-[#1C1814]" : "text-[#F5F5F5]"}`}>{promo.description}</span>
-            <span style={{ color: isLight ? "#9E917E" : undefined }} className="text-gold/40 text-[10px]">·</span>
-            <span style={{ color: isLight ? "#8A6535" : undefined }} className="text-gold/60 text-[10px] tracking-wide">{promo.time_range}</span>
-          </div>
-          <span className="text-sm">🥂</span>
-        </div>
-        {promotions.length > 1 && (
-          <div className="flex justify-center gap-1 mt-1.5">
-            {promotions.map((_, i) => (
-              <button key={i} onClick={() => setCurrent(i)} className={`rounded-full transition-all duration-300 ${i === current ? "bg-gold w-3 h-1.5" : "bg-gold/30 w-1.5 h-1.5"}`} />
-            ))}
-          </div>
-        )}
+    <div
+      style={{
+        borderTop: `1px solid ${isLight ? "#E0D9CC" : "rgba(200,169,107,0.3)"}`,
+        borderBottom: `1px solid ${isLight ? "#E0D9CC" : "rgba(200,169,107,0.3)"}`,
+        backgroundColor: isLight ? "#FAF8F3" : "#0D0D0D",
+        overflow: "hidden",
+      }}
+      className="w-full py-2"
+    >
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "32px",
+          whiteSpace: "nowrap",
+          animation: "nox-marquee 18s linear infinite",
+        }}
+      >
+        {items.map((p, i) => (
+          <span key={i} style={{ display: "inline-flex", alignItems: "center", gap: "16px" }}>
+            <span style={{ color: isLight ? "rgba(138,101,53,0.4)" : "rgba(200,169,107,0.4)", fontSize: "10px" }}>
+              ✦
+            </span>
+            <span
+              style={{
+                color: isLight ? "#8A6535" : "#C8A96B",
+                fontSize: "11px",
+                letterSpacing: "0.18em",
+                textTransform: "uppercase",
+                fontWeight: 600,
+              }}
+            >
+              {p.name}
+            </span>
+            <span
+              style={{
+                color: isLight ? "#1C1814" : "#F5F5F5",
+                fontSize: "11px",
+                letterSpacing: "0.06em",
+              }}
+            >
+              {p.description}
+              {p.time_range ? ` · ${p.time_range}` : ""}
+            </span>
+          </span>
+        ))}
       </div>
+
+      <style>{`
+        @keyframes nox-marquee {
+          from { transform: translateX(0); }
+          to { transform: translateX(-50%); }
+        }
+      `}</style>
     </div>
   );
 }
