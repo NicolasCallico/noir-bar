@@ -11,16 +11,17 @@ interface Props {
 export function BrandsCarousel({ sponsors, isLight }: Props) {
   if (!sponsors || sponsors.length === 0) return null;
 
-  // Triplicamos para asegurar loop fluido incluso con pocos logos
   const looped = [...sponsors, ...sponsors, ...sponsors];
   const duration = sponsors.length * 3;
+  const bgColor = isLight ? "#FAF8F3" : "#0D0D0D";
 
   return (
     <div
-      className="w-full py-5 overflow-hidden"
+      className="w-full py-5 relative"
       style={{
-        backgroundColor: isLight ? "#FAF8F3" : "#0D0D0D",
+        backgroundColor: bgColor,
         borderTop: `1px solid ${isLight ? "#E0D9CC" : "#1a1a1a"}`,
+        overflow: "hidden",
       }}
     >
       <div
@@ -52,6 +53,17 @@ export function BrandsCarousel({ sponsors, isLight }: Props) {
           </div>
         ))}
       </div>
+
+      {/* Fades en los bordes para que el loop no se corte de golpe */}
+      <div
+        className="absolute top-0 left-0 h-full pointer-events-none"
+        style={{ width: 36, background: `linear-gradient(to right, ${bgColor}, transparent)` }}
+      />
+      <div
+        className="absolute top-0 right-0 h-full pointer-events-none"
+        style={{ width: 36, background: `linear-gradient(to left, ${bgColor}, transparent)` }}
+      />
+
       <style>{`
         @keyframes nox-marquee {
           from { transform: translateX(0); }
