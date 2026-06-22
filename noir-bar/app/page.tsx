@@ -37,7 +37,7 @@ export default function LandingPage() {
               Tus clientes escanean un QR, ven tu carta actualizada y hasta pueden reservar una mesa. Vos manejás todo desde el celular o computadora. Sin papeles, sin llamadas.
             </p>
             <div className="hero-btns">
-              <a href="https://noir-bar.vercel.app/noir-bar"
+        <a href="https://noxdigital.vercel.app/noir-bar"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hero-btn btn-night"
@@ -52,7 +52,7 @@ export default function LandingPage() {
                 Hablar por WhatsApp
               </a>
             </div>
-            <span className="hero-hint hint-night">noir-bar.vercel.app</span>
+        <span className="hero-hint hint-night">noxdigital.vercel.app</span>
           </div>
           <div className="hero-mockup-wrap">
             <img src="https://nkpsojhxljlluzfinaoq.supabase.co/storage/v1/object/public/assets/noche.png" alt="Demo modo noche" className="hero-mockup-img" />
@@ -133,7 +133,7 @@ export default function LandingPage() {
               </li>
             ))}
           </ul>
-          <a href="https://noir-bar.vercel.app/noir-bar" target="_blank" rel="noopener noreferrer" className="product-demo-btn">
+      <a href="https://noxdigital.vercel.app/noir-bar" target="_blank" rel="noopener noreferrer" className="product-demo-btn">
             Ver el demo en vivo →
           </a>
         </div>
