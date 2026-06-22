@@ -74,12 +74,14 @@ export default async function MenuPage({ params }: Props) {
         showUnavailable={venue.show_unavailable}
         isLight={isLight}
       />
-      {hasSponsors && <div style={{ height: 76 }} />}
-      {hasSponsors && (
-        <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 25 }}>
-          <BrandsCarousel sponsors={sponsors!} isLight={isLight} />
-        </div>
-      )}
+{hasSponsors && <div style={{ height: 76 }} />}
+{hasSponsors && (
+  <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 25, display: "flex", justifyContent: "center" }}>
+    <div style={{ width: "100%", maxWidth: 480 }}>
+      <BrandsCarousel sponsors={sponsors!} isLight={isLight} />
+    </div>
+  </div>
+)}
     </main>
   );
 }
