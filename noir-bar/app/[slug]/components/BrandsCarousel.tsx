@@ -16,14 +16,15 @@ export function BrandsCarousel({ sponsors, isLight }: Props) {
   const bgColor = isLight ? "#FAF8F3" : "#0D0D0D";
 
   return (
-    <div
-      className="w-full py-5 relative"
-      style={{
-        backgroundColor: bgColor,
-        borderTop: `1px solid ${isLight ? "#E0D9CC" : "#1a1a1a"}`,
-        overflow: "hidden",
-      }}
-    >
+<div
+  className="w-full py-5 relative mx-auto"
+  style={{
+    backgroundColor: bgColor,
+    borderTop: `1px solid ${isLight ? "#E0D9CC" : "#1a1a1a"}`,
+    overflow: "hidden",
+    maxWidth: 480,
+  }}
+>
       <div
         className="flex items-center gap-3"
         style={{
