@@ -20,7 +20,7 @@ export function BrandsCarousel({ sponsors, isLight }: Props) {
       }}
     >
       <div
-        className="flex items-center gap-4"
+        className="flex items-center gap-3"
         style={{
           width: "max-content",
           animation: `nox-marquee ${sponsors.length * 2.5}s linear infinite`,
@@ -29,13 +29,13 @@ export function BrandsCarousel({ sponsors, isLight }: Props) {
         {looped.map((sponsor, idx) => (
           <div
             key={`${sponsor.id}-${idx}`}
-            className="flex-shrink-0 flex items-center justify-center rounded-2xl"
+            className="flex-shrink-0 flex items-center justify-center rounded-full"
             style={{
-              width: 124,
-              height: 76,
+              width: 64,
+              height: 64,
+              backgroundColor: "#ffffff",
+              boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
               padding: 10,
-              backgroundColor: "rgba(255,255,255,0.94)",
-              boxShadow: "0 0 0 1px rgba(200,169,107,0.25)",
             }}
           >
             <img
