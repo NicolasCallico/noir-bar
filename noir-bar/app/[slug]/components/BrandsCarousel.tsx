@@ -29,19 +29,20 @@ export function BrandsCarousel({ sponsors, isLight }: Props) {
         {looped.map((sponsor, idx) => (
           <div
             key={`${sponsor.id}-${idx}`}
-            className="flex-shrink-0 flex items-center justify-center rounded-xl"
+            className="flex-shrink-0 flex items-center justify-center rounded-2xl"
             style={{
-              width: 110,
-              height: 70,
-              padding: 12,
-              backgroundColor: "#ffffff",
-              boxShadow: "0 4px 12px rgba(0,0,0,0.25)",
+              width: 124,
+              height: 76,
+              padding: 8,
+              backgroundColor: "rgba(255,255,255,0.92)",
+              boxShadow: "0 2px 10px rgba(0,0,0,0.18)",
             }}
           >
             <img
               src={sponsor.logo_url}
               alt={sponsor.name || "Sponsor"}
-              className="object-contain max-h-full max-w-full"
+              className="object-contain"
+              style={{ maxHeight: "100%", maxWidth: "100%", width: "auto", height: "auto" }}
             />
           </div>
         ))}
