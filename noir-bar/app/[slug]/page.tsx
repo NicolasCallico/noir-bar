@@ -74,21 +74,8 @@ export default async function MenuPage({ params }: Props) {
         showUnavailable={venue.show_unavailable}
         isLight={isLight}
       />
-      {hasSponsors && <div className="md:hidden" style={{ height: 76 }} />}
       {hasSponsors && (
-        <div
-          className="md:hidden"
-          style={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 25, display: "flex", justifyContent: "center" }}
-        >
-          <div style={{ width: "100%", maxWidth: 480 }}>
-            <BrandsCarousel sponsors={sponsors!} isLight={isLight} />
-          </div>
-        </div>
-      )}
-      {hasSponsors && (
-        <div className="hidden md:block">
-          <BrandsCarousel sponsors={sponsors!} isLight={isLight} />
-        </div>
+        <BrandsCarousel sponsors={sponsors!} isLight={isLight} />
       )}
     </main>
   );
