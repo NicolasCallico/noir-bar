@@ -31,12 +31,11 @@ export function BrandsCarousel({ sponsors, isLight }: Props) {
             key={`${sponsor.id}-${idx}`}
             className="flex-shrink-0 flex items-center justify-center rounded-xl"
             style={{
-              width: 108,
-              height: 68,
-              padding: 10,
-              backgroundColor: isLight ? "#F0EAD9" : "#2a2a2a",
-              border: `1px solid ${isLight ? "#E0D5C0" : "#3a3a3a"}`,
-              boxShadow: isLight ? "none" : "0 2px 8px rgba(0,0,0,0.4)",
+              width: 110,
+              height: 70,
+              padding: 12,
+              backgroundColor: "#ffffff",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.25)",
             }}
           >
             <img
