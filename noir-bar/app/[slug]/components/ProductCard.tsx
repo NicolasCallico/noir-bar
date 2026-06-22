@@ -46,7 +46,7 @@ export function ProductCard({ product, isLight }: Props) {
             </span>
           )}
         </div>
-        <div className={cn("flex items-start justify-between gap-2", unavailable && "opacity-40")}>
+        <div className={cn("flex items-start justify-between gap-2", unavailable && "opacity-65")}>
           <h3 className={`font-serif text-[17px] font-medium leading-tight ${isLight ? "text-[#1C1814]" : "text-[#F5F5F5]"}`}>{product.name}</h3>
           <div className="flex-shrink-0 text-right">
             <p className="text-[14px] font-medium text-[#C8A96B]">{formatPrice(product.price)}</p>
@@ -55,7 +55,7 @@ export function ProductCard({ product, isLight }: Props) {
             )}
           </div>
         </div>
-        <p className={cn(`text-[11px] mt-0.5 leading-snug line-clamp-1 ${isLight ? "text-[#9E917E]" : "text-[#666]"}`, unavailable && "opacity-40")}>
+      <p className={cn(`text-[11px] mt-0.5 leading-snug line-clamp-1 ${isLight ? "text-[#9E917E]" : "text-[#666]"}`, unavailable && "opacity-65")}>
           {product.description}
         </p>
       </div>
