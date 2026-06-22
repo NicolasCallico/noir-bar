@@ -25,20 +25,28 @@ const badgeConfig: Record<string, { label: string; class: string }> = {
 export function ProductCard({ product, isLight }: Props) {
   const imageUrl = getProductImageUrl(product.image_url);
   const badge = product.badge ? badgeConfig[product.badge] : null;
+  const unavailable = !product.available;
   return (
     <div className="flex items-center gap-3 py-3" style={{ borderBottom: `1px solid ${isLight ? "#E0D9CC" : "#141414"}` }}>
       {imageUrl ? (
-        <div className={cn("w-14 h-14 flex-shrink-0 rounded-xl overflow-hidden bg-[#141414]", !product.available && "opacity-40")}>
+        <div className={cn("w-14 h-14 flex-shrink-0 rounded-xl overflow-hidden bg-[#141414]", unavailable && "opacity-35")}>
           <img src={imageUrl} alt={product.name} loading="lazy" className="w-full h-full object-cover" />
         </div>
       ) : null}
-      <div className={cn("flex-1 min-w-0", !product.available && "opacity-40")}>
-        {badge && (
-          <span className={cn("inline-block text-[9px] font-medium uppercase tracking-wide px-2 py-0.5 rounded-full mb-1", badge.class)}>
-            {badge.label}
-          </span>
-        )}
-        <div className="flex items-start justify-between gap-2">
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center gap-1.5 mb-1 flex-wrap">
+          {badge && !unavailable && (
+            <span className={cn("inline-block text-[9px] font-medium uppercase tracking-wide px-2 py-0.5 rounded-full", badge.class)}>
+              {badge.label}
+            </span>
+          )}
+          {unavailable && (
+            <span className="inline-block text-[9px] font-semibold uppercase tracking-wide px-2 py-0.5 rounded-full text-[#e05555] bg-[rgba(224,85,85,0.1)] border border-[rgba(224,85,85,0.3)]">
+              Sin stock
+            </span>
+          )}
+        </div>
+        <div className={cn("flex items-start justify-between gap-2", unavailable && "opacity-40")}>
           <h3 className={`font-serif text-[17px] font-medium leading-tight ${isLight ? "text-[#1C1814]" : "text-[#F5F5F5]"}`}>{product.name}</h3>
           <div className="flex-shrink-0 text-right">
             <p className="text-[14px] font-medium text-[#C8A96B]">{formatPrice(product.price)}</p>
@@ -47,13 +55,10 @@ export function ProductCard({ product, isLight }: Props) {
             )}
           </div>
         </div>
-        <p className={`text-[11px] mt-0.5 leading-snug line-clamp-1 ${isLight ? "text-[#9E917E]" : "text-[#666]"}`}>{product.description}</p>
+        <p className={cn(`text-[11px] mt-0.5 leading-snug line-clamp-1 ${isLight ? "text-[#9E917E]" : "text-[#666]"}`, unavailable && "opacity-40")}>
+          {product.description}
+        </p>
       </div>
-      {!product.available && (
-        <span className="flex-shrink-0 text-[9px] font-semibold uppercase tracking-wide px-2.5 py-1 rounded-full text-[#e05555] bg-[rgba(224,85,85,0.1)] border border-[rgba(224,85,85,0.25)]">
-          Sin stock
-        </span>
-      )}
     </div>
   );
 }
