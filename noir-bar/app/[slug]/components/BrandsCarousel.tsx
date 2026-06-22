@@ -33,16 +33,16 @@ export function BrandsCarousel({ sponsors, isLight }: Props) {
             style={{
               width: 124,
               height: 76,
-              padding: 8,
-              backgroundColor: "rgba(255,255,255,0.92)",
-              boxShadow: "0 2px 10px rgba(0,0,0,0.18)",
+              padding: 10,
+              backgroundColor: "rgba(255,255,255,0.08)",
+              border: "1px solid rgba(200,169,107,0.2)",
             }}
           >
             <img
               src={sponsor.logo_url}
               alt={sponsor.name || "Sponsor"}
               className="object-contain"
-              style={{ maxHeight: "100%", maxWidth: "100%", width: "auto", height: "auto" }}
+              style={{ maxHeight: "100%", maxWidth: "100%", width: "auto", height: "auto", filter: "brightness(0) invert(1)" }}
             />
           </div>
         ))}
