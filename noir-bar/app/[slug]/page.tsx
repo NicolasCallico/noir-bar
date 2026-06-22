@@ -58,6 +58,7 @@ export default async function MenuPage({ params }: Props) {
   const sponsors = (sponsorsResult.data as unknown) as { id: string; logo_url: string; name?: string }[] | null;
   const isLight = venue.theme === "light";
   const bg = isLight ? "#FAF8F3" : "#0D0D0D";
+  const hasSponsors = sponsors && sponsors.length > 0;
   return (
     <main style={{ backgroundColor: bg, minHeight: "100vh" }}>
       <Hero venue={venue} />
@@ -73,7 +74,12 @@ export default async function MenuPage({ params }: Props) {
         showUnavailable={venue.show_unavailable}
         isLight={isLight}
       />
-      <BrandsCarousel sponsors={sponsors || []} />
+      {hasSponsors && <div style={{ height: 76 }} />}
+      {hasSponsors && (
+        <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 25 }}>
+          <BrandsCarousel sponsors={sponsors!} isLight={isLight} />
+        </div>
+      )}
     </main>
   );
 }
