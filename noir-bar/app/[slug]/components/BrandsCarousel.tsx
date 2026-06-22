@@ -33,8 +33,8 @@ export function BrandsCarousel({ sponsors, isLight }: Props) {
             style={{
               width: 64,
               height: 64,
-              backgroundColor: "#ffffff",
-              boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
+              backgroundColor: "rgba(245,242,235,0.88)",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.25)",
               padding: 10,
             }}
           >
