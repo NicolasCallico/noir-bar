@@ -26,21 +26,16 @@ export function ProductCard({ product, isLight }: Props) {
   const imageUrl = getProductImageUrl(product.image_url);
   const badge = product.badge ? badgeConfig[product.badge] : null;
   return (
-    <div className={cn("flex items-center gap-3 py-3", !product.available && "opacity-40")} style={{ borderBottom: `1px solid ${isLight ? "#E0D9CC" : "#141414"}` }}>
+    <div className="flex items-center gap-3 py-3" style={{ borderBottom: `1px solid ${isLight ? "#E0D9CC" : "#141414"}` }}>
       {imageUrl ? (
-        <div className="w-14 h-14 flex-shrink-0 rounded-xl overflow-hidden bg-[#141414]">
+        <div className={cn("w-14 h-14 flex-shrink-0 rounded-xl overflow-hidden bg-[#141414]", !product.available && "opacity-40")}>
           <img src={imageUrl} alt={product.name} loading="lazy" className="w-full h-full object-cover" />
         </div>
       ) : null}
-      <div className="flex-1 min-w-0">
+      <div className={cn("flex-1 min-w-0", !product.available && "opacity-40")}>
         {badge && (
           <span className={cn("inline-block text-[9px] font-medium uppercase tracking-wide px-2 py-0.5 rounded-full mb-1", badge.class)}>
             {badge.label}
-          </span>
-        )}
-        {!product.available && (
-          <span className="inline-block text-[9px] font-medium uppercase tracking-wide px-2 py-0.5 rounded-full mb-1 text-[#555] bg-[rgba(80,80,80,0.12)] border border-[#2a2a2a]">
-            Sin stock
           </span>
         )}
         <div className="flex items-start justify-between gap-2">
@@ -54,6 +49,11 @@ export function ProductCard({ product, isLight }: Props) {
         </div>
         <p className={`text-[11px] mt-0.5 leading-snug line-clamp-1 ${isLight ? "text-[#9E917E]" : "text-[#666]"}`}>{product.description}</p>
       </div>
+      {!product.available && (
+        <span className="flex-shrink-0 text-[9px] font-semibold uppercase tracking-wide px-2.5 py-1 rounded-full text-[#e05555] bg-[rgba(224,85,85,0.1)] border border-[rgba(224,85,85,0.25)]">
+          Sin stock
+        </span>
+      )}
     </div>
   );
 }
