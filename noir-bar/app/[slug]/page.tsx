@@ -4,6 +4,7 @@ import { Hero } from "./components/Hero";
 import { PromoBar } from "./components/PromoBar";
 import { CategoryFilter } from "./components/CategoryFilter";
 import { ProductList } from "./components/ProductList";
+import { BrandsCarousel } from "./components/BrandsCarousel";
 import { notFound } from "next/navigation";
 export const revalidate = 0;
 interface Props {
@@ -48,9 +49,15 @@ export default async function MenuPage({ params }: Props) {
     .eq("venue_id", venue.id)
     .eq("active", true);
   const promotions = (promotionsResult.data as unknown) as Promotion[] | null;
+  const sponsorsResult = await supabase
+    .from("brand_sponsors")
+    .select("*")
+    .eq("venue_id", venue.id)
+    .eq("active", true)
+    .order("order", { ascending: true });
+  const sponsors = (sponsorsResult.data as unknown) as { id: string; logo_url: string; name?: string }[] | null;
   const isLight = venue.theme === "light";
   const bg = isLight ? "#FAF8F3" : "#0D0D0D";
-
   return (
     <main style={{ backgroundColor: bg, minHeight: "100vh" }}>
       <Hero venue={venue} />
@@ -66,6 +73,7 @@ export default async function MenuPage({ params }: Props) {
         showUnavailable={venue.show_unavailable}
         isLight={isLight}
       />
+      <BrandsCarousel sponsors={sponsors || []} />
     </main>
   );
 }
