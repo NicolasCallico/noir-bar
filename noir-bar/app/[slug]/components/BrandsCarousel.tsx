@@ -10,7 +10,11 @@ interface Props {
 }
 export function BrandsCarousel({ sponsors, isLight }: Props) {
   if (!sponsors || sponsors.length === 0) return null;
-  const looped = [...sponsors, ...sponsors];
+
+  // Triplicamos para asegurar loop fluido incluso con pocos logos
+  const looped = [...sponsors, ...sponsors, ...sponsors];
+  const duration = sponsors.length * 3;
+
   return (
     <div
       className="w-full py-5 overflow-hidden"
@@ -23,7 +27,8 @@ export function BrandsCarousel({ sponsors, isLight }: Props) {
         className="flex items-center gap-3"
         style={{
           width: "max-content",
-          animation: `nox-marquee ${sponsors.length * 2.5}s linear infinite`,
+          animation: `nox-marquee ${duration}s linear infinite`,
+          willChange: "transform",
         }}
       >
         {looped.map((sponsor, idx) => (
@@ -50,7 +55,7 @@ export function BrandsCarousel({ sponsors, isLight }: Props) {
       <style>{`
         @keyframes nox-marquee {
           from { transform: translateX(0); }
-          to { transform: translateX(-50%); }
+          to { transform: translateX(-33.333%); }
         }
       `}</style>
     </div>
